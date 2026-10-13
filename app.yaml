@@ -1,0 +1,19 @@
+# Databricks Apps configuration.
+# The platform runs `npm install` and `npm run build` automatically because a
+# package.json is present, then launches the command below.
+command: ['npm', 'run', 'start']
+
+env:
+  # Default connection target shown when the app opens: "uc", "lakebase" or "demo".
+  - name: ERD_DEFAULT_SOURCE
+    value: 'uc'
+  # Optional: pre-select a catalog / schema in the Unity Catalog picker.
+  # - name: ERD_DEFAULT_CATALOG
+  #   value: 'main'
+  # - name: ERD_DEFAULT_SCHEMA
+  #   value: 'default'
+
+  # Lakebase: add a "Database" resource to the app (permission: Can connect and
+  # create). Databricks then injects PGHOST, PGPORT, PGDATABASE, PGUSER and
+  # PGSSLMODE automatically. The app authenticates with the service principal's
+  # OAuth token as the Postgres password.
