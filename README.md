@@ -22,7 +22,7 @@ configuration.
 ```
 src/      React + Vite + React Flow (@xyflow/react) + dagre layout
 server/   Express: serves dist/ and the /api endpoints
-  databricks.js    REST client (user token → OAuth M2M → PAT)
+  databricks.js    REST client (OAuth M2M → PAT; user token if opted in)
   unityCatalog.js  /api/2.1/unity-catalog/{catalogs,schemas,tables}
   lakebase.js      pg_catalog queries for columns, PKs and FKs
   model.js         shared ERD model, relationship inference, demo data
@@ -50,11 +50,12 @@ app.yaml  Databricks Apps entry point (npm run start)
    `app.yaml`.
 2. **Unity Catalog:** grant the app's service principal `USE CATALOG`,
    `USE SCHEMA` and `SELECT` (or `BROWSE`) on the schemas it should show.
-   Alternatively, enable **user authorization** on the app with the
-   `catalog.catalogs:read`, `catalog.schemas:read` and `catalog.tables:read`
-   scopes. The app then queries Unity Catalog as the signed-in user, so each
-   viewer only sees what they can access. Set `ERD_USE_USER_TOKEN=false` to
-   always use the service principal instead.
+   By default the app always queries Unity Catalog as this service principal.
+   To make each viewer see only what they can access, enable **user
+   authorization** on the app with the `catalog.catalogs:read`,
+   `catalog.schemas:read` and `catalog.tables:read` scopes, and set
+   `ERD_USE_USER_TOKEN=true` in `app.yaml`. Without those scopes the user's
+   token is rejected with "invalid scope".
 3. **Lakebase:** add a **Database** resource to the app (permission *Can
    connect and create*). Databricks injects `PGHOST`, `PGPORT`, `PGDATABASE`,
    `PGUSER` and `PGSSLMODE`, and the app uses the service principal's OAuth

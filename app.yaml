@@ -7,6 +7,11 @@ env:
   # Default connection target shown when the app opens: "uc", "lakebase" or "demo".
   - name: ERD_DEFAULT_SOURCE
     value: 'uc'
+  # Query Unity Catalog as the signed-in user instead of the app's service
+  # principal. Requires user authorization on the app with the scopes
+  # catalog.catalogs:read, catalog.schemas:read and catalog.tables:read.
+  # - name: ERD_USE_USER_TOKEN
+  #   value: 'true'
   # Optional: pre-select a catalog / schema in the Unity Catalog picker.
   # - name: ERD_DEFAULT_CATALOG
   #   value: 'main'

@@ -14,11 +14,13 @@ const port = Number(process.env.DATABRICKS_APP_PORT || process.env.PORT || 8000)
 const app = express();
 app.disable('x-powered-by');
 
-// Databricks Apps forwards the signed-in user's token when user authorization
-// is enabled. Opt out with ERD_USE_USER_TOKEN=false to always use the app's
-// service principal.
+// By default Unity Catalog is queried as the app's service principal. Set
+// ERD_USE_USER_TOKEN=true to query as the signed-in user instead; this needs
+// user authorization on the app with the catalog.*:read scopes; otherwise the
+// forwarded token only carries identity scopes and UC calls fail with
+// "invalid scope".
 const userToken = (req) =>
-  process.env.ERD_USE_USER_TOKEN === 'false' ? null : req.get('x-forwarded-access-token') || null;
+  process.env.ERD_USE_USER_TOKEN === 'true' ? req.get('x-forwarded-access-token') || null : null;
 
 const wrap = (fn) => (req, res) =>
   Promise.resolve(fn(req, res)).catch((err) => {

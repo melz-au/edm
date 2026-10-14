@@ -2,7 +2,7 @@
 //
 // Authentication order:
 //   1. The signed-in user's token forwarded by Databricks Apps
-//      (x-forwarded-access-token), when user authorization is enabled.
+//      (x-forwarded-access-token), only when ERD_USE_USER_TOKEN=true.
 //   2. The app's service principal via OAuth M2M (DATABRICKS_CLIENT_ID /
 //      DATABRICKS_CLIENT_SECRET), which Databricks Apps injects automatically.
 //   3. A personal access token (DATABRICKS_TOKEN) for local development.
@@ -64,8 +64,8 @@ export class DatabricksError extends Error {
 }
 
 /**
- * GET a Databricks REST endpoint. `userToken` (from x-forwarded-access-token)
- * takes precedence so Unity Catalog permissions are evaluated as the user.
+ * GET a Databricks REST endpoint. When `userToken` (from x-forwarded-access-token)
+ * is given it takes precedence, so Unity Catalog permissions are evaluated as the user.
  */
 export async function apiGet(path, params = {}, userToken = null) {
   const host = getHost();
@@ -91,6 +91,10 @@ export async function apiGet(path, params = {}, userToken = null) {
       message = JSON.parse(message).message ?? message;
     } catch {
       // keep raw text
+    }
+    if (userToken && /scope/i.test(message)) {
+      message +=
+        ' (the signed-in user token lacks the required scopes: add catalog.catalogs:read, catalog.schemas:read and catalog.tables:read under the app\'s user authorization, or unset ERD_USE_USER_TOKEN to use the service principal)';
     }
     throw new DatabricksError(`Databricks API ${path} failed (${res.status}): ${message}`, res.status);
   }
