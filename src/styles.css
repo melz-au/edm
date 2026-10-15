@@ -258,3 +258,24 @@ button, input, select { font: inherit; color: inherit; }
 .tag { margin-left: 6px; font-size: 10px; padding: 0 4px; border-radius: 3px; background: var(--bg); color: var(--muted); }
 
 .react-flow__minimap { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+
+/* Model levels */
+.erd-marker--hollow { fill: var(--panel); }
+.table-node.level-logical .table-node__type { font-family: inherit; font-style: italic; }
+.table-node.level-conceptual {
+  width: 180px;
+  border-radius: 12px;
+  padding-bottom: 0;
+  border: 2px solid var(--navy);
+}
+.table-node.level-conceptual .table-node__header {
+  height: 56px;
+  justify-content: center;
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+}
+.table-node.level-conceptual .table-node__name { font-size: 15px; white-space: normal; text-align: center; line-height: 1.2; }
+.options .segmented + .check { margin-top: 10px; }
+.table-node.level-conceptual.external { border-color: #8a9ba4; }
+.table-node.level-conceptual.external .table-node__header { background: #fbfcfc; }

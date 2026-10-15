@@ -12,6 +12,17 @@ configuration.
 - Hover or select a table to highlight its relationships. The details panel lists
   its columns, the tables it references and the tables that reference it.
 - You can show all columns, keys only, or table names only.
+- **Three model levels**, switchable at any time:
+  - **Physical:** tables, columns and database types exactly as stored.
+  - **Logical:** business names (`order_items` → *Order Item*, `customer_id`
+    → *Customer ID*), generic data types (*Integer*, *Text*, *Timestamp* and
+    so on), keys and cardinality.
+  - **Conceptual:** entities and relationships only. Pure junction tables
+    (whose primary key is made up of foreign keys to exactly two other tables)
+    collapse into many-to-many relationships.
+- Cardinality comes from the keys at every level. A nullable foreign key is an
+  optional relationship (○), and a foreign key that is also the child's
+  primary key is one-to-one.
 - Optional **relationship inference** from column names (`customer_id` →
   `customers.id`). Unity Catalog foreign keys are informational and often not
   declared, so this helps there. Inferred links are drawn dashed.
@@ -26,6 +37,7 @@ server/   Express: serves dist/ and the /api endpoints
   unityCatalog.js  /api/2.1/unity-catalog/{catalogs,schemas,tables}
   lakebase.js      pg_catalog queries for columns, PKs and FKs
   model.js         shared ERD model, relationship inference, demo data
+src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
 

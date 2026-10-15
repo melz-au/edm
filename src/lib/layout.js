@@ -1,6 +1,8 @@
 import dagre from '@dagrejs/dagre';
 
 export const NODE_WIDTH = 280;
+export const CONCEPT_WIDTH = 180;
+export const CONCEPT_HEIGHT = 60;
 export const HEADER_HEIGHT = 40;
 export const ROW_HEIGHT = 26;
 export const FOOTER_HEIGHT = 8;
@@ -25,8 +27,16 @@ export function nodeHeight(columnCount, hasMore = false) {
  * they reference.
  */
 export function buildGraph(model, { columnMode = 'all', showInferred = true } = {}) {
+  const conceptual = model.level === 'conceptual';
+  if (conceptual) columnMode = 'none';
   const g = new dagre.graphlib.Graph({ multigraph: true });
-  g.setGraph({ rankdir: 'LR', nodesep: 40, ranksep: 120, marginx: 20, marginy: 20 });
+  g.setGraph({
+    rankdir: 'LR',
+    nodesep: conceptual ? 60 : 40,
+    ranksep: conceptual ? 140 : 120,
+    marginx: 20,
+    marginy: 20,
+  });
   g.setDefaultEdgeLabel(() => ({}));
 
   const tableIds = new Set(model.tables.map((t) => t.id));
@@ -36,7 +46,12 @@ export function buildGraph(model, { columnMode = 'all', showInferred = true } = 
     const cols = visibleColumns(table, columnMode);
     visibleCols.set(table.id, new Set(cols.map((c) => c.name)));
     const hasMore = columnMode !== 'none' && cols.length < table.columns.length;
-    g.setNode(table.id, { width: NODE_WIDTH, height: nodeHeight(cols.length, hasMore) });
+    g.setNode(
+      table.id,
+      conceptual
+        ? { width: CONCEPT_WIDTH, height: CONCEPT_HEIGHT }
+        : { width: NODE_WIDTH, height: nodeHeight(cols.length, hasMore) },
+    );
   }
 
   const relationships = model.relationships.filter(
@@ -54,7 +69,7 @@ export function buildGraph(model, { columnMode = 'all', showInferred = true } = 
       id: table.id,
       type: 'table',
       position: { x: x - width / 2, y: y - height / 2 },
-      data: { table, columnMode },
+      data: { table, columnMode, level: model.level ?? 'physical' },
     };
   });
 
@@ -76,8 +91,8 @@ export function buildGraph(model, { columnMode = 'all', showInferred = true } = 
       sourceHandle,
       targetHandle,
       type: 'smoothstep',
-      markerStart: 'erd-many',
-      markerEnd: 'erd-one',
+      markerStart: `erd-${r.childEnd ?? 'many'}`,
+      markerEnd: `erd-${r.parentEnd ?? 'one'}`,
       className: r.inferred ? 'erd-edge inferred' : 'erd-edge',
       data: { relationship: r },
     };
