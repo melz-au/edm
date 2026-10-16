@@ -45,6 +45,7 @@ export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges] = useState([]);
   const requestId = useRef(0);
+  const canvasRef = useRef(null);
   const defaults = useRef({});
 
   // Runs an async loader, ignoring results from superseded requests.
@@ -136,7 +137,11 @@ export default function App() {
       setEdges([]);
       return;
     }
-    const graph = buildGraph(view, { columnMode });
+    const box = canvasRef.current?.getBoundingClientRect();
+    const graph = buildGraph(view, {
+      columnMode,
+      viewport: box && { width: box.width, height: box.height },
+    });
     setNodes(graph.nodes);
     setEdges(graph.edges);
     requestAnimationFrame(() => rf.fitView({ padding: 0.15, duration: 300 }));
@@ -357,7 +362,7 @@ export default function App() {
           )}
         </aside>
 
-        <main className="canvas">
+        <main className="canvas" ref={canvasRef}>
           <ErdMarkers />
           <ReactFlow
             nodes={displayNodes}

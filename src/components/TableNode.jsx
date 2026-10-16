@@ -1,6 +1,12 @@
 import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { TABLE_HANDLE_IN, TABLE_HANDLE_OUT, visibleColumns } from '../lib/layout.js';
+import {
+  TABLE_HANDLE_BOTTOM,
+  TABLE_HANDLE_IN,
+  TABLE_HANDLE_OUT,
+  TABLE_HANDLE_TOP,
+  visibleColumns,
+} from '../lib/layout.js';
 
 const TYPE_BADGE = {
   VIEW: 'view',
@@ -19,6 +25,8 @@ function TableNode({ data }) {
 
   return (
     <div className={`table-node level-${level}${table.external ? ' external' : ''}`}>
+      <Handle type="target" position={Position.Top} id={TABLE_HANDLE_TOP} className="erd-handle" />
+      <Handle type="source" position={Position.Bottom} id={TABLE_HANDLE_BOTTOM} className="erd-handle" />
       <div className="table-node__header" title={[table.comment, table.id].filter(Boolean).join('\n')}>
         <Handle type="target" position={Position.Left} id={TABLE_HANDLE_IN} className="erd-handle" />
         <span className="table-node__name">{table.label ?? table.name}</span>

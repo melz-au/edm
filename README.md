@@ -8,7 +8,10 @@ configuration.
 - Pan by dragging or scrolling, and zoom with pinch or ctrl+scroll. There are also
   a minimap and fit/re-layout controls.
 - Tables are laid out automatically, with primary and foreign keys marked and
-  crow's-foot relationship lines.
+  crow's-foot relationship lines. The layout fills the browser window: groups
+  of related tables and unrelated tables are packed into rows sized to the
+  window's shape. With columns hidden, long chains can flow top-to-bottom. Use
+  the re-layout button (⟲) after resizing the window.
 - Hover or select a table to highlight its relationships. The details panel lists
   its columns, the tables it references and the tables that reference it.
 - You can show all columns, keys only, or table names only.
