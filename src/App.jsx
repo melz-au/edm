@@ -12,6 +12,7 @@ import TableDetails from './components/TableDetails.jsx';
 import ErdMarkers from './components/ErdMarkers.jsx';
 import { api } from './lib/api.js';
 import { buildGraph } from './lib/layout.js';
+import { LEVELS, deriveView } from './lib/modelLevels.js';
 
 const nodeTypes = { table: TableNode };
 
@@ -20,6 +21,9 @@ const SOURCES = [
   { id: 'lakebase', label: 'Lakebase' },
   { id: 'demo', label: 'Demo' },
 ];
+
+const matchesQuery = (table, query) =>
+  table.name.toLowerCase().includes(query) || table.label.toLowerCase().includes(query);
 
 export default function App() {
   const rf = useReactFlow();
@@ -31,6 +35,7 @@ export default function App() {
   const [schema, setSchema] = useState('');
   const [infer, setInfer] = useState(false);
   const [columnMode, setColumnMode] = useState('all');
+  const [level, setLevel] = useState('physical');
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,6 +45,7 @@ export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges] = useState([]);
   const requestId = useRef(0);
+  const canvasRef = useRef(null);
   const defaults = useRef({});
 
   // Runs an async loader, ignoring results from superseded requests.
@@ -123,23 +129,29 @@ export default function App() {
     }
   }, [source, catalog, schema, infer, run]);
 
+  const view = useMemo(() => deriveView(model, level), [model, level]);
+
   const layout = useCallback(() => {
-    if (!model) {
+    if (!view) {
       setNodes([]);
       setEdges([]);
       return;
     }
-    const graph = buildGraph(model, { columnMode });
+    const box = canvasRef.current?.getBoundingClientRect();
+    const graph = buildGraph(view, {
+      columnMode,
+      viewport: box && { width: box.width, height: box.height },
+    });
     setNodes(graph.nodes);
     setEdges(graph.edges);
     requestAnimationFrame(() => rf.fitView({ padding: 0.15, duration: 300 }));
-  }, [model, columnMode, rf, setNodes]);
+  }, [view, columnMode, rf, setNodes]);
 
   useEffect(layout, [layout]);
 
   const tablesById = useMemo(
-    () => new Map((model?.tables ?? []).map((t) => [t.id, t])),
-    [model],
+    () => new Map((view?.tables ?? []).map((t) => [t.id, t])),
+    [view],
   );
 
   const focusTable = useCallback(
@@ -174,13 +186,13 @@ export default function App() {
       return {
         ...e,
         className: `${e.className}${connected ? ' active' : ''}${activeId && !connected ? ' dimmed' : ''}`,
-        label: connected ? e.data.relationship.name : undefined,
+        label: connected ? e.data.relationship.label : undefined,
         zIndex: connected ? 10 : 0,
       };
     });
 
     const displayNodes = nodes.map((n) => {
-      const matches = !query || n.data.table.name.toLowerCase().includes(query);
+      const matches = !query || matchesQuery(n.data.table, query);
       const related = !activeId || n.id === activeId || neighbours.has(n.id);
       const classes = [];
       if (n.id === activeId) classes.push('active');
@@ -199,14 +211,15 @@ export default function App() {
 
   const filteredTables = useMemo(
     () =>
-      (model?.tables ?? [])
-        .filter((t) => !query || t.name.toLowerCase().includes(query))
-        .sort((a, b) => a.name.localeCompare(b.name)),
-    [model, query],
+      (view?.tables ?? [])
+        .filter((t) => !query || matchesQuery(t, query))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [view, query],
   );
 
   const selectedTable = selectedId ? tablesById.get(selectedId) : null;
-  const inferredCount = model?.relationships.filter((r) => r.inferred).length ?? 0;
+  const inferredCount = view?.relationships.filter((r) => r.inferred).length ?? 0;
+  const physical = level === 'physical';
 
   return (
     <div className="app">
@@ -215,11 +228,11 @@ export default function App() {
           <span className="brand__logo" aria-hidden="true">◆</span>
           ERD Explorer
         </div>
-        {model && (
+        {view && (
           <div className="stats">
-            <span>{model.tables.length} tables</span>
+            <span>{view.tables.length} {physical ? 'tables' : 'entities'}</span>
             <span>
-              {model.relationships.length} relationships
+              {view.relationships.length} relationships
               {inferredCount > 0 && ` (${inferredCount} inferred)`}
             </span>
           </div>
@@ -251,6 +264,9 @@ export default function App() {
 
           {source === 'uc' && (
             <section>
+              {config?.sources.uc.identity && (
+                <div className="conn muted">Querying as {config.sources.uc.identity}</div>
+              )}
               <label className="label" htmlFor="catalog">Catalog</label>
               <select id="catalog" value={catalog} onChange={(e) => setCatalog(e.target.value)}>
                 <option value="">Select a catalog…</option>
@@ -292,15 +308,28 @@ export default function App() {
           )}
 
           <section className="options">
+            <label className="label">Model</label>
+            <div className="segmented">
+              {LEVELS.map((l) => (
+                <button key={l.id} className={level === l.id ? 'active' : ''} onClick={() => setLevel(l.id)}>
+                  {l.label}
+                </button>
+              ))}
+            </div>
             <label className="check">
               <input type="checkbox" checked={infer} onChange={(e) => setInfer(e.target.checked)} />
               Infer relationships from column names
             </label>
-            <label className="label" htmlFor="columns">Columns</label>
-            <select id="columns" value={columnMode} onChange={(e) => setColumnMode(e.target.value)}>
-              <option value="all">All columns</option>
+            <label className="label" htmlFor="columns">{physical ? 'Columns' : 'Attributes'}</label>
+            <select
+              id="columns"
+              value={level === 'conceptual' ? 'none' : columnMode}
+              disabled={level === 'conceptual'}
+              onChange={(e) => setColumnMode(e.target.value)}
+            >
+              <option value="all">{physical ? 'All columns' : 'All attributes'}</option>
               <option value="keys">Keys only</option>
-              <option value="none">Table names only</option>
+              <option value="none">{physical ? 'Table names only' : 'Entity names only'}</option>
             </select>
           </section>
 
@@ -310,7 +339,7 @@ export default function App() {
             <section className="tables">
               <input
                 type="search"
-                placeholder="Search tables…"
+                placeholder={physical ? 'Search tables…' : 'Search entities…'}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -323,7 +352,7 @@ export default function App() {
                       onMouseEnter={() => setHoveredId(t.id)}
                       onMouseLeave={() => setHoveredId(null)}
                     >
-                      <span>{t.name}</span>
+                      <span>{t.label}</span>
                       <span className="muted">{t.columns.length}</span>
                     </button>
                   </li>
@@ -333,7 +362,7 @@ export default function App() {
           )}
         </aside>
 
-        <main className="canvas">
+        <main className="canvas" ref={canvasRef}>
           <ErdMarkers />
           <ReactFlow
             nodes={displayNodes}
@@ -371,7 +400,7 @@ export default function App() {
           </ReactFlow>
 
           {loading && <div className="overlay">Loading…</div>}
-          {!loading && model && model.tables.length === 0 && (
+          {!loading && view && view.tables.length === 0 && (
             <div className="overlay">No tables found in this schema.</div>
           )}
           {!loading && !model && !error && source !== 'demo' && (
@@ -381,7 +410,8 @@ export default function App() {
           {selectedTable && (
             <TableDetails
               table={selectedTable}
-              relationships={model.relationships}
+              level={level}
+              relationships={view.relationships}
               tablesById={tablesById}
               onSelect={focusTable}
               onClose={() => setSelectedId(null)}

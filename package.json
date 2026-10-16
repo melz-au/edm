@@ -11,7 +11,7 @@
     "dev": "concurrently -k -n api,web \"node --watch server/index.js\" \"vite\"",
     "build": "vite build",
     "start": "node server/index.js",
-    "test": "node --test server/*.test.js"
+    "test": "node --test server/*.test.js src/lib/*.test.js"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.8",

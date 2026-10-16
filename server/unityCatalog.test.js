@@ -16,6 +16,10 @@ before(async () => {
       return res.end(JSON.stringify({ access_token: 'sp-token', expires_in: 3600 }));
     }
     seenAuth.push(req.headers.authorization);
+    if (req.headers.authorization === 'Bearer unscoped-token') {
+      res.statusCode = 403;
+      return res.end(JSON.stringify({ message: 'Invalid scope' }));
+    }
     if (url.pathname === '/api/2.1/unity-catalog/tables') {
       const page = url.searchParams.get('page_token');
       if (!page) {
@@ -84,4 +88,10 @@ test('forwarded user token takes precedence', async () => {
 test('API errors surface the Databricks message and status', async () => {
   const { apiGet } = await import('./databricks.js');
   await assert.rejects(apiGet('/api/2.1/unknown'), (err) => err.status === 404 && /nope/.test(err.message));
+});
+
+test('invalid scope on a user token explains how to fix it', async () => {
+  const { listCatalogs } = await import('./unityCatalog.js');
+  await assert.rejects(listCatalogs('unscoped-token'), (err) =>
+    err.status === 403 && /catalog\.catalogs:read/.test(err.message) && /ERD_USE_USER_TOKEN/.test(err.message));
 });

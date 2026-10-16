@@ -14,11 +14,13 @@ const port = Number(process.env.DATABRICKS_APP_PORT || process.env.PORT || 8000)
 const app = express();
 app.disable('x-powered-by');
 
-// Databricks Apps forwards the signed-in user's token when user authorization
-// is enabled. Opt out with ERD_USE_USER_TOKEN=false to always use the app's
-// service principal.
+// By default Unity Catalog is queried as the app's service principal. Set
+// ERD_USE_USER_TOKEN=true to query as the signed-in user instead; this needs
+// user authorization on the app with the catalog.*:read scopes; otherwise the
+// forwarded token only carries identity scopes and UC calls fail with
+// "invalid scope".
 const userToken = (req) =>
-  process.env.ERD_USE_USER_TOKEN === 'false' ? null : req.get('x-forwarded-access-token') || null;
+  process.env.ERD_USE_USER_TOKEN === 'true' ? req.get('x-forwarded-access-token') || null : null;
 
 const wrap = (fn) => (req, res) =>
   Promise.resolve(fn(req, res)).catch((err) => {
@@ -34,7 +36,18 @@ const required = (req, ...names) => {
 
 const withInference = (req, model) => (req.query.infer === 'true' ? inferRelationships(model) : model);
 
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+// Which identity Unity Catalog calls run as, shown in the UI and /api/health
+// so a deployment can be checked without reading logs.
+const ucIdentity = (req) => {
+  if (userToken(req)) return 'signed-in user';
+  if (process.env.DATABRICKS_CLIENT_ID && process.env.DATABRICKS_CLIENT_SECRET) return 'app service principal';
+  if (process.env.DATABRICKS_TOKEN) return 'personal access token';
+  return 'none';
+};
+
+app.get('/api/health', (req, res) =>
+  res.json({ ok: true, ucIdentity: ucIdentity(req), useUserToken: process.env.ERD_USE_USER_TOKEN === 'true' }),
+);
 
 app.get('/api/config', (req, res) => {
   res.json({
@@ -43,7 +56,10 @@ app.get('/api/config', (req, res) => {
     defaultSchema: process.env.ERD_DEFAULT_SCHEMA || null,
     user: req.get('x-forwarded-email') || req.get('x-forwarded-preferred-username') || null,
     sources: {
-      uc: { available: databricks.isConfigured() || Boolean(userToken(req) && databricks.getHost()) },
+      uc: {
+        available: databricks.isConfigured() || Boolean(userToken(req) && databricks.getHost()),
+        identity: ucIdentity(req),
+      },
       lakebase: { available: lakebase.isConfigured(), ...lakebase.getConnectionInfo() },
       demo: { available: true },
     },
@@ -93,6 +109,9 @@ if (fs.existsSync(distDir)) {
 
 const server = app.listen(port, () => {
   console.log(`ERD app listening on http://localhost:${port}`);
+  console.log(
+    `Unity Catalog auth: ${process.env.ERD_USE_USER_TOKEN === 'true' ? 'signed-in user token (ERD_USE_USER_TOKEN=true)' : 'app service principal'}`,
+  );
 });
 
 const shutdown = async () => {

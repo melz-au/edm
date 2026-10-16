@@ -8,10 +8,24 @@ configuration.
 - Pan by dragging or scrolling, and zoom with pinch or ctrl+scroll. There are also
   a minimap and fit/re-layout controls.
 - Tables are laid out automatically, with primary and foreign keys marked and
-  crow's-foot relationship lines.
+  crow's-foot relationship lines. The layout fills the browser window: groups
+  of related tables and unrelated tables are packed into rows sized to the
+  window's shape. With columns hidden, long chains can flow top-to-bottom. Use
+  the re-layout button (⟲) after resizing the window.
 - Hover or select a table to highlight its relationships. The details panel lists
   its columns, the tables it references and the tables that reference it.
 - You can show all columns, keys only, or table names only.
+- **Three model levels**, switchable at any time:
+  - **Physical:** tables, columns and database types exactly as stored.
+  - **Logical:** business names (`order_items` → *Order Item*, `customer_id`
+    → *Customer ID*), generic data types (*Integer*, *Text*, *Timestamp* and
+    so on), keys and cardinality.
+  - **Conceptual:** entities and relationships only. Pure junction tables
+    (whose primary key is made up of foreign keys to exactly two other tables)
+    collapse into many-to-many relationships.
+- Cardinality comes from the keys at every level. A nullable foreign key is an
+  optional relationship (○), and a foreign key that is also the child's
+  primary key is one-to-one.
 - Optional **relationship inference** from column names (`customer_id` →
   `customers.id`). Unity Catalog foreign keys are informational and often not
   declared, so this helps there. Inferred links are drawn dashed.
@@ -22,10 +36,11 @@ configuration.
 ```
 src/      React + Vite + React Flow (@xyflow/react) + dagre layout
 server/   Express: serves dist/ and the /api endpoints
-  databricks.js    REST client (user token → OAuth M2M → PAT)
+  databricks.js    REST client (OAuth M2M → PAT; user token if opted in)
   unityCatalog.js  /api/2.1/unity-catalog/{catalogs,schemas,tables}
   lakebase.js      pg_catalog queries for columns, PKs and FKs
   model.js         shared ERD model, relationship inference, demo data
+src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
 
@@ -50,11 +65,12 @@ app.yaml  Databricks Apps entry point (npm run start)
    `app.yaml`.
 2. **Unity Catalog:** grant the app's service principal `USE CATALOG`,
    `USE SCHEMA` and `SELECT` (or `BROWSE`) on the schemas it should show.
-   Alternatively, enable **user authorization** on the app with the
-   `catalog.catalogs:read`, `catalog.schemas:read` and `catalog.tables:read`
-   scopes. The app then queries Unity Catalog as the signed-in user, so each
-   viewer only sees what they can access. Set `ERD_USE_USER_TOKEN=false` to
-   always use the service principal instead.
+   By default the app always queries Unity Catalog as this service principal.
+   To make each viewer see only what they can access, enable **user
+   authorization** on the app with the `catalog.catalogs:read`,
+   `catalog.schemas:read` and `catalog.tables:read` scopes, and set
+   `ERD_USE_USER_TOKEN=true` in `app.yaml`. Without those scopes the user's
+   token is rejected with "invalid scope".
 3. **Lakebase:** add a **Database** resource to the app (permission *Can
    connect and create*). Databricks injects `PGHOST`, `PGPORT`, `PGDATABASE`,
    `PGUSER` and `PGSSLMODE`, and the app uses the service principal's OAuth
