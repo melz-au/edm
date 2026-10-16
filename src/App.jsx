@@ -259,6 +259,9 @@ export default function App() {
 
           {source === 'uc' && (
             <section>
+              {config?.sources.uc.identity && (
+                <div className="conn muted">Querying as {config.sources.uc.identity}</div>
+              )}
               <label className="label" htmlFor="catalog">Catalog</label>
               <select id="catalog" value={catalog} onChange={(e) => setCatalog(e.target.value)}>
                 <option value="">Select a catalog…</option>
