@@ -4,6 +4,7 @@ import CodeSetDialog from '../components/CodeSetDialog.jsx';
 import ChangeDiff from '../components/ChangeDiff.jsx';
 import { api } from '../lib/api.js';
 import { showRaw } from '../components/CodeMappingDialog.jsx';
+import UcPublishPanel from '../components/UcPublishPanel.jsx';
 
 function MappingsTab({ set, mappings, onSubmitted, onError }) {
   const [selected, setSelected] = useState(new Set());
@@ -162,7 +163,7 @@ function ValueDialog({ set, value, onClose, onSubmitted }) {
   );
 }
 
-export default function ReferenceData({ onChanged }) {
+export default function ReferenceData({ me, onChanged }) {
   const [sets, setSets] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [detail, setDetail] = useState(null);
@@ -247,6 +248,8 @@ export default function ReferenceData({ onChanged }) {
             </li>
           ))}
         </ul>
+        <span className="grow" />
+        <UcPublishPanel me={me} />
       </aside>
 
       <section className="page__main">

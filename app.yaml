@@ -59,3 +59,11 @@ env:
   # Largest file accepted, in MB.
   # - name: ERD_UPLOAD_MAX_MB
   #   value: '100'
+  # --- Publish reference data to Unity Catalog --------------------------------
+  # Default target (catalog.schema) and auto-publish; stewards can change both
+  # in the Reference data page. Requires a SQL warehouse (see above).
+  # - name: ERD_UC_REFDATA_TARGET
+  #   value: 'main.refdata'
+  # - name: ERD_UC_AUTO_PUBLISH
+  #   value: 'true'
+

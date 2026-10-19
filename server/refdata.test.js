@@ -185,3 +185,46 @@ test('code mappings: propose, approve, conflict check, view, remove', { skip: !e
   assert.deepEqual((await refdata.listMappings(codeSetId)).map((m) => m.source_value), ['A', 'Closed ']);
   assert.equal((await refdata.mappingsForSource('lakebase', 'billing.customer_master', 'ACCT_STATUS')).length, 2);
 });
+
+test('publishing: settings, snapshot, run log, serialised runs and the applied hook', { skip: !enabled }, async () => {
+  const ucpublish = await import('./ucpublish.js');
+  await assert.rejects(refdata.setPublishSettings({ target: 'main.refdata' }, 'analyst@x.com'), /Only data stewards/);
+  await assert.rejects(refdata.setPublishSettings({ target: 'nope' }, 'steward@x.com'), /catalog\.schema/);
+  const settings = await refdata.setPublishSettings({ target: 'main.refdata', auto: true }, 'steward@x.com');
+  assert.deepEqual([settings.target, settings.auto], ['main.refdata', true]);
+
+  const statements = [];
+  const fakeRun = async (sql) => {
+    statements.push(sql);
+    await new Promise((r) => setTimeout(r, 20));
+    return [];
+  };
+  const run = await ucpublish.publish({ trigger: 'manual', user: 'steward@x.com', run: fakeRun });
+  assert.equal(run.status, 'succeeded');
+  assert.ok(run.counts.code_set >= 2 && run.counts.code_mapping >= 1, JSON.stringify(run.counts));
+  assert.equal(statements.length, 3);
+  assert.ok(statements.every((s) => s.startsWith('CREATE OR REPLACE TABLE `main`.`refdata`.')));
+
+  // A publish requested while one runs is queued once, not run in parallel.
+  statements.length = 0;
+  const first = ucpublish.publish({ run: fakeRun });
+  const second = ucpublish.publish({ run: fakeRun });
+  assert.equal(first, second);
+  await first;
+  await new Promise((r) => setTimeout(r, 300));
+  assert.equal(statements.length, 6, 'one queued re-run after the first');
+
+  const failed = await ucpublish.publish({ run: async () => { throw new Error('PERMISSION_DENIED'); } }).catch((e) => e);
+  assert.match(failed.message, /PERMISSION_DENIED/);
+  const runs = await refdata.listPublishRuns();
+  assert.equal(runs[0].status, 'failed');
+  assert.match(runs[0].error, /PERMISSION_DENIED/);
+
+  // The applied hook fires after an approval commits.
+  const seen = [];
+  refdata.onApplied((cr) => seen.push(cr.kind));
+  const cr = await refdata.proposeChange({ kind: 'code_set', action: 'create', payload: { name: 'Hooked', values: [] } }, 'a@x.com');
+  await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com');
+  await new Promise((r) => setTimeout(r, 50));
+  assert.deepEqual(seen, ['code_set']);
+});
