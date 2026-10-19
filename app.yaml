@@ -45,3 +45,17 @@ env:
   # - name: ERD_ALLOW_SELF_APPROVAL
   #   value: 'false'
 
+
+  # --- CSV upload to bronze tables (needs the SQL warehouse above) ------------
+  # Catalog and schema preselected on the Upload CSV tab.
+  # - name: ERD_BRONZE_CATALOG
+  #   value: 'main'
+  # - name: ERD_BRONZE_SCHEMA
+  #   value: 'bronze'
+  # Volume for the raw files (default: <catalog>.<schema>.landing, created on
+  # first use).
+  # - name: ERD_UPLOAD_VOLUME
+  #   value: 'main.bronze.landing'
+  # Largest file accepted, in MB.
+  # - name: ERD_UPLOAD_MAX_MB
+  #   value: '100'

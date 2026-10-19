@@ -14,6 +14,7 @@ import CodeSetDialog from './components/CodeSetDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
+import UploadCsv from './pages/UploadCsv.jsx';
 import { api, sourceTableName } from './lib/api.js';
 import { buildGraph } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
@@ -30,6 +31,7 @@ const PAGES = [
   { id: 'diagram', label: 'Diagram' },
   { id: 'refdata', label: 'Reference data' },
   { id: 'approvals', label: 'Approvals' },
+  { id: 'upload', label: 'Upload CSV' },
 ];
 
 const matchesQuery = (table, query) =>
@@ -97,6 +99,10 @@ export default function App() {
   }, []);
 
   const refdataAvailable = Boolean(config?.sources.refdata?.available);
+  const ingestAvailable = Boolean(config?.sources.ingest?.available);
+  const pages = PAGES.filter((p) =>
+    p.id === 'diagram' || (p.id === 'upload' ? ingestAvailable : refdataAvailable),
+  );
 
   const refreshPending = useCallback(() => {
     if (!refdataAvailable) return;
@@ -337,9 +343,9 @@ export default function App() {
             </span>
           </div>
         )}
-        {refdataAvailable && (
+        {pages.length > 1 && (
           <nav className="tabs">
-            {PAGES.map((p) => (
+            {pages.map((p) => (
               <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => setPage(p.id)}>
                 {p.label}
                 {p.id === 'approvals' && pending > 0 && <span className="badge">{pending}</span>}
@@ -357,6 +363,7 @@ export default function App() {
 
       {page === 'refdata' && <ReferenceData onChanged={refreshPending} />}
       {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
+      {page === 'upload' && <UploadCsv config={config} />}
 
       <div className="body" hidden={page !== 'diagram'}>
         <aside className="sidebar">
