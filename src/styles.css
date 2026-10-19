@@ -295,6 +295,8 @@ button, input, select { font: inherit; color: inherit; }
 }
 .tabs button:hover { background: rgb(255 255 255 / 0.08); color: #fff; }
 .tabs button.active { background: rgb(255 255 255 / 0.14); color: #fff; }
+.tabs button[aria-disabled='true'] { color: rgb(201 209 213 / 0.4); cursor: not-allowed; }
+.tabs button[aria-disabled='true']:hover { background: none; }
 .badge { background: var(--accent); color: #fff; border-radius: 999px; font-size: 11px; padding: 0 6px; line-height: 17px; }
 .tag.steward { margin-left: 8px; background: rgb(255 255 255 / 0.15); color: #fff; }
 

@@ -100,9 +100,16 @@ export default function App() {
 
   const refdataAvailable = Boolean(config?.sources.refdata?.available);
   const ingestAvailable = Boolean(config?.sources.ingest?.available);
-  const pages = PAGES.filter((p) =>
-    p.id === 'diagram' || (p.id === 'upload' ? ingestAvailable : refdataAvailable),
-  );
+  // Why a page can't be used here, shown on its greyed-out tab; null when available.
+  const unavailable = (id) => {
+    if (id === 'upload') {
+      return ingestAvailable ? null : 'Uploading CSV files needs Unity Catalog and a SQL warehouse connected to this app.';
+    }
+    if (id === 'refdata' || id === 'approvals') {
+      return refdataAvailable ? null : 'Reference data and approvals need a Lakebase database connected to this app.';
+    }
+    return null;
+  };
 
   const refreshPending = useCallback(() => {
     if (!refdataAvailable) return;
@@ -343,10 +350,16 @@ export default function App() {
             </span>
           </div>
         )}
-        {pages.length > 1 && (
+        {config && (
           <nav className="tabs">
-            {pages.map((p) => (
-              <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => setPage(p.id)}>
+            {PAGES.map((p) => (
+              <button
+                key={p.id}
+                className={page === p.id ? 'active' : ''}
+                aria-disabled={Boolean(unavailable(p.id))}
+                title={unavailable(p.id) ?? undefined}
+                onClick={() => !unavailable(p.id) && setPage(p.id)}
+              >
                 {p.label}
                 {p.id === 'approvals' && pending > 0 && <span className="badge">{pending}</span>}
               </button>
