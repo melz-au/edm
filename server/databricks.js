@@ -124,6 +124,29 @@ export async function apiPost(path, body, userToken = null) {
   return res.json();
 }
 
+/** Uploads a file to a Unity Catalog volume path (/Volumes/...) with the Files API. */
+export async function apiPutFile(volumePath, body, userToken = null) {
+  const host = getHost();
+  if (!host) throw new DatabricksError('DATABRICKS_HOST is not set', 500);
+  const token = userToken || (await getServicePrincipalToken());
+  if (!token) throw new DatabricksError('No Databricks credentials found.', 500);
+  const encoded = volumePath.split('/').map(encodeURIComponent).join('/');
+  const res = await fetch(`${host}/api/2.0/fs/files${encoded}?overwrite=false`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/octet-stream' },
+    body,
+  });
+  if (!res.ok) {
+    let message = await res.text();
+    try {
+      message = JSON.parse(message).message ?? message;
+    } catch {
+      // keep raw text
+    }
+    throw new DatabricksError(`Upload to ${volumePath} failed (${res.status}): ${message}`, res.status);
+  }
+}
+
 /** Follows next_page_token pagination and concatenates `key` arrays. */
 export async function apiGetAll(path, key, params = {}, userToken = null) {
   const items = [];

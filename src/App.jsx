@@ -15,6 +15,7 @@ import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
+import UploadCsv from './pages/UploadCsv.jsx';
 import { api, sourceTableName } from './lib/api.js';
 import { buildGraph } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
@@ -31,6 +32,7 @@ const PAGES = [
   { id: 'diagram', label: 'Diagram' },
   { id: 'refdata', label: 'Reference data' },
   { id: 'approvals', label: 'Approvals' },
+  { id: 'upload', label: 'Upload CSV' },
 ];
 
 const matchesQuery = (table, query) =>
@@ -102,6 +104,17 @@ export default function App() {
   }, []);
 
   const refdataAvailable = Boolean(config?.sources.refdata?.available);
+  const ingestAvailable = Boolean(config?.sources.ingest?.available);
+  // Why a page can't be used here, shown on its greyed-out tab; null when available.
+  const unavailable = (id) => {
+    if (id === 'upload') {
+      return ingestAvailable ? null : 'Uploading CSV files needs Unity Catalog and a SQL warehouse connected to this app.';
+    }
+    if (id === 'refdata' || id === 'approvals') {
+      return refdataAvailable ? null : 'Reference data and approvals need a Lakebase database connected to this app.';
+    }
+    return null;
+  };
 
   const refreshPending = useCallback(() => {
     if (!refdataAvailable) return;
@@ -356,10 +369,16 @@ export default function App() {
             </span>
           </div>
         )}
-        {refdataAvailable && (
+        {config && (
           <nav className="tabs">
             {PAGES.map((p) => (
-              <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => setPage(p.id)}>
+              <button
+                key={p.id}
+                className={page === p.id ? 'active' : ''}
+                aria-disabled={Boolean(unavailable(p.id))}
+                title={unavailable(p.id) ?? undefined}
+                onClick={() => !unavailable(p.id) && setPage(p.id)}
+              >
                 {p.label}
                 {p.id === 'approvals' && pending > 0 && <span className="badge">{pending}</span>}
               </button>
@@ -376,6 +395,7 @@ export default function App() {
 
       {page === 'refdata' && <ReferenceData me={me} onChanged={refreshPending} />}
       {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
+      {page === 'upload' && <UploadCsv config={config} />}
 
       <div className="body" hidden={page !== 'diagram'}>
         <aside className="sidebar">

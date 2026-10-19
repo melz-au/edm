@@ -60,6 +60,31 @@ export const api = {
   proposeChange: (change) => post('refdata/changes', change),
   reviewChange: (id, decision, comment) => post(`refdata/changes/${id}/review`, { decision, comment }),
   cancelChange: (id) => post(`refdata/changes/${id}/cancel`),
+
+  ingestTable: (catalog, schema, table) => get('ingest/table', { catalog, schema, table }),
+  ingestLoad: (load) => post('ingest/load', load),
+  ingestCreateSchema: (catalog, schema) => post('ingest/schema', { catalog, schema }),
+  /** Sends the raw file to the landing volume, reporting progress as 0–1. */
+  ingestUpload: (file, { catalog, schema }, onProgress) =>
+    new Promise((resolve, reject) => {
+      const qs = new URLSearchParams({ catalog, schema, fileName: file.name });
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', `./api/ingest/upload?${qs}`);
+      xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+      xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.(e.loaded / e.total);
+      xhr.onload = () => {
+        let data = {};
+        try {
+          data = JSON.parse(xhr.responseText);
+        } catch {
+          // not JSON
+        }
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new Error(data.error || `Upload failed (${xhr.status})`));
+      };
+      xhr.onerror = () => reject(new Error('Upload failed: the connection was interrupted.'));
+      xhr.send(file);
+    }),
 };
 
 /** Identifies a model table in refdata links: "maximo.asset" or "main.sales.orders". */
