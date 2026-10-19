@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { attributeName, deriveView, entityName, logicalType } from './modelLevels.js';
+import { attributeName, codeSetName, deriveView, entityName, logicalType } from './modelLevels.js';
 import { demoModel } from '../../server/model.js';
 
 test('names are humanised for logical and conceptual levels', () => {
@@ -58,4 +58,11 @@ test('conceptual view collapses junction tables into many-to-many', () => {
   assert.equal(m2m[0].label, 'Store M:N Product (via Inventory)');
   assert.ok(!view.relationships.some((r) => r.from.table.endsWith('.inventory')));
   assert.equal(view.relationships.length, model.relationships.length - 2 + 1);
+});
+
+test('code set names avoid repeating the entity', () => {
+  assert.equal(codeSetName('asset', 'assettype'), 'Asset Type');
+  assert.equal(codeSetName('asset', 'status'), 'Asset Status');
+  assert.equal(codeSetName('locations', 'type'), 'Location Type');
+  assert.equal(codeSetName('orders', 'order_status'), 'Order Status');
 });

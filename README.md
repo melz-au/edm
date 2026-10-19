@@ -31,6 +31,55 @@ configuration.
   declared, so this helps there. Inferred links are drawn dashed.
 - Tables referenced from outside the selected schema appear as dashed "REF" nodes.
 
+## Categorical fields, reference data and master data
+
+**Detect categorical fields.** *Detect categorical fields* (sidebar, or per
+table in the details panel) samples up to 10,000 rows of each table. It flags
+columns with few distinct values relative to their rows, such as `STATUS`,
+`ASSETTYPE`, `SITEID` or Y/N flags, and shows each one's top values; flagged
+columns get a purple **CAT** badge in the diagram. Keys, foreign keys,
+mostly-unique text, amounts, coordinates and dates are skipped. Names like
+*status*, *type* and *code* raise confidence. Lakebase tables are profiled
+directly; Unity Catalog tables need a SQL warehouse (see below). The limit on
+distinct values is 50, configurable with `ERD_CATEGORICAL_MAX_DISTINCT`.
+
+**Reference data.** Any categorical field can become a managed **code set**:
+*Create code set* reads all of the column's distinct values. Review the codes,
+add labels and descriptions, and submit. The **Reference data** tab lists code
+sets, where codes can be added, edited, deactivated and reactivated.
+
+**Master data.** For Lakebase tables with a primary key, *Edit master data* in
+the details panel opens a row browser with search and paging. You can propose
+new rows, edits and deletes.
+
+**Approval workflow.** Every change, whether to code sets, codes or master data
+rows, becomes a *change request*:
+
+1. Anyone proposes a change. It waits as **pending**, and the **Approvals** tab
+   shows the field-by-field before/after.
+2. A **data steward** (`ERD_STEWARDS`) approves or rejects it, with an optional
+   comment. Stewards can't approve their own requests, and requesters can
+   cancel theirs.
+3. On approval the change is applied in the same transaction and written to the
+   **change history** (audit log) with before and after images, who requested
+   it and who approved it.
+4. If the data changed between request and approval (someone else edited the
+   row), the request is marked **failed** rather than overwriting that edit.
+
+Everything is stored in Lakebase, in the `refdata` schema (`ERD_REFDATA_SCHEMA`),
+which is created on first use:
+
+| Table | Holds |
+| --- | --- |
+| `code_set` | Named code lists, optionally linked to the source column |
+| `code_value` | Codes with label, description, sort order and active flag |
+| `change_request` | Every proposed change, its status and review |
+| `audit_log` | Every applied change with before/after JSON |
+
+Users are identified by the email Databricks Apps forwards for the signed-in
+user (`X-Forwarded-Email`). Outside Databricks Apps that header is just a
+request header, so don't expose a locally run server to other people.
+
 ## Architecture
 
 ```
@@ -40,6 +89,9 @@ server/   Express: serves dist/ and the /api endpoints
   unityCatalog.js  /api/2.1/unity-catalog/{catalogs,schemas,tables}
   lakebase.js      pg_catalog queries for columns, PKs and FKs
   model.js         shared ERD model, relationship inference, demo data
+  profile.js       categorical field detection (SQL for Postgres and Databricks SQL)
+  warehouse.js     Statement Execution API client for Unity Catalog profiling
+  refdata.js       code sets, change requests, approvals and audit log (Lakebase)
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
@@ -52,6 +104,14 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/lakebase/schemas` | Lakebase schemas |
 | `GET /api/lakebase/erd?schema=&infer=true` | ERD model for a Lakebase schema |
 | `GET /api/demo/erd` | Sample retail schema |
+| `GET /api/{lakebase,uc}/profile?…&table=` | Categorical field profile of one table |
+| `GET /api/{lakebase,uc}/values?…&column=` | All distinct values of a column |
+| `GET /api/lakebase/rows?schema=&table=` | A page of rows for master data editing |
+| `GET /api/me` | Signed-in user and steward status |
+| `GET /api/refdata/code-sets[/:id]` | Code sets and their values |
+| `GET /api/refdata/changes?status=` · `POST /api/refdata/changes` | List or propose change requests |
+| `POST /api/refdata/changes/:id/review` · `…/cancel` | Approve/reject (`{decision, comment}`) or cancel |
+| `GET /api/refdata/audit` | Change history |
 
 ## Deploy as a Databricks App
 
@@ -77,6 +137,18 @@ app.yaml  Databricks Apps entry point (npm run start)
    token as the Postgres password.
 4. Optional defaults in `app.yaml`: `ERD_DEFAULT_SOURCE` (`uc` | `lakebase` |
    `demo`), `ERD_DEFAULT_CATALOG`, `ERD_DEFAULT_SCHEMA`.
+5. **Profiling Unity Catalog tables:** add a **SQL warehouse** resource (*Can
+   use*, resource key `sql-warehouse`) and uncomment `DATABRICKS_WAREHOUSE_ID`
+   in `app.yaml`. Profiling reads rows, so the service principal needs `SELECT`
+   on those tables; `BROWSE` alone only covers the diagram.
+6. **Reference and master data:** this needs the Lakebase resource from step 3.
+   The app creates the `refdata` schema itself, using the *create* permission.
+   To edit existing master tables, the service principal needs table grants:
+   ```sql
+   GRANT USAGE ON SCHEMA maximo TO "<sp-client-id>";
+   GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA maximo TO "<sp-client-id>";
+   ```
+   Set `ERD_STEWARDS` to the emails of the people who approve changes.
 
 To declare keys in Unity Catalog so they show up as solid relationships:
 

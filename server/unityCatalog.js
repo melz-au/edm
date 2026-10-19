@@ -1,4 +1,4 @@
-import { apiGetAll } from './databricks.js';
+import { apiGet, apiGetAll } from './databricks.js';
 
 const UC = '/api/2.1/unity-catalog';
 
@@ -30,6 +30,14 @@ export async function getErd(catalog, schema, userToken) {
     userToken,
   );
   return buildModelFromUcTables(ucTables);
+}
+
+/** One table's columns and keys (used to validate names before profiling). */
+export async function getTable(catalog, schema, table, userToken) {
+  const t = await apiGet(`${UC}/tables/${encodeURIComponent(`${catalog}.${schema}.${table}`)}`, {}, userToken);
+  const model = buildModelFromUcTables([t]);
+  const found = model.tables.find((x) => x.id === t.full_name);
+  return { ...found, primaryKey: found.columns.filter((c) => c.pk).map((c) => c.name) };
 }
 
 export function buildModelFromUcTables(ucTables) {

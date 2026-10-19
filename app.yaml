@@ -22,3 +22,25 @@ env:
   # create). Databricks then injects PGHOST, PGPORT, PGDATABASE, PGUSER and
   # PGSSLMODE automatically. The app authenticates with the service principal's
   # OAuth token as the Postgres password.
+
+  # --- Categorical field detection on Unity Catalog tables -------------------
+  # Add a "SQL warehouse" resource to the app (permission: Can use) with the
+  # resource key "sql-warehouse", then uncomment:
+  # - name: DATABRICKS_WAREHOUSE_ID
+  #   valueFrom: sql-warehouse
+
+  # --- Reference & master data (stored in Lakebase) ---------------------------
+  # Comma-separated emails of data stewards who may approve changes. When
+  # unset, any user may approve other people's requests.
+  # - name: ERD_STEWARDS
+  #   value: 'steward@example.com,lead@example.com'
+  # Schema that holds code sets, change requests and the audit log.
+  # - name: ERD_REFDATA_SCHEMA
+  #   value: 'refdata'
+  # Restrict master data editing to these Lakebase schemas (default: any).
+  # - name: ERD_EDITABLE_SCHEMAS
+  #   value: 'maximo'
+  # Let a steward approve their own requests (single-person teams only).
+  # - name: ERD_ALLOW_SELF_APPROVAL
+  #   value: 'false'
+

@@ -6,6 +6,7 @@ import http from 'node:http';
 let server;
 let tokenRequests = 0;
 const seenAuth = [];
+const statements = [];
 
 before(async () => {
   server = http.createServer((req, res) => {
@@ -19,6 +20,23 @@ before(async () => {
     if (req.headers.authorization === 'Bearer unscoped-token') {
       res.statusCode = 403;
       return res.end(JSON.stringify({ message: 'Invalid scope' }));
+    }
+    if (url.pathname === '/api/2.0/sql/statements' && req.method === 'POST') {
+      let body = '';
+      req.on('data', (c) => (body += c));
+      req.on('end', () => {
+        statements.push(JSON.parse(body));
+        res.end(JSON.stringify({ statement_id: 'st1', status: { state: 'RUNNING' } }));
+      });
+      return;
+    }
+    if (url.pathname === '/api/2.0/sql/statements/st1') {
+      return res.end(JSON.stringify({
+        statement_id: 'st1',
+        status: { state: 'SUCCEEDED' },
+        manifest: { schema: { columns: [{ name: 'v' }, { name: 'n' }] } },
+        result: { data_array: [['OPEN', '3'], ['CLOSED', '1']] },
+      }));
     }
     if (url.pathname === '/api/2.1/unity-catalog/tables') {
       const page = url.searchParams.get('page_token');
@@ -94,4 +112,13 @@ test('invalid scope on a user token explains how to fix it', async () => {
   const { listCatalogs } = await import('./unityCatalog.js');
   await assert.rejects(listCatalogs('unscoped-token'), (err) =>
     err.status === 403 && /catalog\.catalogs:read/.test(err.message) && /ERD_USE_USER_TOKEN/.test(err.message));
+});
+
+test('warehouse.runSql polls a running statement and maps rows', async () => {
+  process.env.DATABRICKS_WAREHOUSE_ID = 'wh1';
+  const { runSql } = await import('./warehouse.js');
+  const rows = await runSql('SELECT 1');
+  assert.deepEqual(rows, [{ v: 'OPEN', n: '3' }, { v: 'CLOSED', n: '1' }]);
+  assert.equal(statements[0].warehouse_id, 'wh1');
+  assert.equal(statements[0].statement, 'SELECT 1');
 });
