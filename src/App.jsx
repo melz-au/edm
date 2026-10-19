@@ -15,6 +15,7 @@ import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
+import Writeback from './pages/Writeback.jsx';
 import UploadCsv from './pages/UploadCsv.jsx';
 import { api, sourceTableName } from './lib/api.js';
 import { buildGraph } from './lib/layout.js';
@@ -32,6 +33,7 @@ const PAGES = [
   { id: 'diagram', label: 'Diagram' },
   { id: 'refdata', label: 'Reference data' },
   { id: 'approvals', label: 'Approvals' },
+  { id: 'writeback', label: 'Write-back' },
   { id: 'upload', label: 'Upload CSV' },
 ];
 
@@ -110,15 +112,17 @@ export default function App() {
     if (id === 'upload') {
       return ingestAvailable ? null : 'Uploading CSV files needs Unity Catalog and a SQL warehouse connected to this app.';
     }
-    if (id === 'refdata' || id === 'approvals') {
+    if (id === 'refdata' || id === 'approvals' || id === 'writeback') {
       return refdataAvailable ? null : 'Reference data and approvals need a Lakebase database connected to this app.';
     }
     return null;
   };
 
+  const [outboxPending, setOutboxPending] = useState(0);
   const refreshPending = useCallback(() => {
     if (!refdataAvailable) return;
     api.pendingCount().then((r) => setPending(r.pending)).catch(() => {});
+    api.outboxCounts().then((c) => setOutboxPending(c.pending ?? 0)).catch(() => {});
   }, [refdataAvailable]);
 
   useEffect(() => {
@@ -381,6 +385,7 @@ export default function App() {
               >
                 {p.label}
                 {p.id === 'approvals' && pending > 0 && <span className="badge">{pending}</span>}
+                {p.id === 'writeback' && outboxPending > 0 && <span className="badge muted-badge">{outboxPending}</span>}
               </button>
             ))}
           </nav>
@@ -395,6 +400,7 @@ export default function App() {
 
       {page === 'refdata' && <ReferenceData me={me} onChanged={refreshPending} />}
       {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
+      {page === 'writeback' && <Writeback me={me} onChanged={refreshPending} />}
       {page === 'upload' && <UploadCsv config={config} />}
 
       <div className="body" hidden={page !== 'diagram'}>
@@ -613,6 +619,7 @@ export default function App() {
               onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
               dqSource={refdataAvailable && canProfile ? source : null}
               onDqChanged={() => setDqVersion((v) => v + 1)}
+              onChangeSubmitted={submitted}
               onEditData={
                 refdataAvailable && source === 'lakebase' && !selectedTable.external
                   ? () => setDialog({ type: 'masterData', table: selectedTable })

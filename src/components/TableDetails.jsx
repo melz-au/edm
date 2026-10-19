@@ -138,6 +138,7 @@ export default function TableDetails({
   onEditData,
   dqSource,
   onDqChanged,
+  onChangeSubmitted,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
   const piiNames = new Set(profile?.columns.filter((c) => c.pii).map((c) => c.name));
@@ -217,7 +218,9 @@ export default function TableDetails({
         onMapCodes={onMapCodes}
       />
 
-      {dqSource && !table.external && <DataQuality source={dqSource} table={table} onChanged={onDqChanged} />}
+      {dqSource && !table.external && (
+        <DataQuality source={dqSource} table={table} onChanged={onDqChanged} onSubmitted={onChangeSubmitted} />
+      )}
 
       {outgoing.length > 0 && (
         <>

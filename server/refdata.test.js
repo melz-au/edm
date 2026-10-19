@@ -267,3 +267,72 @@ test('data quality rules run against Postgres, including orphaned references', {
   assert.equal(summary.rules, 6);
   assert.equal(summary.failing, 5);
 });
+
+test('write-back: propose from rules, approve with stale check, outbox and acknowledgement', { skip: !enabled }, async () => {
+  const writeback = await import('./writeback.js');
+  const dqstore = await import('./dqstore.js');
+  const dq = await import('./dq.js');
+  await lakebase.query(`CREATE TABLE ${MASTER}.billing (cust_no text, state text, bsb text, email text);
+    INSERT INTO ${MASTER}.billing VALUES
+      ('C1', 'S.A.', '545124', 'a@x.com '), ('C2', 'sa', '545-124', 'b@x.com'),
+      ('C3', 'SA', '123456', 'c.x.com'), ('C4', 'NSW', '111-222', 'd@x.com'),
+      ('C5', 'SA', '999-888', 'e@x.com'), ('C5', 'SA', '999-888', 'e@x.com');`);
+  const name = `${MASTER}.billing`;
+  const ctx = {
+    system: 'lakebase',
+    name,
+    dialect: 'pg',
+    ref: dq.tableRef('pg', [MASTER, 'billing']),
+    columns: ['cust_no', 'state', 'bsb', 'email'].map((n) => ({ name: n })),
+    primaryKey: [],
+    exec: async (sql) => (await lakebase.query(sql)).rows,
+  };
+  writeback.configure({ tableContext: async () => ctx });
+  await dqstore.addRules('lakebase', name, [
+    { column: 'state', rule_type: 'allowed_values', params: { values: ['SA'] }, description: 'state' },
+    { column: 'bsb', rule_type: 'format', params: { regex: '^[0-9]{3}[-][0-9]{3}$', pattern: '999-999', piiType: 'financial' }, description: 'bsb' },
+    { column: 'email', rule_type: 'format', params: { regex: '^[^@ ]+@[^@ ]+[.][A-Za-z]{2,}$', piiType: 'email' }, description: 'email' },
+  ], 'a@x.com');
+
+  const p = await writeback.proposals(ctx, { keyColumns: ['cust_no'] });
+  const ids = p.groups.map((g) => g.id).sort();
+  assert.ok(ids.includes('state|standardise_code|safe') && ids.includes('bsb|reformat|safe') && ids.includes('email|trim|safe'), ids.join());
+  assert.ok(p.groups.find((g) => g.id === 'state|unknown_code|manual'), 'NSW is manual');
+  assert.ok(p.groups.find((g) => g.id === 'email|invalid_email|manual'));
+
+  const target = { system: 'lakebase', schema: MASTER, table: 'billing' };
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'writeback', action: 'create', target, payload: { keyColumns: ['cust_no'], groupIds: ['state|unknown_code|manual'], pathTemplate: '/c/{cust_no}' } }, 'a@x.com'),
+    /None of the selected corrections/,
+    'manual groups can never be sent',
+  );
+  const cr = await refdata.proposeChange(
+    { kind: 'writeback', action: 'create', target, payload: { keyColumns: ['cust_no'], groupIds: ['state|standardise_code|safe', 'bsb|reformat|safe', 'email|trim|safe'], method: 'PATCH', pathTemplate: '/customers/{cust_no}' } },
+    'analyst@x.com',
+  );
+  assert.equal(cr.payload.changes.length, 5, 'C1 state+bsb+email, C2 state, C3 bsb');
+  assert.match(cr.summary, /5 corrections to 3 records/);
+
+  // The source changes C2's state before approval: that change is dropped.
+  await lakebase.query(`UPDATE ${MASTER}.billing SET state = 'SA' WHERE cust_no = 'C2'`);
+  const done = await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com');
+  assert.equal(done.status, 'applied');
+  const [audit] = (await refdata.auditLog()).filter((a) => a.change_request_id === cr.id);
+  assert.deepEqual(audit.after, { outboxEntries: 2, changes: 4, staleChangesDropped: 1 });
+
+  const outbox = await writeback.listOutbox({ table: name });
+  assert.deepEqual(outbox.map((e) => e.path), ['/customers/C1', '/customers/C3']);
+  assert.deepEqual(outbox[1].body.set, { bsb: '123-456' });
+  assert.deepEqual(outbox[0].body.set, { state: 'SA', bsb: '545-124', email: 'a@x.com' });
+  assert.deepEqual(outbox[0].body.expect, { state: 'S.A.', bsb: '545124', email: 'a@x.com ' });
+
+  const { rows: source } = await lakebase.query(`SELECT state FROM ${MASTER}.billing WHERE cust_no = 'C1'`);
+  assert.equal(source[0].state, 'S.A.', 'the app never edits the source itself');
+
+  await writeback.acknowledge([outbox[0].id], { status: 'failed', response: '409 changed' }, 'integration');
+  await writeback.acknowledge([outbox[0].id], { status: 'sent', response: '200' }, 'integration');
+  const after = (await writeback.listOutbox({ table: name }))[0];
+  assert.equal(after.status, 'sent');
+  assert.equal(after.attempts, 2);
+  assert.deepEqual(await writeback.acknowledge([outbox[0].id], { status: 'cancelled' }, 'x'), [], 'sent entries stay sent');
+});

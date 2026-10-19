@@ -18,6 +18,7 @@ test('column names map to PII types across naming styles', () => {
     // Legacy billing-system names.
     CUST_NAME: 'person_name', CONC_CARD: 'government_id', BANK_ACCT: 'financial', SUPPLY_ADDR_1: 'address',
     MAIL_ADDR: 'address', PCODE: 'location', LAST_UPD_USER: 'person_id',
+    PH_MOB: 'phone', PH_HOME: 'phone',
   };
   for (const [name, type] of Object.entries(cases)) assert.equal(detectByName(name), type, name);
   for (const name of ['status', 'assettype', 'description', 'serialnum', 'siteid', 'glaccount', 'product_name', 'orgid', 'location', 'notes']) {

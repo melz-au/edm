@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Modal from './Modal.jsx';
 import { api, sourceTableName } from '../lib/api.js';
+import WritebackDialog from './WritebackDialog.jsx';
 
 const TYPE_LABEL = {
   not_null: 'Not null',
@@ -113,10 +114,11 @@ function SuggestDialog({ source, table, onClose, onAdded }) {
 }
 
 /** Data quality section of the table details panel. */
-export default function DataQuality({ source, table, onChanged }) {
+export default function DataQuality({ source, table, onChanged, onSubmitted }) {
   const tableName = sourceTableName(source, table);
   const [rules, setRules] = useState(null);
   const [suggesting, setSuggesting] = useState(false);
+  const [correcting, setCorrecting] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState(null);
 
@@ -167,6 +169,11 @@ export default function DataQuality({ source, table, onChanged }) {
           </button>
         )}
       </div>
+      {failing > 0 && (
+        <button className="btn small block" onClick={() => setCorrecting(true)} title="Propose fixes to send back to the source system">
+          Propose corrections for the source system
+        </button>
+      )}
       {error && <div className="error inline">{error}</div>}
       {sorted.map((r) => {
         const rate = passRate(r);
@@ -199,6 +206,9 @@ export default function DataQuality({ source, table, onChanged }) {
           </div>
         );
       })}
+      {correcting && (
+        <WritebackDialog source={source} table={table} onClose={() => setCorrecting(false)} onSubmitted={onSubmitted} />
+      )}
       {suggesting && (
         <SuggestDialog source={source} table={table} onClose={() => setSuggesting(false)} onAdded={() => { load(); onChanged?.(); }} />
       )}

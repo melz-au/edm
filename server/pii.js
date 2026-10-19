@@ -48,7 +48,7 @@ const NAME_PATTERNS = [
   ['date_of_birth', /(^dob$|dateofbirth|birthdate|birthday|^dob[a-z]*$)/],
   ['special_category', /(gender|^sex$|ethnic|^race$|religio|health|diagnos|disabilit|sexualorient|medicalcond|criminal)/],
   ['email', /(e?mail(address)?$|^email)/],
-  ['phone', /(phone|mobile|cellno|^cell$|^tel$|telephone|^fax)/],
+  ['phone', /(phone|mobile|cellno|^cell$|^tel$|telephone|^fax|phmob|phhome|phwork|phbus|^mob$|mobno|mobnum)/],
   ['person_name', /(firstname|lastname|surname|givenname|fullname|middlename|maidenname|forename|familyname|preferredname|nickname|(contact|customer|cust|client|employee|emp|person|patient|student|staff|member)name$)/],
   ['address', /(address(line)?\d?$|^addr|addr(line)?\d*$|street|suburb|postaladdr|homeaddr|residential)/],
   ['location', /(^latitude|^longitude|^lat$|^lon$|^lng$|latitude[xy]?$|longitude[xy]?$|geolocation|coordinates|postcode|zipcode|^zip$|postalcode|^pcode$|postcd)/],

@@ -45,6 +45,14 @@ export const api = {
   dqRun: (system, table) => post('dq/run', { system, catalog: table.catalog, schema: table.schema, table: table.name }),
   dqSummary: (system, prefix) => get('dq/summary', { system, prefix }),
 
+  // Write-back to source systems.
+  writebackProposals: (system, table, { key, areaCode } = {}) =>
+    get('writeback/proposals', { system, catalog: table.catalog, schema: table.schema, table: table.name, key, areaCode }),
+  outbox: (params) => get('writeback/outbox', params),
+  outboxCounts: () => get('writeback/outbox/counts'),
+  outboxAck: (ids, status, response) => post('writeback/outbox/ack', { ids, status, response }),
+  outboxExportUrl: (format, status = 'pending') => `./api/writeback/outbox/export?format=${format}&status=${status}`,
+
   codeSets: () => get('refdata/code-sets'),
   codeSet: (id) => get(`refdata/code-sets/${id}`),
   linkedCodeSets: (system, table) => get('refdata/linked', { system, table }),

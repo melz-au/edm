@@ -532,3 +532,8 @@ input.invalid { border-color: #f04438 !important; background: #fffbfa; }
 .table-node__dq.ok { background: #d1fadf; color: #05603a; }
 .table-node__dq.warn { background: #fef0c7; color: #93370d; }
 .table-node__dq.bad { background: #fee4e2; color: #912018; }
+
+/* Write-back */
+.badge.muted-badge { background: rgb(255 255 255 / 0.25); }
+.notice.warn { background: var(--warn-bg); color: var(--warn); }
+.details > .btn.block { margin: 4px 0 8px; }

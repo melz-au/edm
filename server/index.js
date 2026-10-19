@@ -12,6 +12,7 @@ import { suggestMappings } from './mapping.js';
 import * as ucpublish from './ucpublish.js';
 import * as dq from './dq.js';
 import * as dqstore from './dqstore.js';
+import * as writeback from './writeback.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 import * as ingest from './ingest.js';
@@ -227,7 +228,8 @@ app.get('/api/refdata/linked', wrap(async (req, res) => {
 }));
 
 app.get('/api/refdata/changes', wrap(async (req, res) => {
-  res.json(await refdata.listChanges({ status: req.query.status, kind: req.query.kind, limit: req.query.limit }));
+  const changes = await refdata.listChanges({ status: req.query.status, kind: req.query.kind, limit: req.query.limit });
+  res.json(changes.map(writeback.forDisplay)); // write-back changes: counts + masked examples only
 }));
 
 app.get('/api/refdata/pending-count', wrap(async (_req, res) => res.json({ pending: await refdata.pendingCount() })));
@@ -252,6 +254,7 @@ async function tableContext(req, { system, catalog, schema, table }) {
     const token = userToken(req);
     const meta = await uc.getTable(catalog, schema, table, token);
     return {
+      system,
       name: `${catalog}.${schema}.${table}`,
       dialect: 'spark',
       ref: dq.tableRef('spark', [catalog, schema, table]),
@@ -269,6 +272,7 @@ async function tableContext(req, { system, catalog, schema, table }) {
   if (system === 'lakebase') {
     const meta = await lakebase.tableMeta(schema, table);
     return {
+      system,
       name: `${schema}.${table}`,
       dialect: 'pg',
       ref: dq.tableRef('pg', [schema, table]),
@@ -337,6 +341,75 @@ app.post('/api/dq/run', wrap(async (req, res) => {
 app.get('/api/dq/summary', wrap(async (req, res) => {
   required(req, 'system', 'prefix');
   res.json(await dqstore.summary(req.query.system, req.query.prefix));
+}));
+
+// Write-back of corrections to source systems, via an outbox.
+writeback.configure({ tableContext: (target) => tableContext({ get: () => undefined }, target) });
+
+const requireSteward = (req) => {
+  if (!refdata.isSteward(currentUser(req))) {
+    throw Object.assign(new Error('Only data stewards can read or update the write-back outbox'), { status: 403 });
+  }
+};
+
+app.get('/api/writeback/proposals', wrap(async (req, res) => {
+  required(req, 'system', 'schema', 'table');
+  const ctx = await tableContext(req, tableParams(req.query));
+  const rules = await dqstore.listRules(req.query.system, ctx.name);
+  // Default key: the primary key, else the unique-rule column(s) with the fewest duplicates.
+  const uniqueRules = rules
+    .filter((r) => r.rule_type === 'unique')
+    .sort((a, b) => (a.last_failed ?? Infinity) - (b.last_failed ?? Infinity) || a.column_name.localeCompare(b.column_name));
+  const suggestedKey = ctx.primaryKey.length ? ctx.primaryKey : (uniqueRules[0]?.params?.columns ?? []);
+  const keyColumns = req.query.key ? String(req.query.key).split(',') : suggestedKey;
+  if (!keyColumns.length) {
+    return res.json({ table: ctx.name, keyColumns: [], suggestedKey, columns: ctx.columns.map((c) => c.name), groups: [], needsKey: true });
+  }
+  for (const k of keyColumns) {
+    if (!ctx.columns.some((c) => c.name === k)) throw Object.assign(new Error(`Unknown key column ${k}`), { status: 400 });
+  }
+  const p = await writeback.proposals(ctx, { keyColumns, areaCode: req.query.areaCode });
+  res.json({
+    table: ctx.name,
+    keyColumns,
+    suggestedKey,
+    columns: ctx.columns.map((c) => c.name),
+    rowsRead: p.rowsRead,
+    truncated: p.truncated,
+    ambiguousKeys: p.ambiguousKeys,
+    missingKey: p.missingKey,
+    groups: writeback.maskGroups(p.groups, p.piiTypes),
+  });
+}));
+
+app.get('/api/writeback/outbox/counts', wrap(async (_req, res) => res.json(await writeback.outboxCounts())));
+
+app.get('/api/writeback/outbox', wrap(async (req, res) => {
+  requireSteward(req);
+  const entries = await writeback.listOutbox({ status: req.query.status, table: req.query.table, limit: req.query.limit });
+  // On screen, personal data is masked; exports carry the real values for the source system.
+  res.json(req.query.raw === 'true' ? entries.map(({ pii_types, ...e }) => e) : entries.map(({ pii_types, ...e }) => writeback.maskEntry({ ...e, pii_types })));
+}));
+
+// For integrations: pending API calls as JSON, or one row per field as CSV.
+app.get('/api/writeback/outbox/export', wrap(async (req, res) => {
+  requireSteward(req);
+  const entries = await writeback.listOutbox({ status: req.query.status ?? 'pending', table: req.query.table, limit: 10_000 });
+  const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  if (req.query.format === 'csv') {
+    res.type('text/csv').attachment(`writeback-${stamp}.csv`).send(writeback.toCsv(entries));
+  } else {
+    res.attachment(`writeback-${stamp}.json`).json(
+      entries.map((e) => ({ id: e.id, source_table: e.source_table, record_key: e.record_key, method: e.method, path: e.path, body: e.body })),
+    );
+  }
+}));
+
+// Integration acknowledgement: { ids: [..], status: 'sent' | 'failed' | 'cancelled' | 'pending', response }.
+app.post('/api/writeback/outbox/ack', wrap(async (req, res) => {
+  requireSteward(req);
+  const { ids = [], status, response } = req.body ?? {};
+  res.json(await writeback.acknowledge(ids, { status, response }, currentUser(req)));
 }));
 
 // Publishing reference data to Unity Catalog
