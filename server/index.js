@@ -58,7 +58,8 @@ app.get('/api/health', (req, res) =>
   res.json({ ok: true, ucIdentity: ucIdentity(req), useUserToken: process.env.ERD_USE_USER_TOKEN === 'true' }),
 );
 
-app.get('/api/config', (req, res) => {
+app.get('/api/config', wrap(async (req, res) => {
+  const wh = await warehouse.resolveWarehouse();
   res.json({
     defaultSource: process.env.ERD_DEFAULT_SOURCE || (databricks.isConfigured() ? 'uc' : 'demo'),
     defaultCatalog: process.env.ERD_DEFAULT_CATALOG || null,
@@ -70,12 +71,12 @@ app.get('/api/config', (req, res) => {
         identity: ucIdentity(req),
       },
       lakebase: { available: lakebase.isConfigured(), ...lakebase.getConnectionInfo() },
-      warehouse: { available: warehouse.isConfigured() },
+      warehouse: { available: Boolean(wh), name: wh?.name ?? null, source: wh?.source ?? null },
       refdata: { available: lakebase.isConfigured(), schema: refdata.SCHEMA },
       demo: { available: true },
     },
   });
-});
+}));
 
 // Unity Catalog
 app.get('/api/uc/catalogs', wrap(async (req, res) => {

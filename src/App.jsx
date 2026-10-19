@@ -443,12 +443,21 @@ export default function App() {
             </select>
           </section>
 
-          {canProfile && model && (
+          {model && source !== 'demo' && (
             <section>
               <label className="label">Data</label>
-              <button className="btn block" disabled={Boolean(profiling)} onClick={profileAll}>
+              <button className="btn block" disabled={!canProfile || Boolean(profiling)} onClick={profileAll}>
                 {profiling ? `Profiling ${profiling.done}/${profiling.total} tables…` : 'Detect categorical fields'}
               </button>
+              {!canProfile && (
+                <div className="muted small" style={{ marginTop: 6 }}>
+                  Profiling Unity Catalog tables needs a SQL warehouse. In Databricks, open this app → Edit → App
+                  resources → add a SQL warehouse (Can use), then reload.
+                </div>
+              )}
+              {canProfile && source === 'uc' && config?.sources.warehouse?.name && (
+                <div className="muted small" style={{ marginTop: 6 }}>Using warehouse {config.sources.warehouse.name}</div>
+              )}
               {profiles.size > 0 && !profiling && (
                 <div className="muted small" style={{ marginTop: 6 }}>
                   {categoricalCount} categorical field{categoricalCount === 1 ? '' : 's'} in {profiles.size} profiled table

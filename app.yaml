@@ -24,8 +24,9 @@ env:
   # OAuth token as the Postgres password.
 
   # --- Categorical field detection on Unity Catalog tables -------------------
-  # Add a "SQL warehouse" resource to the app (permission: Can use) with the
-  # resource key "sql-warehouse", then uncomment:
+  # Add a "SQL warehouse" resource to the app (permission: Can use). The app
+  # finds it automatically. To pin a specific one, set ERD_WAREHOUSE_NAME, or
+  # give the resource the key "sql-warehouse" and uncomment:
   # - name: DATABRICKS_WAREHOUSE_ID
   #   valueFrom: sql-warehouse
 

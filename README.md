@@ -137,9 +137,11 @@ app.yaml  Databricks Apps entry point (npm run start)
    token as the Postgres password.
 4. Optional defaults in `app.yaml`: `ERD_DEFAULT_SOURCE` (`uc` | `lakebase` |
    `demo`), `ERD_DEFAULT_CATALOG`, `ERD_DEFAULT_SCHEMA`.
-5. **Profiling Unity Catalog tables:** add a **SQL warehouse** resource (*Can
-   use*, resource key `sql-warehouse`) and uncomment `DATABRICKS_WAREHOUSE_ID`
-   in `app.yaml`. Profiling reads rows, so the service principal needs `SELECT`
+5. **Profiling Unity Catalog tables:** add a **SQL warehouse** resource with
+   permission *Can use*, such as the *Serverless Starter Warehouse*. The app
+   finds it automatically: it prefers a running warehouse, then serverless,
+   then one named "Starter". To pin one, set `ERD_WAREHOUSE_NAME`, or
+   `DATABRICKS_WAREHOUSE_ID` via `valueFrom`. Profiling reads rows, so the service principal needs `SELECT`
    on those tables; `BROWSE` alone only covers the diagram.
 6. **Reference and master data:** this needs the Lakebase resource from step 3.
    The app creates the `refdata` schema itself, using the *create* permission.

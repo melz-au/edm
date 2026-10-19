@@ -21,6 +21,12 @@ before(async () => {
       res.statusCode = 403;
       return res.end(JSON.stringify({ message: 'Invalid scope' }));
     }
+    if (url.pathname === '/api/2.0/sql/warehouses') {
+      return res.end(JSON.stringify({ warehouses: [
+        { id: 'w-classic', name: 'Shared Classic', state: 'STOPPED', enable_serverless_compute: false },
+        { id: 'w-starter', name: 'Serverless Starter Warehouse', state: 'STOPPED', enable_serverless_compute: true },
+      ] }));
+    }
     if (url.pathname === '/api/2.0/sql/statements' && req.method === 'POST') {
       let body = '';
       req.on('data', (c) => (body += c));
@@ -114,11 +120,32 @@ test('invalid scope on a user token explains how to fix it', async () => {
     err.status === 403 && /catalog\.catalogs:read/.test(err.message) && /ERD_USE_USER_TOKEN/.test(err.message));
 });
 
+test('warehouse is discovered when DATABRICKS_WAREHOUSE_ID is not set', async () => {
+  delete process.env.DATABRICKS_WAREHOUSE_ID;
+  const { resolveWarehouse, runSql, resetDiscovery } = await import('./warehouse.js');
+  resetDiscovery();
+  assert.deepEqual(await resolveWarehouse(), { id: 'w-starter', name: 'Serverless Starter Warehouse', source: 'discovered' });
+  await runSql('SELECT 2');
+  assert.equal(statements.at(-1).warehouse_id, 'w-starter');
+});
+
+test('pickWarehouse honours a preferred name, then running, serverless and starter', async () => {
+  const { pickWarehouse } = await import('./warehouse.js');
+  const list = [
+    { id: 'a', name: 'BI', state: 'RUNNING' },
+    { id: 'b', name: 'Serverless Starter Warehouse', state: 'STOPPED', enable_serverless_compute: true },
+    { id: 'c', name: 'Old', state: 'DELETED' },
+  ];
+  assert.equal(pickWarehouse(list).id, 'a');
+  assert.equal(pickWarehouse(list, 'serverless starter warehouse').id, 'b');
+  assert.equal(pickWarehouse([list[2]]), null);
+});
+
 test('warehouse.runSql polls a running statement and maps rows', async () => {
   process.env.DATABRICKS_WAREHOUSE_ID = 'wh1';
   const { runSql } = await import('./warehouse.js');
   const rows = await runSql('SELECT 1');
   assert.deepEqual(rows, [{ v: 'OPEN', n: '3' }, { v: 'CLOSED', n: '1' }]);
-  assert.equal(statements[0].warehouse_id, 'wh1');
-  assert.equal(statements[0].statement, 'SELECT 1');
+  assert.equal(statements.at(-1).warehouse_id, 'wh1');
+  assert.equal(statements.at(-1).statement, 'SELECT 1');
 });
