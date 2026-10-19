@@ -43,6 +43,28 @@ mostly-unique text, amounts, coordinates and dates are skipped. Names like
 directly; Unity Catalog tables need a SQL warehouse (see below). The limit on
 distinct values is 50, configurable with `ERD_CATEGORICAL_MAX_DISTINCT`.
 
+**Detect personal data (PII).** The same profiling pass (sidebar **Profile
+data**) flags columns holding personal data with a red **PII** badge. It uses
+two kinds of evidence:
+
+- **Column name:** `email`, `first_name`, `mobile`, `dob`, `tfn`/`ssn`/
+  `passport`/`medicare`, `credit_card`/`bsb`/`bank_account`, `password`,
+  `gender`, `address`, and audit columns such as `created_by`/`CHANGEBY`.
+- **Sampled values** (up to 100 per text column): email addresses, phone
+  numbers, card numbers that pass the Luhn check, IP/MAC addresses, IBANs, US
+  SSNs and formatted AU TFNs (with checksum). A column named `contact` that
+  holds email addresses is still caught.
+
+Each finding has a type, a **sensitivity** and a **confidence**. High
+sensitivity covers IDs, financial data, credentials, birth dates and special
+categories. Medium covers contact details, names and user IDs. Low covers
+location. Coordinates and postcodes are only flagged in tables that also hold
+direct personal details, so asset and site locations aren't. Values from PII
+columns are **masked on the server** (`j•••@example.com`, `•••• 1111`) in the
+profile, in categorical top values and in the distinct-values endpoint, and
+PII columns aren't offered as code sets. Detection is a heuristic aid, not a
+compliance guarantee: review the results.
+
 **Reference data.** Any categorical field can become a managed **code set**:
 *Create code set* reads all of the column's distinct values. Review the codes,
 add labels and descriptions, and submit. The **Reference data** tab lists code
@@ -90,6 +112,7 @@ server/   Express: serves dist/ and the /api endpoints
   lakebase.js      pg_catalog queries for columns, PKs and FKs
   model.js         shared ERD model, relationship inference, demo data
   profile.js       categorical field detection (SQL for Postgres and Databricks SQL)
+  pii.js           personal data detection (name patterns, value formats, masking)
   warehouse.js     Statement Execution API client for Unity Catalog profiling
   refdata.js       code sets, change requests, approvals and audit log (Lakebase)
 src/lib/modelLevels.js  physical → logical → conceptual transforms

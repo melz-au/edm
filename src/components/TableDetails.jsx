@@ -20,19 +20,22 @@ function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreat
   };
 
   const categorical = profile?.columns.filter((c) => c.categorical) ?? [];
+  const personal = profile?.columns.filter((c) => c.pii) ?? [];
   const linkedBy = new Map((linked ?? []).map((l) => [l.source_column, l]));
+  const rank = { high: 0, medium: 1, low: 2 };
 
   return (
     <>
-      <h4>Categorical fields</h4>
+      <h4>Data profile</h4>
       {!profile ? (
         <button className="btn small" disabled={busy} onClick={run}>
-          {busy ? 'Profiling…' : 'Detect categorical fields'}
+          {busy ? 'Profiling…' : 'Profile data (categorical & PII)'}
         </button>
       ) : (
         <>
           <p className="muted small">
-            {categorical.length} found in a sample of {profile.sampled.toLocaleString()} rows
+            {categorical.length} categorical, {personal.length} personal data field{personal.length === 1 ? '' : 's'} in a
+            sample of {profile.sampled.toLocaleString()} rows
             {canProfile && (
               <>
                 {' · '}
@@ -40,13 +43,38 @@ function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreat
               </>
             )}
           </p>
+          {personal.length > 0 && <h4>Personal data (PII)</h4>}
+          {[...personal]
+            .sort((a, b) => rank[a.pii.sensitivity] - rank[b.pii.sensitivity])
+            .map((c) => (
+              <div key={c.name} className={`cat-field pii-field ${c.pii.sensitivity}`}>
+                <div className="cat-field__head">
+                  <code>{c.name}</code>
+                  <span className={`tag pii ${c.pii.sensitivity}`}>{c.pii.sensitivity} sensitivity</span>
+                  <span className="grow" />
+                  <span className="muted small">{c.pii.confidence} confidence</span>
+                </div>
+                <div className="small">{c.pii.label}</div>
+                <div className="muted small">Evidence: {c.pii.evidence}</div>
+                {c.pii.examples.length > 0 && (
+                  <div className="chips">
+                    {c.pii.examples.map((v, i) => (
+                      <span key={i} className="chip masked" title="Masked sample value">{v}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          {categorical.length > 0 && <h4>Categorical fields</h4>}
           {categorical.map((c) => (
             <div key={c.name} className="cat-field">
               <div className="cat-field__head">
                 <code>{c.name}</code>
                 <span className={`tag ${c.confidence === 'high' ? 'ok' : ''}`}>{c.confidence}</span>
                 <span className="grow" />
-                {linkedBy.has(c.name) ? (
+                {c.pii ? (
+                  <span className="tag pii medium" title="Personal data is not offered as reference data">PII · values masked</span>
+                ) : linkedBy.has(c.name) ? (
                   <span className="tag ok" title="Managed as reference data">code set: {linkedBy.get(c.name).name}</span>
                 ) : (
                   onCreateCodeSet && (
@@ -88,6 +116,7 @@ export default function TableDetails({
   onEditData,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
+  const piiNames = new Set(profile?.columns.filter((c) => c.pii).map((c) => c.name));
   const physical = level === 'physical';
   const outgoing = relationships.filter((r) => r.from.table === table.id);
   const incoming = relationships.filter((r) => r.to.table === table.id && r.from.table !== table.id);
@@ -143,7 +172,8 @@ export default function TableDetails({
               <td className="keys">
                 {c.pk && <span className="key pk">PK</span>}
                 {c.fk && <span className="key fk">FK</span>}
-                {categorical.has(c.name) && <span className="key cat">CAT</span>}
+                {piiNames.has(c.name) && <span className="key pii">PII</span>}
+                {categorical.has(c.name) && !piiNames.has(c.name) && <span className="key cat">CAT</span>}
               </td>
               <td className={c.nullable ? '' : 'required'}>{c.label ?? c.name}</td>
               <td className="type">{c.displayType ?? c.type}</td>

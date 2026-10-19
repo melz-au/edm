@@ -9,6 +9,8 @@
 //   'pg'    Lakebase / Postgres (run directly)
 //   'spark' Unity Catalog via a Databricks SQL warehouse
 
+import * as pii from './pii.js';
+
 export const SAMPLE_ROWS = 10_000;
 export const TOP_VALUES = 15;
 export const MAX_DISTINCT = Number(process.env.ERD_CATEGORICAL_MAX_DISTINCT || 50);
@@ -111,5 +113,28 @@ export async function profileTable({ dialect, ref, columns, primaryKey, run }) {
 
   const order = new Map(columns.map((c, i) => [c.name, i]));
   const all = [...results, ...skipped].sort((a, b) => order.get(a.name) - order.get(b.name));
+
+  // PII: sample values of text-like columns, then combine with name evidence.
+  const sampleCols = pii.valueColumns(columns).map((c) => ({ name: c.name, index: order.get(c.name) }));
+  const samples = new Map();
+  if (sampleCols.length) {
+    for (const row of await run(pii.samplesSql(dialect, ref, sampleCols, SAMPLE_ROWS))) {
+      const name = columns[Number(row.i)].name;
+      if (!samples.has(name)) samples.set(name, []);
+      samples.get(name).push(row.v);
+    }
+  }
+  for (const col of all) col.pii = pii.assess(col.name, samples.get(col.name) ?? []);
+  // Coordinates and postcodes only identify people when the table is about
+  // people (e.g. a customer's address), not assets or sites.
+  const aboutPeople = all.some((c) => c.pii && pii.DIRECT_IDENTIFIERS.has(c.pii.type));
+  for (const col of all) {
+    if (col.pii && !aboutPeople && pii.QUASI_IDENTIFIERS.has(col.pii.type)) col.pii = null;
+    if (col.pii) {
+      // Never send raw personal data to the browser.
+      col.topValues = col.topValues.map((v) => ({ ...v, value: pii.mask(v.value, col.pii.type) }));
+    }
+  }
+
   return { sampled, sampleLimit: SAMPLE_ROWS, columns: all };
 }
