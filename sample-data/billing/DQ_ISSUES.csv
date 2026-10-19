@@ -1,0 +1,2520 @@
+cust_no,column,issue,detail
+C3000006,ACCT_STATUS,non_standard_code,C as 'c'
+C3000006,BALANCE,currency_formatting,-124.17
+C3000006,CONNECT_DATE,two_digit_year,2020-05-10
+C3000006,DOB,month_day_swapped,1953-09-25
+C3000012,ACCT_TYPE,non_standard_code,BUS as 'B'
+C3000012,BALANCE,currency_formatting,0.00
+C3000012,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3000012,STATE,non_standard_code,sa
+C3000017,CONNECT_DATE,two_digit_year,2026-03-14
+C3000017,LAST_READ_DATE,two_digit_year,2026-07-20
+C3000019,BALANCE,accounting_negative,-69.74
+C3000019,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3000019,SEX,non_standard_code,F as 'f'
+C3000019,STATE,non_standard_code,S.A.
+C3000025,BALANCE,currency_formatting,403.40
+C3000025,PCODE,excel_number_format,5066
+C3000025,PH_MOB,leading_zero_lost,0491 570 039
+C3000029,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3000029,EMAIL_ADDR,invalid_email,missing @: elena.brown.example.net
+C3000029,LAST_READ_DATE,two_digit_year,2026-10-04
+C3000029,PH_MOB,placeholder_value,0491 570 036
+C3000036,LAST_READ_DATE,two_digit_year,2026-07-12
+C3000043,EMAIL_ADDR,trailing_whitespace,
+C3000047,LAST_READ_DATE,two_digit_year,2026-09-21
+C3000051,STATE,non_standard_code,S.A.
+C3000055,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000055,CONNECT_DATE,two_digit_year,2020-02-02
+C3000055,DISCONNECT_DATE,two_digit_year,2022-10-30
+C3000060,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3000060,STATE,non_standard_code,South Australia
+C3000062,CONC_FLAG,non_standard_code,Y as 'yes'
+C3000062,LAST_READ_DATE,two_digit_year,2026-09-04
+C3000067,CONC_CARD,missing_value_token,' '
+C3000067,CONNECT_DATE,two_digit_year,2015-11-13
+C3000068,CUST_NAME,extra_whitespace,
+C3000072,BALANCE,currency_formatting,451.79
+C3000072,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3000072,CONNECT_DATE,month_day_swapped,2018-01-22
+C3000072,PCODE,inconsistent_with_suburb,Modbury should be 5092
+C3000073,DOB,placeholder_value,1944-07-24
+C3000073,EMAIL_ADDR,missing_value,rohan.khan@example.org
+C3000073,PCODE,truncated,5022
+C3000076,BALANCE,currency_formatting,0.00
+C3000076,CONNECT_DATE,two_digit_year,2019-08-09
+C3000079,PH_MOB,missing_value_token,'-' replaced a value
+C3000084,CONNECT_DATE,two_digit_year,2015-06-14
+C3000084,PH_MOB,leading_zero_lost,0491 570 138
+C3000089,SEX,missing_value_token,' '
+C3000089,STATE,non_standard_code,South Australia
+C3000094,CONNECT_DATE,two_digit_year,2012-04-21
+C3000094,DOB,two_digit_year,1997-06-28
+C3000094,MAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3000094,STATE,non_standard_code,S.A.
+C3000098,COMMENTS,pii_in_free_text,date of birth in comments
+C3000098,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3000098,PCODE,missing_value,5253
+C3000098,PH_MOB,missing_value_token,'NULL' replaced a value
+C3000104,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3000104,COMMENTS,pii_in_free_text,date of birth in comments
+C3000104,CONNECT_DATE,two_digit_year,2026-03-12
+C3000104,DOB,two_digit_year,1995-06-15
+C3000104,EMAIL_ADDR,trailing_whitespace,
+C3000109,*,exact_duplicate_row,
+C3000109,ACCT_STATUS,non_standard_code,A as 'a'
+C3000109,BALANCE,accounting_negative,-30.63
+C3000109,COMMENTS,pii_in_free_text,date of birth in comments
+C3000109,CONNECT_DATE,two_digit_year,2021-04-01
+C3000109,DOB,two_digit_year,2004-12-21
+C3000110,PH_MOB,leading_zero_lost,0491 570 034
+C3000110,STATE,non_standard_code,S.A.
+C3000117,PH_MOB,placeholder_value,0491 570 155
+C3000120,*,exact_duplicate_row,
+C3000120,BALANCE,currency_formatting,0.00
+C3000120,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3000120,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3000122,CONC_CARD,missing_value_token,'UNKNOWN'
+C3000122,CONNECT_DATE,two_digit_year,2021-01-27
+C3000126,STATE,non_standard_code,sa
+C3000128,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3000128,SEX,non_standard_code,M as 'Male'
+C3000129,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3000129,CONC_CARD,missing_value_token,'N/A'
+C3000129,CONC_FLAG,non_standard_code,N as ''
+C3000129,PAY_METHOD,non_standard_code,CC as 'CARD'
+C3000130,EMAIL_ADDR,trailing_whitespace,
+C3000130,LAST_READ_DATE,two_digit_year,2026-07-27
+C3000133,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000133,LAST_READ_DATE,two_digit_year,2026-08-21
+C3000133,PCODE,missing_value,5066
+C3000134,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3000140,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3000144,CONC_FLAG,non_standard_code,N as ''
+C3000149,ACCT_NUM,inconsistent_case,WC-9102729
+C3000149,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000149,LAST_READ_DATE,two_digit_year,2026-10-24
+C3000149,PCODE,inconsistent_with_suburb,North Adelaide should be 5006
+C3000150,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000150,COMMENTS,pii_in_free_text,date of birth in comments
+C3000150,EMAIL_ADDR,missing_value,omar.thompson@example.com
+C3000154,ACCT_NUM,inconsistent_case,WC-1952391
+C3000154,EMAIL_ADDR,inconsistent_case,kiri.mitchell@example.org
+C3000155,CONNECT_DATE,two_digit_year,2018-04-03
+C3000155,PH_HOME,missing_area_code,(08) 5550 2007
+C3000158,ACCT_NUM,inconsistent_case,WC-9061148
+C3000161,CONNECT_DATE,two_digit_year,2017-08-21
+C3000167,BALANCE,currency_formatting,599.98
+C3000167,CONNECT_DATE,two_digit_year,2019-12-20
+C3000167,SEX,missing_value_token,' ' replaced a value
+C3000172,BALANCE,currency_formatting,0.00
+C3000172,DOB,placeholder_value,1971-03-28
+C3000179,DOB,two_digit_year,1985-05-20
+C3000179,PH_HOME,missing_value_token,' '
+C3000179,STATE,missing_value,
+C3000183,CONNECT_DATE,two_digit_year,2021-05-28
+C3000183,PCODE,missing_value,5045
+C3000188,DOB,two_digit_year,1955-11-30
+C3000188,STATE,non_standard_code,S.A.
+C3000193,ACCT_STATUS,non_standard_code,C as 'CLOSED'
+C3000193,BALANCE,currency_formatting,391.55
+C3000193,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3000193,STATE,non_standard_code,sa
+C3000198,COMMENTS,pii_in_free_text,date of birth in comments
+C3000198,CONNECT_DATE,two_digit_year,2017-02-26
+C3000199,COMMENTS,pii_in_free_text,date of birth in comments
+C3000199,CONNECT_DATE,two_digit_year,2023-02-07
+C3000203,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000203,ACCT_STATUS,non_standard_code,C as 'CLOSED'
+C3000203,BALANCE,currency_formatting,434.07
+C3000203,DISCONNECT_DATE,before_connect_date,
+C3000203,LAST_READ_DATE,two_digit_year,2026-09-12
+C3000209,CONNECT_DATE,two_digit_year,2025-03-24
+C3000209,CUST_NAME,extra_whitespace,
+C3000209,EMAIL_ADDR,placeholder_value,giuseppe.wright@example.net
+C3000209,SUBURB_TOWN,trailing_whitespace,
+C3000210,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3000210,METER_NO,shared_with_other_customer,also on C3003344
+C3000214,CONC_FLAG,non_standard_code,Y as '1'
+C3000214,DOB,placeholder_value,1952-11-09
+C3000214,STATE,non_standard_code,South Australia
+C3000219,EMAIL_ADDR,inconsistent_case,hamid.ryan322@example.com
+C3000221,CUST_NAME,first_last_swapped,Lucas White
+C3000221,DOB,two_digit_year,1996-06-11
+C3000221,EMAIL_ADDR,inconsistent_case,lucas.white@example.com
+C3000221,PCODE,missing_value,5108
+C3000225,ACCT_TYPE,non_standard_code,BUS as 'B'
+C3000225,PH_MOB,leading_zero_lost,0491 570 135
+C3000230,ACCT_NUM,inconsistent_case,WC-4719364
+C3000230,DISCONNECT_DATE,month_day_swapped,2022-07-19
+C3000230,LAST_READ_DATE,two_digit_year,2026-07-05
+C3000234,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000234,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3000234,EMAIL_ADDR,domain_typo,arjun.smith@example.ogr
+C3000234,PH_MOB,placeholder_value,0491 570 116
+C3000239,BALANCE,currency_formatting,550.09
+C3000239,CONC_FLAG,non_standard_code,N as 'false'
+C3000242,BALANCE,currency_formatting,0.00
+C3000242,CONNECT_DATE,month_day_swapped,2015-11-13
+C3000242,EMAIL_ADDR,missing_value,grace.rossi@example.org
+C3000242,LAST_READ_DATE,month_day_swapped,2026-08-18
+C3000247,DOB,month_day_swapped,1948-06-27
+C3000252,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000252,CUST_NAME,first_last_swapped,Aisha Anderson
+C3000252,DISCONNECT_DATE,month_day_swapped,2026-07-15
+C3000252,SUPPLY_ADDR_1,missing_street_number,215 Goodwood Rd
+C3000257,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3000257,PCODE,missing_value,5022
+C3000257,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3000264,CONC_FLAG,non_standard_code,N as 'no'
+C3000264,EMAIL_ADDR,inconsistent_case,maria.jones@example.net
+C3000271,ACCT_NUM,inconsistent_case,WC-3844077
+C3000271,BALANCE,currency_formatting,808.38
+C3000277,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000277,STATE,non_standard_code,S.A.
+C3000280,ACCT_STATUS,non_standard_code,A as 'a'
+C3000280,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000281,CONNECT_DATE,month_day_swapped,2019-12-07
+C3000281,DOB,two_digit_year,1998-02-06
+C3000281,STATE,inconsistent_with_postcode,NSW with SA postcode 5118
+C3000282,DISCONNECT_DATE,before_connect_date,
+C3000282,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3000286,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000286,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000286,DISCONNECT_DATE,two_digit_year,2021-03-13
+C3000286,EMAIL_ADDR,missing_value,wei.wright@example.net
+C3000286,PH_MOB,leading_zero_lost,0491 570 097
+C3000286,SEX,missing_value_token,'N/A' replaced a value
+C3000293,ACCT_NUM,inconsistent_case,WC-6540040
+C3000293,ACCT_STATUS,non_standard_code,A as 'a'
+C3000293,DOB,two_digit_year,1989-03-30
+C3000293,LAST_READ_DATE,two_digit_year,2026-08-21
+C3000293,SUBURB_TOWN,trailing_whitespace,
+C3000300,BALANCE,currency_formatting,302.10
+C3000300,LAST_READ_DATE,two_digit_year,2026-08-08
+C3000303,CONNECT_DATE,two_digit_year,2015-09-11
+C3000303,EMAIL_ADDR,missing_value_token,'-' replaced a value
+C3000305,DOB,two_digit_year,1965-05-07
+C3000310,LAST_READ_DATE,two_digit_year,2026-10-28
+C3000313,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3000313,PCODE,inconsistent_with_suburb,Marion should be 5043
+C3000314,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000314,DOB,placeholder_value,1955-01-19
+C3000314,PCODE,excel_number_format,5000
+C3000321,EMAIL_ADDR,invalid_email,missing @: marco.johnson.example.com
+C3000328,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000328,BALANCE,accounting_negative,-19.85
+C3000328,CONC_FLAG,non_standard_code,N as '0'
+C3000328,CONNECT_DATE,two_digit_year,2020-03-13
+C3000328,LAST_READ_DATE,two_digit_year,2026-10-16
+C3000328,STATE,inconsistent_with_postcode,NSW with SA postcode 5118
+C3000334,LAST_READ_DATE,two_digit_year,2026-08-16
+C3000334,PCODE,inconsistent_with_suburb,Unley should be 5061
+C3000336,*,exact_duplicate_row,
+C3000336,BALANCE,currency_formatting,735.93
+C3000336,COMMENTS,pii_in_free_text,date of birth in comments
+C3000338,BALANCE,currency_formatting,0.00
+C3000338,CONC_FLAG,non_standard_code,N as 'false'
+C3000338,LAST_READ_DATE,two_digit_year,2026-10-25
+C3000338,SEX,non_standard_code,M as '1'
+C3000342,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3000342,DOB,two_digit_year,2002-09-12
+C3000343,PCODE,missing_value,5000
+C3000346,ACCT_STATUS,non_standard_code,I as 'Inactive'
+C3000346,BALANCE,currency_formatting,280.52
+C3000346,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3000350,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000350,ACCT_TYPE,non_standard_code,BUS as 'B'
+C3000350,BALANCE,currency_formatting,561.61
+C3000350,STATE,non_standard_code,sa
+C3000360,CONC_FLAG,non_standard_code,N as ''
+C3000360,CONNECT_DATE,two_digit_year,2020-08-05
+C3000367,BALANCE,currency_formatting,0.00
+C3000367,STATE,inconsistent_with_postcode,NSW with SA postcode 5048
+C3000374,CONC_FLAG,non_standard_code,N as 'no'
+C3000376,ACCT_NUM,inconsistent_case,WC-9835503
+C3000376,CONC_CARD,missing_value_token,'N/A'
+C3000377,CONC_FLAG,non_standard_code,N as 'false'
+C3000379,CONNECT_DATE,two_digit_year,2016-03-20
+C3000379,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3000379,PH_MOB,placeholder_value,0491 570 071
+C3000380,ACCT_NUM,inconsistent_case,WC-4730650
+C3000380,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000380,LAST_READ_DATE,two_digit_year,2026-08-18
+C3000389,BALANCE,currency_formatting,222.17
+C3000389,CONC_CARD,missing_value_token,'N/A'
+C3000389,CONNECT_DATE,two_digit_year,2025-10-12
+C3000389,DOB,two_digit_year,1960-10-26
+C3000392,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000392,BALANCE,currency_formatting,0.00
+C3000392,COMMENTS,pii_in_free_text,date of birth in comments
+C3000392,CONNECT_DATE,two_digit_year,2016-03-29
+C3000392,CUST_NAME,extra_whitespace,
+C3000392,DOB,two_digit_year,1948-12-30
+C3000397,ACCT_STATUS,non_standard_code,I as 'i'
+C3000397,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3000397,PCODE,truncated,5045
+C3000403,CUST_NAME,first_last_swapped,Charlotte Rossi
+C3000403,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3000403,STATE,non_standard_code,South Australia
+C3000408,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000408,CONC_CARD,missing_value_token,'-'
+C3000408,CONNECT_DATE,two_digit_year,2020-01-19
+C3000408,LAST_READ_DATE,two_digit_year,2026-08-18
+C3000412,BALANCE,currency_formatting,0.00
+C3000412,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3000412,LAST_READ_DATE,two_digit_year,2026-08-10
+C3000413,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000413,BALANCE,currency_formatting,0.00
+C3000414,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3000414,BALANCE,currency_formatting,73.17
+C3000420,DOB,two_digit_year,1942-01-04
+C3000421,COMMENTS,pii_in_free_text,date of birth in comments
+C3000421,CUST_NAME,first_last_swapped,Robert Nguyen
+C3000421,LAST_READ_DATE,two_digit_year,2026-10-01
+C3000423,CONNECT_DATE,two_digit_year,2018-11-12
+C3000423,DOB,two_digit_year,1969-03-14
+C3000423,EMAIL_ADDR,placeholder_value,mia.thompson182@example.net
+C3000423,MAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3000423,PCODE,missing_value,5251
+C3000423,STATE,non_standard_code,S.A.
+C3000423,SUPPLY_ADDR_2,missing_value_token,'UNKNOWN'
+C3000427,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3000427,CONC_FLAG,non_standard_code,N as ''
+C3000427,LAST_READ_DATE,two_digit_year,2026-10-05
+C3000432,CONC_FLAG,non_standard_code,N as '0'
+C3000432,PH_HOME,missing_value_token,'NULL'
+C3000434,CUST_NAME,extra_whitespace,
+C3000434,EMAIL_ADDR,placeholder_value,tane.campbell@example.net
+C3000434,LAST_READ_DATE,two_digit_year,2026-07-28
+C3000434,SEX,missing_value_token,' ' replaced a value
+C3000435,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000435,COMMENTS,pii_in_free_text,date of birth in comments
+C3000435,LAST_READ_DATE,two_digit_year,2026-09-11
+C3000438,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000438,EMAIL_ADDR,invalid_email,missing @: charlotte.rossi.example.com
+C3000438,PAY_METHOD,non_standard_code,DD as 'D/D'
+C3000443,COMMENTS,pii_in_free_text,date of birth in comments
+C3000443,STATE,non_standard_code,S.A.
+C3000443,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3000456,CONNECT_DATE,two_digit_year,2017-08-22
+C3000456,EMAIL_ADDR,domain_typo,ethan.kelly@example.ogr
+C3000463,BALANCE,currency_formatting,0.00
+C3000463,DOB,two_digit_year,1985-09-24
+C3000467,ACCT_STATUS,non_standard_code,A as 'act'
+C3000467,COMMENTS,pii_in_free_text,date of birth in comments
+C3000467,CONC_FLAG,non_standard_code,N as 'false'
+C3000474,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3000474,COMMENTS,pii_in_free_text,date of birth in comments
+C3000474,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3000474,DOB,two_digit_year,1997-09-21
+C3000474,SEX,missing_value_token,' ' replaced a value
+C3000476,EMAIL_ADDR,inconsistent_case,kwame.green@example.com
+C3000480,CONC_FLAG,non_standard_code,N as 'false'
+C3000480,CONNECT_DATE,two_digit_year,2014-01-01
+C3000480,SEX,non_standard_code, as '9'
+C3000482,CONC_FLAG,non_standard_code,N as ''
+C3000482,EMAIL_ADDR,inconsistent_case,arjun.anderson@example.com
+C3000482,SEX,missing_value_token,'N/A'
+C3000484,BALANCE,currency_formatting,656.59
+C3000484,EMAIL_ADDR,missing_value,leila.campbell@example.net
+C3000490,BALANCE,currency_formatting,502.91
+C3000490,DOB,two_digit_year,1955-02-27
+C3000494,LAST_READ_DATE,two_digit_year,2026-07-23
+C3000498,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000498,BALANCE,currency_formatting,764.58
+C3000498,DOB,month_day_swapped,1992-06-22
+C3000503,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000503,CONNECT_DATE,two_digit_year,2016-08-05
+C3000510,ACCT_NUM,inconsistent_case,WC-3736939
+C3000510,COMMENTS,pii_in_free_text,date of birth in comments
+C3000510,CONC_CARD,missing_value_token,'NULL'
+C3000510,DISCONNECT_DATE,two_digit_year,2013-12-02
+C3000510,EMAIL_ADDR,missing_value,samuel.papadopoulos663@example.net
+C3000510,SEX,non_standard_code,M as '1'
+C3000510,SUPPLY_ADDR_2,missing_value_token,'UNKNOWN'
+C3000511,LAST_READ_DATE,two_digit_year,2026-07-28
+C3000516,CONC_CARD,missing_value_token,'N/A' replaced a value
+C3000516,CUST_NAME,first_last_swapped,Jack Jones
+C3000516,LAST_READ_DATE,two_digit_year,2026-07-26
+C3000516,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3000523,BALANCE,currency_formatting,0.00
+C3000523,PCODE,missing_value,5253
+C3000523,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3000524,CONC_CARD,missing_value_token,'-' replaced a value
+C3000524,EMAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3000526,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000531,CONC_FLAG,non_standard_code,N as '0'
+C3000531,LAST_READ_DATE,two_digit_year,2026-08-22
+C3000537,LAST_READ_DATE,two_digit_year,2026-09-06
+C3000543,CONNECT_DATE,two_digit_year,2021-01-27
+C3000543,DOB,month_day_swapped,1982-11-02
+C3000543,PH_HOME,missing_area_code,(08) 5550 5872
+C3000543,STATE,non_standard_code,S.A.
+C3000546,BALANCE,currency_formatting,878.81
+C3000546,CONNECT_DATE,two_digit_year,2013-03-02
+C3000546,CUST_NAME,first_last_swapped,Linh Kelly
+C3000546,DOB,two_digit_year,1986-03-06
+C3000546,PH_MOB,leading_zero_lost,0491 570 021
+C3000551,BALANCE,currency_formatting,0.00
+C3000551,CONC_CARD,missing_value_token,'-' replaced a value
+C3000551,CONC_FLAG,non_standard_code,Y as '0'
+C3000551,LAST_READ_DATE,two_digit_year,2026-09-10
+C3000555,COMMENTS,pii_in_free_text,date of birth in comments
+C3000555,CONNECT_DATE,month_day_swapped,2022-08-13
+C3000559,BALANCE,currency_formatting,0.00
+C3000559,EMAIL_ADDR,inconsistent_case,giuseppe.roberts@example.com
+C3000565,DOB,month_day_swapped,1978-08-01
+C3000565,LAST_READ_DATE,month_day_swapped,2026-10-21
+C3000565,SEX,missing_value_token,' ' replaced a value
+C3000572,CONNECT_DATE,two_digit_year,2020-03-05
+C3000572,DISCONNECT_DATE,two_digit_year,2024-05-20
+C3000572,DOB,two_digit_year,2000-04-19
+C3000576,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3000576,PH_MOB,missing_value_token,'NULL' replaced a value
+C3000582,DOB,two_digit_year,1990-01-18
+C3000582,EMAIL_ADDR,inconsistent_case,arjun.roberts@example.com
+C3000583,PH_HOME,missing_value_token,' ' replaced a value
+C3000589,EMAIL_ADDR,trailing_whitespace,
+C3000589,PH_MOB,placeholder_value,0491 570 037
+C3000589,PH_MOB,missing_value_token,'NULL' replaced a value
+C3000589,STATE,non_standard_code,S.A.
+C3000594,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000594,BALANCE,currency_formatting,524.49
+C3000594,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3000600,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000600,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3000607,COMMENTS,pii_in_free_text,date of birth in comments
+C3000607,CONNECT_DATE,month_day_swapped,2015-08-30
+C3000607,DOB,two_digit_year,1984-05-09
+C3000612,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3000612,STATE,non_standard_code,South Australia
+C3000619,CONC_FLAG,non_standard_code,N as ''
+C3000619,DOB,future_date,1952-06-21
+C3000619,LAST_READ_DATE,two_digit_year,2026-09-19
+C3000627,CONC_FLAG,non_standard_code,Y as '1'
+C3000627,EMAIL_ADDR,missing_value,jack.green437@example.org
+C3000627,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3000627,PH_MOB,placeholder_value,0491 570 100
+C3000630,BALANCE,currency_formatting,677.88
+C3000630,CONC_FLAG,non_standard_code,N as '0'
+C3000630,PH_HOME,missing_area_code,(08) 5550 1230
+C3000630,PH_MOB,placeholder_value,0491 570 038
+C3000630,STATE,non_standard_code,sa
+C3000630,SUPPLY_ADDR_1,missing_street_number,240 Jacaranda Pl
+C3000632,BALANCE,currency_formatting,0.00
+C3000632,EMAIL_ADDR,missing_value,chloe.williams@example.net
+C3000639,EMAIL_ADDR,trailing_whitespace,
+C3000646,CONNECT_DATE,two_digit_year,2026-01-05
+C3000646,METER_NO,shared_with_other_customer,also on C3000576
+C3000646,PH_MOB,placeholder_value,0491 570 053
+C3000646,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3000648,BALANCE,currency_formatting,418.00
+C3000650,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3000650,PH_HOME,missing_value_token,' ' replaced a value
+C3000650,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3000651,CONC_FLAG,non_standard_code,N as 'no'
+C3000656,BALANCE,currency_formatting,791.79
+C3000656,PH_MOB,leading_zero_lost,0491 570 065
+C3000659,BANK_ACCT,excel_scientific_notation,45779345
+C3000659,DOB,placeholder_value,1962-10-23
+C3000659,SEX,non_standard_code,F as 'Female'
+C3000665,ACCT_STATUS,non_standard_code,A as 'Active'
+C3000665,DOB,two_digit_year,2001-07-15
+C3000665,SEX,missing_value_token,'N/A' replaced a value
+C3000677,BALANCE,currency_formatting,574.53
+C3000677,DOB,month_day_swapped,1956-12-07
+C3000677,STATE,non_standard_code,S.A.
+C3000680,BALANCE,currency_formatting,0.00
+C3000680,DOB,future_date,1988-03-22
+C3000680,PH_HOME,missing_value_token,'NULL'
+C3000686,EMAIL_ADDR,inconsistent_case,ahmed.singh@example.com
+C3000686,LAST_READ_DATE,two_digit_year,2026-07-09
+C3000693,ACCT_NUM,inconsistent_case,WC-7786331
+C3000693,BALANCE,currency_formatting,60.33
+C3000693,PH_HOME,missing_area_code,(08) 5550 8874
+C3000697,ACCT_NUM,inconsistent_case,WC-1835980
+C3000697,LAST_READ_DATE,two_digit_year,2026-09-17
+C3000697,SEX,missing_value_token,' ' replaced a value
+C3000698,ACCT_STATUS,non_standard_code,A as 'act'
+C3000698,BALANCE,currency_formatting,0.00
+C3000700,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3000700,CONNECT_DATE,two_digit_year,2021-04-26
+C3000700,STATE,non_standard_code,S.A.
+C3000707,LAST_READ_DATE,two_digit_year,2026-08-11
+C3000712,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3000712,CONNECT_DATE,two_digit_year,2012-02-09
+C3000712,EMAIL_ADDR,missing_value,leila.mitchell@example.org
+C3000712,SEX,non_standard_code,F as '2'
+C3000717,LAST_READ_DATE,two_digit_year,2026-10-14
+C3000717,SEX,non_standard_code, as '9'
+C3000717,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3000729,EMAIL_ADDR,invalid_email,missing @: liam.jones.example.net
+C3000731,BALANCE,currency_formatting,772.28
+C3000731,PH_HOME,missing_value_token,'NULL'
+C3000731,STATE,non_standard_code,S.A.
+C3000731,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3000736,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3000740,PH_MOB,leading_zero_lost,0491 570 156
+C3000747,BALANCE,currency_formatting,653.72
+C3000747,EMAIL_ADDR,invalid_email,double @
+C3000747,PCODE,inconsistent_with_suburb,Campbelltown should be 5074
+C3000747,STATE,non_standard_code,South Australia
+C3000751,ACCT_NUM,inconsistent_case,WC-7569361
+C3000751,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3000751,CONC_CARD,missing_value_token,'-'
+C3000751,PH_MOB,placeholder_value,0491 570 075
+C3000752,BALANCE,currency_formatting,0.00
+C3000752,CONNECT_DATE,two_digit_year,2025-10-10
+C3000752,PH_HOME,missing_value_token,'UNKNOWN'
+C3000752,STATE,non_standard_code,South Australia
+C3000754,CONNECT_DATE,month_day_swapped,2025-11-17
+C3000754,DOB,two_digit_year,1951-08-20
+C3000759,ACCT_STATUS,non_standard_code,A as 'act'
+C3000759,CONC_FLAG,non_standard_code,Y as '0'
+C3000759,DOB,two_digit_year,2003-11-18
+C3000759,EMAIL_ADDR,missing_value,ngoc.scott@example.net
+C3000759,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3000765,CONNECT_DATE,two_digit_year,2014-07-25
+C3000766,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000766,BALANCE,currency_formatting,594.45
+C3000772,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3000779,COMMENTS,pii_in_free_text,date of birth in comments
+C3000779,EMAIL_ADDR,invalid_email,missing @: hamid.sharma.example.net
+C3000780,BALANCE,currency_formatting,0.00
+C3000784,CUST_NAME,first_last_swapped,Sarah Le
+C3000784,LAST_READ_DATE,month_day_swapped,2026-07-12
+C3000784,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3000789,CONC_FLAG,non_standard_code,N as 'false'
+C3000790,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3000790,PH_HOME,missing_value_token,'NULL'
+C3000790,STATE,inconsistent_with_postcode,NSW with SA postcode 5082
+C3000791,CONC_FLAG,non_standard_code,N as ''
+C3000791,SEX,non_standard_code,F as 'Female'
+C3000797,BALANCE,currency_formatting,377.67
+C3000797,COMMENTS,pii_in_free_text,date of birth in comments
+C3000797,DOB,two_digit_year,1957-07-16
+C3000803,CONNECT_DATE,two_digit_year,2019-01-29
+C3000803,CUST_NAME,extra_whitespace,
+C3000803,LAST_READ_DATE,two_digit_year,2026-07-27
+C3000803,MAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3000806,CONNECT_DATE,two_digit_year,2023-08-04
+C3000806,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3000806,PH_MOB,leading_zero_lost,0491 570 137
+C3000807,ACCT_TYPE,non_standard_code,RES as 'R'
+C3000809,PH_HOME,missing_value_token,'UNKNOWN'
+C3000809,PH_MOB,missing_value_token,'NULL' replaced a value
+C3000814,ACCT_NUM,inconsistent_case,WC-5167241
+C3000814,ACCT_STATUS,non_standard_code,A as 'act'
+C3000814,CUST_NAME,extra_whitespace,
+C3000814,SEX,missing_value_token,'NULL' replaced a value
+C3000819,ACCT_STATUS,non_standard_code,A as 'a'
+C3000819,BALANCE,currency_formatting,0.00
+C3000819,DOB,two_digit_year,2004-06-06
+C3000822,BALANCE,currency_formatting,0.00
+C3000822,CUST_NAME,first_last_swapped,Mia Patel
+C3000822,EMAIL_ADDR,inconsistent_case,mia.patel@example.com
+C3000825,CONNECT_DATE,two_digit_year,2019-11-13
+C3000825,PH_MOB,missing_value_token,'N/A'
+C3000831,EMAIL_ADDR,placeholder_value,samuel.wilson@example.net
+C3000831,LAST_READ_DATE,two_digit_year,2026-10-20
+C3000831,SUPPLY_ADDR_1,missing_street_number,191 George St
+C3000834,BANK_ACCT,excel_scientific_notation,10689112
+C3000834,CUST_NAME,extra_whitespace,
+C3000834,DOB,two_digit_year,1977-01-25
+C3000834,LAST_READ_DATE,two_digit_year,2026-09-19
+C3000834,PH_MOB,placeholder_value,0491 570 106
+C3000840,CONC_FLAG,non_standard_code,N as 'false'
+C3000840,DOB,two_digit_year,1989-02-15
+C3000840,EMAIL_ADDR,trailing_whitespace,
+C3000845,ACCT_STATUS,non_standard_code,A as 'act'
+C3000845,EMAIL_ADDR,missing_value,david.scott@example.net
+C3000849,ACCT_NUM,inconsistent_case,WC-2223869
+C3000849,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3000849,STATE,non_standard_code,South Australia
+C3000849,SUPPLY_ADDR_2,missing_value_token,'N/A'
+C3000852,LAST_READ_DATE,two_digit_year,2026-08-10
+C3000852,PCODE,inconsistent_with_suburb,Elizabeth should be 5112
+C3000852,STATE,non_standard_code,S.A.
+C3000857,CONNECT_DATE,two_digit_year,2015-05-26
+C3000857,LAST_READ_DATE,two_digit_year,2026-10-06
+C3000857,PCODE,missing_value,5000
+C3000857,PH_HOME,missing_area_code,(08) 5550 3135
+C3000859,*,exact_duplicate_row,
+C3000859,BALANCE,currency_formatting,697.85
+C3000859,CUST_NAME,first_last_swapped,Robert Zhang
+C3000859,LAST_READ_DATE,two_digit_year,2026-09-26
+C3000861,COMMENTS,pii_in_free_text,date of birth in comments
+C3000861,CONC_FLAG,non_standard_code,N as '0'
+C3000861,LAST_READ_DATE,month_day_swapped,2026-08-18
+C3000866,DOB,two_digit_year,1971-05-22
+C3000866,LAST_READ_DATE,two_digit_year,2026-09-11
+C3000866,PH_HOME,missing_value_token,'N/A'
+C3000866,STATE,non_standard_code,South Australia
+C3000873,BANK_ACCT,excel_scientific_notation,14854166
+C3000873,EMAIL_ADDR,trailing_whitespace,
+C3000873,PH_HOME,missing_area_code,(08) 5550 4672
+C3000873,PH_MOB,leading_zero_lost,0491 570 131
+C3000873,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3000879,DOB,two_digit_year,1977-12-28
+C3000881,BALANCE,currency_formatting,774.04
+C3000881,CONNECT_DATE,two_digit_year,2021-10-19
+C3000886,CONNECT_DATE,month_day_swapped,2013-02-11
+C3000886,DOB,month_day_swapped,1943-01-11
+C3000886,PH_MOB,leading_zero_lost,0491 570 140
+C3000888,BALANCE,currency_formatting,504.79
+C3000888,COMMENTS,pii_in_free_text,date of birth in comments
+C3000888,CONNECT_DATE,two_digit_year,2020-07-01
+C3000893,EMAIL_ADDR,inconsistent_case,hamid.li@example.com
+C3000893,LAST_READ_DATE,two_digit_year,2026-07-09
+C3000893,PCODE,excel_number_format,5048
+C3000900,EMAIL_ADDR,missing_value,samuel.baker@example.org
+C3000903,LAST_READ_DATE,two_digit_year,2026-08-19
+C3000903,PCODE,inconsistent_with_suburb,Prospect should be 5082
+C3000904,BALANCE,currency_formatting,455.32
+C3000904,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3000904,SEX,non_standard_code,F as 'Female'
+C3000915,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3000915,BALANCE,currency_formatting,-21.65
+C3000915,COMMENTS,pii_in_free_text,date of birth in comments
+C3000915,CONC_FLAG,non_standard_code,Y as ''
+C3000922,DOB,two_digit_year,1970-09-15
+C3000922,EMAIL_ADDR,inconsistent_case,samuel.le@example.org
+C3000926,BALANCE,currency_formatting,0.00
+C3000926,EMAIL_ADDR,invalid_email,missing @: charlotte.khan.example.com
+C3000926,SEX,non_standard_code,F as '2'
+C3000933,COMMENTS,pii_in_free_text,date of birth in comments
+C3000933,CONNECT_DATE,two_digit_year,2012-02-21
+C3000933,PH_MOB,missing_value_token,'-' replaced a value
+C3000933,SEX,non_standard_code,F as 'f'
+C3000940,CONNECT_DATE,month_day_swapped,2019-12-11
+C3000947,PCODE,missing_value,5112
+C3000953,CONNECT_DATE,two_digit_year,2025-02-15
+C3000953,LAST_READ_DATE,two_digit_year,2026-08-12
+C3000957,ACCT_NUM,inconsistent_case,WC-8180127
+C3000957,ACCT_STATUS,non_standard_code,I as 'Inactive'
+C3000957,BALANCE,currency_formatting,597.57
+C3000957,STATE,non_standard_code,sa
+C3000958,DOB,two_digit_year,1995-10-17
+C3000965,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3000965,EMAIL_ADDR,trailing_whitespace,
+C3000975,ACCT_STATUS,non_standard_code,A as 'act'
+C3000975,BALANCE,currency_formatting,29.46
+C3000975,CONC_FLAG,non_standard_code,N as ''
+C3000980,PH_HOME,missing_area_code,(08) 5550 8854
+C3000980,PH_MOB,placeholder_value,0491 570 056
+C3000985,BALANCE,currency_formatting,0.00
+C3000985,CONNECT_DATE,two_digit_year,2014-05-28
+C3000986,BALANCE,currency_formatting,811.65
+C3000991,DOB,month_day_swapped,2004-05-13
+C3000991,LAST_READ_DATE,two_digit_year,2026-07-03
+C3000995,CONNECT_DATE,two_digit_year,2018-12-28
+C3000995,DOB,two_digit_year,1950-01-03
+C3000995,LAST_READ_DATE,two_digit_year,2026-10-26
+C3001000,CUST_NAME,first_last_swapped,Jarrah Tran
+C3001002,BALANCE,currency_formatting,531.87
+C3001002,CONNECT_DATE,two_digit_year,2017-09-06
+C3001002,PH_MOB,placeholder_value,0491 570 126
+C3001002,STATE,non_standard_code,S.A.
+C3001005,EMAIL_ADDR,invalid_email,missing @: grace.smith.example.com
+C3001005,PH_HOME,missing_value_token,'UNKNOWN'
+C3001006,ACCT_STATUS,non_standard_code,I as 'i'
+C3001006,CONC_FLAG,non_standard_code,Y as '0'
+C3001006,EMAIL_ADDR,missing_value,james.kelly@example.com
+C3001012,CONC_FLAG,non_standard_code,Y as 'yes'
+C3001012,STATE,non_standard_code,S.A.
+C3001018,BALANCE,currency_formatting,142.82
+C3001018,CONC_FLAG,non_standard_code,Y as '0'
+C3001023,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3001027,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001027,DOB,placeholder_value,1969-06-27
+C3001029,CONC_CARD,missing_value_token,'-' replaced a value
+C3001029,EMAIL_ADDR,trailing_whitespace,
+C3001029,LAST_READ_DATE,two_digit_year,2026-10-24
+C3001036,LAST_READ_DATE,two_digit_year,2026-09-03
+C3001036,PH_MOB,placeholder_value,0491 570 127
+C3001040,LAST_READ_DATE,two_digit_year,2026-07-14
+C3001046,ACCT_NUM,inconsistent_case,WC-6824311
+C3001050,CONNECT_DATE,two_digit_year,2014-07-25
+C3001050,DOB,two_digit_year,1942-03-11
+C3001055,BALANCE,currency_formatting,644.85
+C3001055,EMAIL_ADDR,missing_value,ruby.murphy@example.org
+C3001055,SEX,missing_value_token,' '
+C3001065,SUPPLY_ADDR_2,missing_value_token,'-'
+C3001066,ACCT_STATUS,non_standard_code,A as 'Active'
+C3001066,CONC_CARD,missing_value_token,'N/A'
+C3001066,DOB,two_digit_year,1993-09-30
+C3001066,EMAIL_ADDR,missing_value,lucy.walker@example.com
+C3001066,STATE,non_standard_code,South Australia
+C3001073,PH_MOB,missing_value_token,'NULL' replaced a value
+C3001076,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001076,CONC_CARD,missing_value_token,'N/A' replaced a value
+C3001076,LAST_READ_DATE,two_digit_year,2026-10-05
+C3001076,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3001077,EMAIL_ADDR,inconsistent_case,aisha.le@example.com
+C3001077,STATE,non_standard_code,sa
+C3001082,CONNECT_DATE,two_digit_year,2015-06-12
+C3001086,CUST_NAME,extra_whitespace,
+C3001086,DOB,two_digit_year,1977-07-16
+C3001086,EMAIL_ADDR,inconsistent_case,giuseppe.rossi@example.org
+C3001091,BALANCE,currency_formatting,0.00
+C3001094,*,exact_duplicate_row,
+C3001094,COMMENTS,pii_in_free_text,date of birth in comments
+C3001094,CONC_FLAG,non_standard_code,N as '0'
+C3001094,CONNECT_DATE,two_digit_year,2014-01-13
+C3001094,DOB,two_digit_year,1946-08-07
+C3001094,EMAIL_ADDR,missing_value,oliver.papadopoulos@example.org
+C3001094,STATE,non_standard_code,sa
+C3001094,SUBURB_TOWN,trailing_whitespace,
+C3001099,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3001099,SUBURB_TOWN,typo_or_abbreviation,BURNSIDE -> BURNSDE
+C3001100,ACCT_STATUS,non_standard_code,A as 'Active'
+C3001100,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3001100,CONNECT_DATE,two_digit_year,2025-06-08
+C3001107,ACCT_STATUS,non_standard_code,A as 'Active'
+C3001107,DOB,placeholder_value,1973-04-10
+C3001107,LAST_READ_DATE,two_digit_year,2026-10-20
+C3001108,DOB,two_digit_year,1984-04-26
+C3001108,EMAIL_ADDR,inconsistent_case,hamid.singh@example.com
+C3001111,PCODE,inconsistent_with_suburb,Marion should be 5043
+C3001111,PH_MOB,leading_zero_lost,0491 570 095
+C3001114,COMMENTS,pii_in_free_text,date of birth in comments
+C3001114,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3001114,STATE,inconsistent_with_postcode,NSW with SA postcode 5095
+C3001120,COMMENTS,pii_in_free_text,date of birth in comments
+C3001120,LAST_READ_DATE,two_digit_year,2026-09-23
+C3001127,PH_HOME,missing_value_token,'UNKNOWN'
+C3001129,BALANCE,currency_formatting,849.48
+C3001136,DOB,two_digit_year,1974-06-18
+C3001136,EMAIL_ADDR,inconsistent_case,lucy.patel@example.com
+C3001136,EMAIL_ADDR,missing_value_token,' ' replaced a value
+C3001140,ACCT_NUM,inconsistent_case,WC-7691997
+C3001144,EMAIL_ADDR,missing_value,ngoc.wright@example.net
+C3001149,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3001149,LAST_READ_DATE,two_digit_year,2026-08-27
+C3001156,EMAIL_ADDR,trailing_whitespace,
+C3001162,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001162,DISCONNECT_DATE,before_connect_date,
+C3001162,DOB,month_day_swapped,1956-06-11
+C3001165,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001165,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3001167,ACCT_TYPE,non_standard_code,BUS as 'B'
+C3001167,LAST_READ_DATE,month_day_swapped,2026-09-18
+C3001172,*,exact_duplicate_row,
+C3001172,ACCT_STATUS,non_standard_code,A as 'Active'
+C3001175,MAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3001181,BALANCE,currency_formatting,874.81
+C3001183,BALANCE,currency_formatting,91.59
+C3001183,CONC_FLAG,non_standard_code,N as ''
+C3001183,CONNECT_DATE,two_digit_year,2026-05-09
+C3001187,EMAIL_ADDR,missing_value,jack.kelly@example.net
+C3001187,STATE,non_standard_code,S.A.
+C3001199,BALANCE,currency_formatting,55.50
+C3001202,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001202,EMAIL_ADDR,inconsistent_case,yasmin.kelly@example.com
+C3001202,LAST_READ_DATE,two_digit_year,2026-08-02
+C3001207,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001207,BALANCE,currency_formatting,607.99
+C3001207,CONC_CARD,missing_value_token,'UNKNOWN' replaced a value
+C3001207,CONNECT_DATE,two_digit_year,2019-05-29
+C3001214,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001214,PCODE,missing_value,5092
+C3001219,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001219,BALANCE,currency_formatting,0.00
+C3001219,DOB,two_digit_year,1984-03-14
+C3001219,EMAIL_ADDR,trailing_whitespace,
+C3001224,DOB,two_digit_year,1951-02-19
+C3001224,PH_MOB,leading_zero_lost,0491 570 121
+C3001224,STATE,non_standard_code,S.A.
+C3001224,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3001231,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001231,BALANCE,currency_formatting,393.80
+C3001231,DOB,two_digit_year,1971-06-14
+C3001236,BALANCE,currency_formatting,273.45
+C3001236,DOB,two_digit_year,1941-01-16
+C3001236,EMAIL_ADDR,missing_value,mia.thompson@example.org
+C3001239,EMAIL_ADDR,trailing_whitespace,
+C3001239,LAST_READ_DATE,two_digit_year,2026-07-12
+C3001244,EMAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3001244,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3001245,CONNECT_DATE,month_day_swapped,2023-06-04
+C3001245,DOB,placeholder_value,1968-11-07
+C3001245,EMAIL_ADDR,inconsistent_case,yasmin.oconnor@example.net
+C3001249,PCODE,inconsistent_with_suburb,North Adelaide should be 5006
+C3001253,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3001253,PH_HOME,missing_area_code,(08) 5550 0747
+C3001259,CONNECT_DATE,two_digit_year,2017-08-28
+C3001259,DOB,two_digit_year,1969-05-01
+C3001259,STATE,non_standard_code,sa
+C3001262,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3001262,BALANCE,currency_formatting,0.00
+C3001262,STATE,non_standard_code,S.A.
+C3001268,CONNECT_DATE,two_digit_year,2020-10-17
+C3001270,ACCT_NUM,inconsistent_case,WC-7375090
+C3001270,COMMENTS,pii_in_free_text,date of birth in comments
+C3001272,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001272,BALANCE,currency_formatting,0.00
+C3001272,PH_MOB,missing_value_token,'N/A'
+C3001272,SEX,non_standard_code,F as 'f'
+C3001272,SUBURB_TOWN,trailing_whitespace,
+C3001276,CONNECT_DATE,two_digit_year,2025-05-20
+C3001276,PH_MOB,placeholder_value,0491 570 042
+C3001278,ACCT_NUM,inconsistent_case,WC-3894911
+C3001278,BALANCE,currency_formatting,-42.22
+C3001278,PH_MOB,leading_zero_lost,0491 570 012
+C3001278,STATE,non_standard_code,South Australia
+C3001281,BALANCE,currency_formatting,532.74
+C3001281,CONC_FLAG,non_standard_code,N as 'no'
+C3001281,EMAIL_ADDR,missing_value,peter.chen@example.org
+C3001281,SEX,non_standard_code, as '9'
+C3001281,STATE,non_standard_code,S.A.
+C3001286,CUST_NAME,first_last_swapped,Mei Williams
+C3001286,SUPPLY_ADDR_1,missing_street_number,226 Unley Rd
+C3001291,CONNECT_DATE,two_digit_year,2017-12-13
+C3001291,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3001296,CONNECT_DATE,two_digit_year,2017-05-02
+C3001296,DOB,two_digit_year,1951-08-15
+C3001298,DOB,two_digit_year,1971-05-18
+C3001305,BALANCE,currency_formatting,0.00
+C3001305,LAST_READ_DATE,two_digit_year,2026-07-05
+C3001305,PCODE,inconsistent_with_suburb,Marion should be 5043
+C3001312,STATE,non_standard_code,S.A.
+C3001315,EMAIL_ADDR,invalid_email,missing @: chloe.martin.example.com
+C3001322,CONNECT_DATE,two_digit_year,2017-11-15
+C3001322,LAST_READ_DATE,two_digit_year,2026-07-27
+C3001322,SUBURB_TOWN,trailing_whitespace,
+C3001328,EMAIL_ADDR,trailing_whitespace,
+C3001328,PH_MOB,leading_zero_lost,0491 570 085
+C3001328,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3001334,CONNECT_DATE,two_digit_year,2013-11-10
+C3001334,PH_MOB,leading_zero_lost,0491 570 085
+C3001334,STATE,missing_value,
+C3001338,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3001338,BALANCE,currency_formatting,144.20
+C3001338,PH_MOB,placeholder_value,0491 570 034
+C3001344,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001352,BALANCE,currency_formatting,513.85
+C3001352,BANK_ACCT,excel_scientific_notation,48109288
+C3001354,ACCT_NUM,inconsistent_case,WC-9847701
+C3001354,CONNECT_DATE,two_digit_year,2024-03-19
+C3001358,DOB,month_day_swapped,2000-05-04
+C3001360,ACCT_NUM,inconsistent_case,WC-8675882
+C3001360,BALANCE,currency_formatting,394.15
+C3001360,DOB,month_day_swapped,1982-06-25
+C3001363,CONNECT_DATE,two_digit_year,2025-01-30
+C3001363,CUST_NAME,first_last_swapped,Mei Chen
+C3001363,DOB,placeholder_value,1987-09-14
+C3001364,BALANCE,currency_formatting,450.02
+C3001364,LAST_READ_DATE,two_digit_year,2026-09-07
+C3001365,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3001365,ACCT_STATUS,non_standard_code,C as 'Closed '
+C3001365,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3001371,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001371,DOB,placeholder_value,1958-10-29
+C3001371,LAST_READ_DATE,two_digit_year,2026-07-11
+C3001371,PH_MOB,placeholder_value,0491 570 036
+C3001371,STATE,non_standard_code,sa
+C3001377,DOB,placeholder_value,1941-01-26
+C3001383,EMAIL_ADDR,missing_value,wei.li@example.net
+C3001383,STATE,non_standard_code,sa
+C3001389,COMMENTS,pii_in_free_text,date of birth in comments
+C3001389,DOB,month_day_swapped,1965-11-16
+C3001393,PH_MOB,missing_value_token,'N/A' replaced a value
+C3001393,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3001395,PH_MOB,leading_zero_lost,0491 570 125
+C3001400,LAST_READ_DATE,month_day_swapped,2026-07-01
+C3001400,STATE,non_standard_code,S.A.
+C3001405,STATE,non_standard_code,S.A.
+C3001409,DOB,two_digit_year,1993-08-02
+C3001409,PAY_METHOD,non_standard_code,CP as 'Centrepay'
+C3001409,SEX,non_standard_code,F as 'Female'
+C3001412,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001412,CONC_FLAG,non_standard_code,Y as 'yes'
+C3001412,EMAIL_ADDR,missing_value,rohan.smith@example.net
+C3001417,ACCT_STATUS,non_standard_code,A as 'Active'
+C3001417,MAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3001417,PCODE,missing_value,5095
+C3001425,COMMENTS,pii_in_free_text,date of birth in comments
+C3001425,CONC_CARD,missing_value_token,'N/A'
+C3001425,CONNECT_DATE,two_digit_year,2026-01-26
+C3001428,BALANCE,currency_formatting,686.28
+C3001428,COMMENTS,pii_in_free_text,date of birth in comments
+C3001433,SEX,non_standard_code, as '9'
+C3001435,CONC_FLAG,non_standard_code,Y as 'yes'
+C3001435,CUST_NAME,first_last_swapped,Jack Bianchi
+C3001435,LAST_READ_DATE,two_digit_year,2026-08-22
+C3001440,DOB,two_digit_year,1967-12-31
+C3001440,PH_HOME,missing_area_code,(08) 5550 5829
+C3001440,STATE,non_standard_code,S.A.
+C3001447,PH_MOB,missing_value_token,'NULL' replaced a value
+C3001448,CONC_FLAG,non_standard_code,Y as ''
+C3001448,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3001453,BALANCE,currency_formatting,209.56
+C3001453,EMAIL_ADDR,missing_value,david.kelly@example.com
+C3001453,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3001453,SUBURB_TOWN,trailing_whitespace,
+C3001454,BALANCE,currency_formatting,169.96
+C3001454,STATE,non_standard_code,S.A.
+C3001455,EMAIL_ADDR,inconsistent_case,kiri.mitchell@example.com
+C3001460,PCODE,inconsistent_with_suburb,Adelaide should be 5000
+C3001463,ACCT_NUM,inconsistent_case,WC-6853872
+C3001463,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3001463,CUST_NAME,first_last_swapped,Emily Chen
+C3001463,DOB,placeholder_value,1943-05-25
+C3001463,SUPPLY_ADDR_2,missing_value_token,'N/A'
+C3001468,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001470,ACCT_STATUS,non_standard_code,A as 'a'
+C3001470,COMMENTS,pii_in_free_text,date of birth in comments
+C3001477,CONC_FLAG,non_standard_code,N as ''
+C3001477,LAST_READ_DATE,two_digit_year,2026-09-09
+C3001477,PH_MOB,missing_value_token,'-' replaced a value
+C3001477,STATE,non_standard_code,South Australia
+C3001477,SUBURB_TOWN,trailing_whitespace,
+C3001482,ACCT_STATUS,non_standard_code,A as 'a'
+C3001482,CONNECT_DATE,two_digit_year,2017-01-25
+C3001486,BALANCE,currency_formatting,0.00
+C3001486,CONC_FLAG,non_standard_code,N as 'no'
+C3001496,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001496,COMMENTS,pii_in_free_text,date of birth in comments
+C3001500,DOB,two_digit_year,1943-08-20
+C3001500,EMAIL_ADDR,missing_value,lucy.williams@example.com
+C3001504,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3001504,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001504,DOB,placeholder_value,1983-01-08
+C3001504,PAY_METHOD,non_standard_code,CP as 'CTP'
+C3001510,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001510,CONNECT_DATE,two_digit_year,2013-07-20
+C3001510,EMAIL_ADDR,inconsistent_case,jessica.papadopoulos@example.org
+C3001510,STATE,inconsistent_with_postcode,NSW with SA postcode 5067
+C3001515,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001515,BALANCE,accounting_negative,-115.66
+C3001515,CONC_FLAG,non_standard_code,N as ''
+C3001521,CONNECT_DATE,two_digit_year,2012-04-07
+C3001521,PAY_METHOD,non_standard_code,CC as 'CARD'
+C3001523,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3001523,CONNECT_DATE,two_digit_year,2016-05-19
+C3001523,DISCONNECT_DATE,month_day_swapped,2018-02-09
+C3001526,CUST_NAME,extra_whitespace,
+C3001527,CONNECT_DATE,two_digit_year,2017-04-17
+C3001532,BALANCE,currency_formatting,222.22
+C3001532,CONC_FLAG,non_standard_code,Y as 'yes'
+C3001532,PCODE,excel_number_format,5108
+C3001534,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3001538,BALANCE,currency_formatting,69.97
+C3001538,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3001538,MAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3001545,ACCT_STATUS,non_standard_code,A as 'a'
+C3001545,BALANCE,currency_formatting,0.00
+C3001545,COMMENTS,pii_in_free_text,date of birth in comments
+C3001545,EMAIL_ADDR,trailing_whitespace,
+C3001545,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3001549,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3001549,COMMENTS,pii_in_free_text,date of birth in comments
+C3001549,DOB,two_digit_year,2003-12-31
+C3001549,EMAIL_ADDR,missing_value,amelia.chen@example.net
+C3001549,LAST_READ_DATE,two_digit_year,2026-08-13
+C3001549,SEX,missing_value_token,' ' replaced a value
+C3001549,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3001556,DOB,two_digit_year,1987-04-16
+C3001556,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3001558,COMMENTS,pii_in_free_text,date of birth in comments
+C3001558,DOB,month_day_swapped,1979-11-09
+C3001558,EMAIL_ADDR,missing_value,david.green@example.net
+C3001564,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001564,DOB,two_digit_year,1948-02-22
+C3001564,PH_MOB,leading_zero_lost,0491 570 080
+C3001565,MAIL_ADDR,missing_value_token,' ' replaced a value
+C3001567,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001567,COMMENTS,pii_in_free_text,date of birth in comments
+C3001567,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3001572,BALANCE,currency_formatting,0.00
+C3001572,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3001572,PCODE,inconsistent_with_suburb,Mount Barker should be 5251
+C3001574,BALANCE,currency_formatting,0.00
+C3001574,CONNECT_DATE,two_digit_year,2023-05-14
+C3001574,DOB,two_digit_year,1950-10-18
+C3001576,BALANCE,currency_formatting,177.88
+C3001576,COMMENTS,pii_in_free_text,date of birth in comments
+C3001576,DOB,two_digit_year,1991-11-02
+C3001576,EMAIL_ADDR,missing_value,omar.campbell@example.org
+C3001578,BALANCE,currency_formatting,176.95
+C3001578,CUST_NAME,first_last_swapped,Olivia White
+C3001578,DOB,two_digit_year,1956-04-04
+C3001578,EMAIL_ADDR,missing_value,olivia.white@example.org
+C3001582,BALANCE,currency_formatting,574.09
+C3001582,CONC_FLAG,non_standard_code,Y as '0'
+C3001582,DISCONNECT_DATE,before_connect_date,
+C3001582,DOB,two_digit_year,1944-01-13
+C3001586,EMAIL_ADDR,trailing_whitespace,
+C3001586,PH_MOB,leading_zero_lost,0491 570 038
+C3001586,STATE,non_standard_code,S.A.
+C3001587,BALANCE,currency_formatting,277.13
+C3001587,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3001587,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3001587,PH_MOB,leading_zero_lost,0491 570 050
+C3001590,LAST_READ_DATE,two_digit_year,2026-07-16
+C3001590,PH_MOB,leading_zero_lost,0491 570 096
+C3001593,BALANCE,accounting_negative,-112.36
+C3001593,PCODE,missing_value,5048
+C3001596,BALANCE,currency_formatting,528.15
+C3001596,DOB,two_digit_year,1948-08-01
+C3001598,CUST_NAME,extra_whitespace,
+C3001598,PH_MOB,leading_zero_lost,0491 570 147
+C3001603,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3001603,EMAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3001603,LAST_READ_DATE,two_digit_year,2026-07-05
+C3001603,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3001607,CONC_FLAG,non_standard_code,N as 'no'
+C3001609,CONNECT_DATE,two_digit_year,2019-06-03
+C3001610,EMAIL_ADDR,invalid_email,missing @: lucy.smith.example.com
+C3001610,LAST_READ_DATE,month_day_swapped,2026-07-22
+C3001610,SUBURB_TOWN,typo_or_abbreviation,NORWOOD -> NORWOD
+C3001616,CONNECT_DATE,two_digit_year,2014-08-12
+C3001616,EMAIL_ADDR,invalid_email,missing @: ngoc.murphy.example.com
+C3001622,EMAIL_ADDR,inconsistent_case,mei.wilson@example.net
+C3001623,SUBURB_TOWN,trailing_whitespace,
+C3001631,ACCT_STATUS,non_standard_code,A as 'a'
+C3001631,BALANCE,currency_formatting,785.11
+C3001631,CONNECT_DATE,two_digit_year,2021-11-02
+C3001631,EMAIL_ADDR,missing_value,jun.green@example.org
+C3001631,LAST_READ_DATE,two_digit_year,2026-09-15
+C3001636,PH_HOME,missing_area_code,(08) 5550 1437
+C3001636,SUPPLY_ADDR_2,missing_value_token,'UNKNOWN'
+C3001637,DOB,two_digit_year,1968-11-24
+C3001637,LAST_READ_DATE,month_day_swapped,2026-07-16
+C3001638,LAST_READ_DATE,two_digit_year,2026-10-07
+C3001638,PH_MOB,missing_value_token,'NULL'
+C3001644,CONC_FLAG,non_standard_code,Y as ''
+C3001644,EMAIL_ADDR,missing_value,chloe.murphy@example.com
+C3001644,SEX,non_standard_code,F as '2'
+C3001644,SUBURB_TOWN,trailing_whitespace,
+C3001651,BALANCE,accounting_negative,-80.85
+C3001651,SUBURB_TOWN,typo_or_abbreviation,BURNSIDE -> BURNSDE
+C3001655,BALANCE,currency_formatting,804.62
+C3001655,EMAIL_ADDR,invalid_email,missing @: ruby.wang.example.net
+C3001655,MAIL_ADDR,missing_value_token,' ' replaced a value
+C3001662,DOB,two_digit_year,1958-09-19
+C3001664,STATE,inconsistent_with_postcode,NSW with SA postcode 5061
+C3001667,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001667,BALANCE,currency_formatting,0.00
+C3001667,PH_HOME,missing_area_code,(08) 5550 5120
+C3001667,STATE,non_standard_code,sa
+C3001668,CONNECT_DATE,two_digit_year,2013-02-21
+C3001673,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3001673,BALANCE,currency_formatting,132.05
+C3001673,LAST_READ_DATE,two_digit_year,2026-10-14
+C3001675,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001675,BALANCE,currency_formatting,39.10
+C3001675,CONNECT_DATE,month_day_swapped,2021-10-29
+C3001675,EMAIL_ADDR,missing_value,william.patel@example.com
+C3001679,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001679,CONC_FLAG,non_standard_code,Y as ''
+C3001679,CONNECT_DATE,two_digit_year,2024-12-28
+C3001679,PCODE,missing_value,5015
+C3001679,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3001681,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001681,LAST_READ_DATE,two_digit_year,2026-10-12
+C3001681,SEX,non_standard_code, as '9'
+C3001682,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001682,LAST_READ_DATE,two_digit_year,2026-09-10
+C3001682,SUPPLY_ADDR_2,missing_value_token,'-'
+C3001693,COMMENTS,pii_in_free_text,date of birth in comments
+C3001693,CONC_FLAG,non_standard_code,N as '0'
+C3001693,LAST_READ_DATE,two_digit_year,2026-09-03
+C3001693,STATE,non_standard_code,sa
+C3001693,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3001696,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3001696,BALANCE,currency_formatting,233.97
+C3001696,PH_MOB,missing_value_token,' ' replaced a value
+C3001701,DOB,two_digit_year,1957-08-10
+C3001701,EMAIL_ADDR,missing_value,william.smith@example.com
+C3001705,BALANCE,currency_formatting,20.48
+C3001705,LAST_READ_DATE,month_day_swapped,2026-10-01
+C3001705,PH_HOME,missing_area_code,(08) 5550 8451
+C3001705,STATE,non_standard_code,sa
+C3001707,CONNECT_DATE,two_digit_year,2019-02-28
+C3001710,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3001710,CUST_NAME,extra_whitespace,
+C3001716,CONC_FLAG,non_standard_code,N as 'no'
+C3001716,PAY_METHOD,non_standard_code,CP as 'CTP'
+C3001716,PCODE,missing_value,5108
+C3001717,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001717,BALANCE,currency_formatting,0.00
+C3001717,DOB,two_digit_year,1947-03-11
+C3001717,PCODE,missing_value,5066
+C3001724,DISCONNECT_DATE,two_digit_year,2027-09-30
+C3001724,PH_HOME,missing_area_code,(08) 5550 1946
+C3001724,STATE,non_standard_code,South Australia
+C3001731,BALANCE,currency_formatting,323.53
+C3001733,BALANCE,currency_formatting,836.71
+C3001733,SEX,missing_value_token,'N/A' replaced a value
+C3001733,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3001736,STATE,non_standard_code,S.A.
+C3001743,COMMENTS,pii_in_free_text,date of birth in comments
+C3001743,DOB,placeholder_value,1995-06-21
+C3001749,PH_MOB,missing_value_token,'-' replaced a value
+C3001749,STATE,non_standard_code,South Australia
+C3001750,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3001750,CONC_FLAG,non_standard_code,N as 'no'
+C3001753,COMMENTS,pii_in_free_text,date of birth in comments
+C3001753,CONC_FLAG,non_standard_code,N as 'false'
+C3001754,STATE,non_standard_code,sa
+C3001759,DOB,two_digit_year,1964-04-15
+C3001759,SEX,non_standard_code,F as 'f'
+C3001764,BALANCE,currency_formatting,0.00
+C3001764,LAST_READ_DATE,two_digit_year,2026-07-12
+C3001764,SUPPLY_ADDR_2,missing_value_token,'UNKNOWN'
+C3001771,CONNECT_DATE,two_digit_year,2025-07-31
+C3001771,PH_MOB,missing_value_token,'NULL' replaced a value
+C3001771,STATE,missing_value,
+C3001772,ACCT_NUM,inconsistent_case,WC-2142472
+C3001773,CONNECT_DATE,two_digit_year,2014-07-16
+C3001779,COMMENTS,pii_in_free_text,date of birth in comments
+C3001779,CONNECT_DATE,month_day_swapped,2014-03-10
+C3001779,PCODE,inconsistent_with_suburb,Norwood should be 5067
+C3001790,CONC_FLAG,non_standard_code,N as ''
+C3001790,EMAIL_ADDR,missing_value_token,' ' replaced a value
+C3001792,DOB,two_digit_year,1942-03-16
+C3001792,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3001793,CONC_FLAG,non_standard_code,Y as 'yes'
+C3001793,DOB,two_digit_year,1948-07-21
+C3001793,LAST_READ_DATE,two_digit_year,2026-08-26
+C3001793,PCODE,excel_number_format,5095
+C3001793,PH_HOME,missing_value_token,'-'
+C3001793,SEX,missing_value_token,'-' replaced a value
+C3001793,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3001796,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3001800,ACCT_NUM,inconsistent_case,WC-8435065
+C3001803,CONNECT_DATE,two_digit_year,2013-07-20
+C3001803,STATE,non_standard_code,sa
+C3001807,BALANCE,currency_formatting,0.00
+C3001807,BANK_ACCT,excel_scientific_notation,65658521
+C3001807,CONC_FLAG,non_standard_code,N as ''
+C3001807,CONNECT_DATE,two_digit_year,2023-04-22
+C3001809,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001809,CONNECT_DATE,two_digit_year,2015-08-26
+C3001809,LAST_READ_DATE,two_digit_year,2026-07-08
+C3001809,PAY_METHOD,non_standard_code,DD as 'D/D'
+C3001815,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3001821,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001821,LAST_READ_DATE,two_digit_year,2026-08-06
+C3001821,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3001821,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3001828,BALANCE,currency_formatting,-9.46
+C3001828,CONC_FLAG,non_standard_code,N as '0'
+C3001828,DOB,two_digit_year,1969-08-24
+C3001828,EMAIL_ADDR,invalid_email,double @
+C3001828,LAST_READ_DATE,two_digit_year,2026-07-25
+C3001837,ACCT_NUM,inconsistent_case,WC-1836157
+C3001841,CONC_FLAG,non_standard_code,N as '0'
+C3001841,LAST_READ_DATE,two_digit_year,2026-08-15
+C3001841,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3001841,PH_HOME,missing_area_code,(08) 5550 5536
+C3001841,PH_MOB,missing_value_token,' ' replaced a value
+C3001843,DOB,two_digit_year,1957-10-20
+C3001843,LAST_READ_DATE,two_digit_year,2026-07-13
+C3001848,COMMENTS,pii_in_free_text,date of birth in comments
+C3001848,LAST_READ_DATE,two_digit_year,2026-09-21
+C3001848,STATE,inconsistent_with_postcode,NSW with SA postcode 5015
+C3001861,STATE,inconsistent_with_postcode,NSW with SA postcode 5015
+C3001863,ACCT_STATUS,non_standard_code,A as 'a'
+C3001863,EMAIL_ADDR,missing_value,ananya.thompson@example.org
+C3001863,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3001865,BALANCE,currency_formatting,0.00
+C3001865,CONNECT_DATE,two_digit_year,2018-07-28
+C3001865,CUST_NAME,first_last_swapped,Mia Mitchell
+C3001865,EMAIL_ADDR,missing_value,mia.mitchell@example.org
+C3001865,SEX,non_standard_code,F as 'Female'
+C3001865,SUBURB_TOWN,trailing_whitespace,
+C3001871,ACCT_NUM,inconsistent_case,WC-8955895
+C3001871,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3001871,METER_NO,shared_with_other_customer,also on C3002883
+C3001871,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3001878,ACCT_STATUS,non_standard_code,A as 'act'
+C3001885,LAST_READ_DATE,month_day_swapped,2026-08-06
+C3001885,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3001885,PCODE,inconsistent_with_suburb,Campbelltown should be 5074
+C3001889,COMMENTS,pii_in_free_text,date of birth in comments
+C3001889,CONC_FLAG,non_standard_code,Y as '0'
+C3001889,CONNECT_DATE,two_digit_year,2018-05-22
+C3001889,EMAIL_ADDR,missing_value,aisha.anderson@example.com
+C3001896,ACCT_STATUS,non_standard_code,I as 'Inactive'
+C3001896,SEX,non_standard_code, as 'Unknown'
+C3001900,CONNECT_DATE,two_digit_year,2024-06-08
+C3001904,PCODE,inconsistent_with_suburb,Adelaide should be 5000
+C3001904,SEX,non_standard_code,M as 'Male'
+C3001906,BALANCE,currency_formatting,392.00
+C3001906,PH_MOB,leading_zero_lost,0491 570 044
+C3001911,BALANCE,currency_formatting,0.00
+C3001913,CONNECT_DATE,two_digit_year,2024-03-22
+C3001913,LAST_READ_DATE,two_digit_year,2026-09-03
+C3001920,EMAIL_ADDR,trailing_whitespace,
+C3001920,METER_NO,shared_with_other_customer,also on C3003952
+C3001923,CUST_NAME,first_last_swapped,Sarah Roberts
+C3001923,DOB,two_digit_year,1996-04-27
+C3001925,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001925,CONNECT_DATE,two_digit_year,2024-10-27
+C3001925,EMAIL_ADDR,missing_value,siobhan.murphy638@example.com
+C3001931,ACCT_STATUS,non_standard_code,A as 'act'
+C3001931,LAST_READ_DATE,month_day_swapped,2026-09-05
+C3001931,PCODE,inconsistent_with_suburb,Modbury should be 5092
+C3001934,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3001934,BALANCE,currency_formatting,684.99
+C3001934,PH_MOB,missing_value_token,' ' replaced a value
+C3001939,LAST_READ_DATE,month_day_swapped,2026-10-18
+C3001939,SEX,non_standard_code,M as '1'
+C3001940,ACCT_NUM,inconsistent_case,WC-5821257
+C3001940,EMAIL_ADDR,missing_value,tahlia.green@example.org
+C3001942,CONC_FLAG,non_standard_code,N as '0'
+C3001942,LAST_READ_DATE,two_digit_year,2026-10-21
+C3001944,ACCT_NUM,inconsistent_case,WC-6460106
+C3001944,LAST_READ_DATE,two_digit_year,2026-09-18
+C3001949,ACCT_STATUS,non_standard_code,A as 'a'
+C3001949,BALANCE,currency_formatting,166.06
+C3001949,PH_HOME,missing_area_code,(08) 5550 4070
+C3001954,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001954,CONNECT_DATE,two_digit_year,2013-10-11
+C3001954,CUST_NAME,extra_whitespace,
+C3001954,DOB,placeholder_value,1985-04-03
+C3001954,LAST_READ_DATE,two_digit_year,2026-10-18
+C3001961,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3001961,SEX,missing_value_token,'N/A' replaced a value
+C3001961,STATE,non_standard_code,South Australia
+C3001968,CONNECT_DATE,two_digit_year,2017-03-08
+C3001968,LAST_READ_DATE,two_digit_year,2026-09-08
+C3001970,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001970,CONNECT_DATE,two_digit_year,2018-03-22
+C3001970,LAST_READ_DATE,two_digit_year,2026-08-18
+C3001975,COMMENTS,pii_in_free_text,date of birth in comments
+C3001975,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3001976,CUST_NAME,first_last_swapped,George Haddad
+C3001976,PH_MOB,leading_zero_lost,0491 570 022
+C3001980,ACCT_TYPE,non_standard_code,RES as 'R'
+C3001980,CONNECT_DATE,two_digit_year,2023-01-22
+C3001984,DOB,two_digit_year,1947-10-14
+C3001984,LAST_READ_DATE,two_digit_year,2026-09-11
+C3001988,SUBURB_TOWN,trailing_whitespace,
+C3001989,BALANCE,currency_formatting,0.00
+C3001989,CONNECT_DATE,two_digit_year,2018-09-18
+C3001989,PH_HOME,missing_area_code,(08) 5550 8488
+C3001990,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3001990,EMAIL_ADDR,invalid_email,missing @: robert.zhang855.example.org
+C3001990,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3001993,CONNECT_DATE,month_day_swapped,2017-04-17
+C3001993,EMAIL_ADDR,trailing_whitespace,
+C3002000,BALANCE,currency_formatting,273.26
+C3002001,DOB,two_digit_year,1985-02-27
+C3002001,LAST_READ_DATE,two_digit_year,2026-09-01
+C3002008,EMAIL_ADDR,inconsistent_case,maria.green@example.com
+C3002008,PCODE,excel_number_format,5251
+C3002010,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3002010,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3002012,LAST_READ_DATE,two_digit_year,2026-08-08
+C3002016,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002016,LAST_READ_DATE,month_day_swapped,2026-08-26
+C3002018,CONC_CARD,missing_value_token,'-'
+C3002018,CUST_NAME,extra_whitespace,
+C3002023,BALANCE,currency_formatting,0.00
+C3002023,COMMENTS,pii_in_free_text,date of birth in comments
+C3002023,DOB,two_digit_year,1949-11-08
+C3002025,BALANCE,currency_formatting,275.85
+C3002025,CONC_CARD,missing_value_token,'N/A' replaced a value
+C3002025,DOB,two_digit_year,1998-06-30
+C3002025,EMAIL_ADDR,missing_value,george.nguyen@example.net
+C3002025,MAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002030,BALANCE,currency_formatting,-2.37
+C3002030,COMMENTS,pii_in_free_text,date of birth in comments
+C3002030,CONNECT_DATE,two_digit_year,2013-10-04
+C3002030,DOB,future_date,1980-02-27
+C3002030,EMAIL_ADDR,missing_value,giuseppe.rossi@example.com
+C3002030,PCODE,missing_value,5045
+C3002037,CONC_FLAG,non_standard_code,Y as ''
+C3002037,EMAIL_ADDR,inconsistent_case,lucas.rossi@example.org
+C3002037,PCODE,inconsistent_with_suburb,Adelaide should be 5000
+C3002038,BALANCE,currency_formatting,-52.18
+C3002038,EMAIL_ADDR,missing_value,noah.thompson@example.net
+C3002041,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3002041,PH_MOB,missing_value_token,'NULL' replaced a value
+C3002048,ACCT_STATUS,non_standard_code,I as 'i'
+C3002048,EMAIL_ADDR,missing_value,zoe.chen@example.net
+C3002048,EMAIL_ADDR,missing_value_token,'NULL'
+C3002054,ACCT_STATUS,non_standard_code,A as 'act'
+C3002054,BALANCE,currency_formatting,0.00
+C3002054,PAY_METHOD,non_standard_code,CC as 'CARD'
+C3002059,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3002059,PH_HOME,missing_area_code,(08) 5550 1928
+C3002062,BALANCE,currency_formatting,0.00
+C3002062,DOB,two_digit_year,1951-09-09
+C3002063,CONNECT_DATE,two_digit_year,2017-01-12
+C3002063,CUST_NAME,first_last_swapped,Jack Wang
+C3002063,DOB,two_digit_year,1981-10-15
+C3002063,STATE,non_standard_code,S.A.
+C3002074,EMAIL_ADDR,trailing_whitespace,
+C3002074,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3002074,SEX,non_standard_code,M as 'm'
+C3002081,CONNECT_DATE,two_digit_year,2020-06-01
+C3002081,EMAIL_ADDR,trailing_whitespace,
+C3002081,LAST_READ_DATE,two_digit_year,2026-08-19
+C3002081,PH_MOB,missing_value_token,' ' replaced a value
+C3002090,LAST_READ_DATE,two_digit_year,2026-09-26
+C3002090,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3002097,EMAIL_ADDR,placeholder_value,ngoc.campbell@example.net
+C3002097,LAST_READ_DATE,two_digit_year,2026-08-09
+C3002097,STATE,non_standard_code,S.A.
+C3002101,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002101,EMAIL_ADDR,trailing_whitespace,
+C3002101,STATE,non_standard_code,sa
+C3002104,DOB,two_digit_year,1969-10-12
+C3002104,STATE,non_standard_code,S.A.
+C3002107,CONC_FLAG,non_standard_code,N as 'no'
+C3002109,LAST_READ_DATE,two_digit_year,2026-10-06
+C3002109,SUPPLY_ADDR_2,missing_value_token,'-'
+C3002110,ACCT_STATUS,non_standard_code,A as 'a'
+C3002110,DOB,two_digit_year,1956-01-08
+C3002110,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3002117,CONNECT_DATE,two_digit_year,2016-11-15
+C3002122,DOB,two_digit_year,1976-02-03
+C3002122,SEX,missing_value_token,' ' replaced a value
+C3002128,EMAIL_ADDR,missing_value,patricia.baker@example.com
+C3002134,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002134,ACCT_STATUS,non_standard_code,C as 'c'
+C3002134,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3002134,DOB,two_digit_year,1980-12-23
+C3002134,MAIL_ADDR,missing_value_token,' ' replaced a value
+C3002148,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3002148,STATE,non_standard_code,S.A.
+C3002149,DOB,two_digit_year,1958-08-29
+C3002149,LAST_READ_DATE,two_digit_year,2026-09-06
+C3002149,PH_MOB,leading_zero_lost,0491 570 111
+C3002149,STATE,non_standard_code,sa
+C3002151,ACCT_NUM,inconsistent_case,WC-8178203
+C3002151,DOB,two_digit_year,1990-03-07
+C3002151,STATE,inconsistent_with_postcode,NSW with SA postcode 5022
+C3002159,ACCT_NUM,inconsistent_case,WC-2110955
+C3002159,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002159,CONC_FLAG,non_standard_code,Y as 'yes'
+C3002159,DOB,two_digit_year,1969-01-13
+C3002159,EMAIL_ADDR,missing_value,matthew.ali@example.net
+C3002160,LAST_READ_DATE,two_digit_year,2026-07-02
+C3002164,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002164,CONC_FLAG,non_standard_code,N as 'no'
+C3002164,STATE,missing_value,
+C3002166,CONC_FLAG,non_standard_code,N as ''
+C3002166,DOB,two_digit_year,1989-08-25
+C3002169,EMAIL_ADDR,missing_value,jun.williams@example.com
+C3002174,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002174,BALANCE,currency_formatting,438.87
+C3002182,BALANCE,currency_formatting,-120.86
+C3002182,DOB,month_day_swapped,1968-01-11
+C3002189,ACCT_STATUS,non_standard_code,A as 'Active'
+C3002189,CONNECT_DATE,two_digit_year,2025-11-26
+C3002190,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002190,BALANCE,currency_formatting,-45.34
+C3002190,DISCONNECT_DATE,before_connect_date,
+C3002190,STATE,non_standard_code,S.A.
+C3002193,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002193,DISCONNECT_DATE,before_connect_date,
+C3002199,ACCT_STATUS,non_standard_code,A as 'Active'
+C3002199,BALANCE,currency_formatting,474.54
+C3002199,LAST_READ_DATE,two_digit_year,2026-08-28
+C3002199,PH_HOME,missing_value_token,'UNKNOWN'
+C3002203,DOB,two_digit_year,1959-10-23
+C3002203,EMAIL_ADDR,missing_value_token,' ' replaced a value
+C3002205,CONNECT_DATE,two_digit_year,2012-06-23
+C3002205,EMAIL_ADDR,placeholder_value,ananya.williams@example.org
+C3002205,LAST_READ_DATE,two_digit_year,2026-10-08
+C3002207,ACCT_NUM,inconsistent_case,WC-1367190
+C3002207,BALANCE,currency_formatting,-47.82
+C3002207,CONNECT_DATE,two_digit_year,2021-06-24
+C3002207,PH_MOB,placeholder_value,0491 570 124
+C3002209,EMAIL_ADDR,domain_typo,george.papadopoulos@example.con
+C3002209,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3002215,CUST_NAME,first_last_swapped,Sophie Nguyen
+C3002222,PH_HOME,missing_value_token,'UNKNOWN'
+C3002227,MAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002227,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3002233,LAST_READ_DATE,two_digit_year,2026-08-25
+C3002233,SUBURB_TOWN,typo_or_abbreviation,NORWOOD -> NORWOD
+C3002233,SUPPLY_ADDR_2,missing_value_token,' '
+C3002240,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002240,EMAIL_ADDR,missing_value,lucas.williams@example.org
+C3002241,CONC_FLAG,non_standard_code,Y as 'yes'
+C3002241,DOB,month_day_swapped,1948-12-01
+C3002241,SUPPLY_ADDR_1,missing_street_number,77 Unley Rd
+C3002243,BALANCE,currency_formatting,94.67
+C3002243,CUST_NAME,first_last_swapped,Minh Campbell
+C3002243,DOB,two_digit_year,1970-07-10
+C3002243,SEX,non_standard_code,U as 'Unknown'
+C3002243,SEX,missing_value_token,'-' replaced a value
+C3002243,STATE,missing_value,
+C3002243,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3002246,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002247,CONC_FLAG,non_standard_code,N as 'false'
+C3002247,LAST_READ_DATE,two_digit_year,2026-07-13
+C3002248,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3002248,CUST_NAME,first_last_swapped,Henry Singh
+C3002248,LAST_READ_DATE,two_digit_year,2026-08-27
+C3002252,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002252,BALANCE,currency_formatting,0.00
+C3002255,PH_MOB,placeholder_value,0491 570 103
+C3002255,SUPPLY_ADDR_2,missing_value_token,' '
+C3002258,LAST_READ_DATE,two_digit_year,2026-10-08
+C3002258,PCODE,missing_value,5000
+C3002265,CONNECT_DATE,two_digit_year,2013-05-31
+C3002265,STATE,non_standard_code,South Australia
+C3002269,DOB,two_digit_year,1955-07-06
+C3002269,LAST_READ_DATE,two_digit_year,2026-08-08
+C3002272,DOB,two_digit_year,1952-09-04
+C3002276,EMAIL_ADDR,trailing_whitespace,
+C3002276,SEX,non_standard_code,F as 'Female'
+C3002279,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002279,BANK_ACCT,excel_scientific_notation,63254437
+C3002279,CONNECT_DATE,two_digit_year,2025-07-25
+C3002279,PCODE,excel_number_format,5045
+C3002284,EMAIL_ADDR,inconsistent_case,noah.baker@example.net
+C3002284,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3002291,CONNECT_DATE,two_digit_year,2017-02-03
+C3002297,CONNECT_DATE,two_digit_year,2015-02-06
+C3002297,CUST_NAME,extra_whitespace,
+C3002297,EMAIL_ADDR,placeholder_value,isla.johnson@example.com
+C3002297,LAST_READ_DATE,month_day_swapped,2026-08-13
+C3002297,PH_MOB,placeholder_value,0491 570 148
+C3002303,ACCT_STATUS,non_standard_code,C as 'c'
+C3002303,BALANCE,currency_formatting,0.00
+C3002303,CONC_CARD,missing_value_token,'UNKNOWN'
+C3002310,ACCT_NUM,inconsistent_case,WC-8561421
+C3002310,BALANCE,currency_formatting,0.00
+C3002310,CONC_FLAG,non_standard_code,N as '0'
+C3002310,DOB,placeholder_value,1944-10-22
+C3002310,SEX,non_standard_code,M as '1'
+C3002311,ACCT_NUM,inconsistent_case,WC-5956056
+C3002311,CONNECT_DATE,two_digit_year,2023-12-13
+C3002317,CONNECT_DATE,two_digit_year,2026-01-10
+C3002318,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002318,EMAIL_ADDR,invalid_email,missing @: priya.li.example.org
+C3002325,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002325,EMAIL_ADDR,missing_value,isla.hall@example.net
+C3002328,*,exact_duplicate_row,
+C3002328,EMAIL_ADDR,missing_value,liam.baker@example.net
+C3002328,LAST_READ_DATE,two_digit_year,2026-08-28
+C3002329,CONC_CARD,missing_value_token,' '
+C3002329,PH_MOB,leading_zero_lost,0491 570 097
+C3002329,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3002336,ACCT_NUM,inconsistent_case,WC-7619149
+C3002336,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002336,PCODE,truncated,5015
+C3002337,CONNECT_DATE,two_digit_year,2019-01-10
+C3002340,BALANCE,currency_formatting,0.00
+C3002340,CONC_FLAG,non_standard_code,N as 'no'
+C3002340,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3002341,ACCT_NUM,inconsistent_case,WC-6749734
+C3002342,BALANCE,currency_formatting,0.00
+C3002342,COMMENTS,pii_in_free_text,date of birth in comments
+C3002348,BALANCE,currency_formatting,787.77
+C3002348,EMAIL_ADDR,trailing_whitespace,
+C3002354,ACCT_NUM,inconsistent_case,WC-1338677
+C3002356,COMMENTS,pii_in_free_text,date of birth in comments
+C3002356,CONC_CARD,missing_value_token,' '
+C3002356,STATE,non_standard_code,sa
+C3002361,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002361,LAST_READ_DATE,two_digit_year,2026-08-02
+C3002361,PAY_METHOD,non_standard_code,DD as 'D/D'
+C3002362,BALANCE,currency_formatting,444.97
+C3002362,CONC_CARD,missing_value_token,' '
+C3002367,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002367,CONC_FLAG,non_standard_code,Y as ''
+C3002369,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002369,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3002369,MAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3002369,PH_MOB,leading_zero_lost,0491 570 131
+C3002369,STATE,non_standard_code,S.A.
+C3002374,MAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002374,STATE,non_standard_code,South Australia
+C3002376,ACCT_NUM,inconsistent_case,WC-7505554
+C3002376,BALANCE,currency_formatting,0.00
+C3002378,COMMENTS,pii_in_free_text,date of birth in comments
+C3002378,CONC_FLAG,non_standard_code,N as ''
+C3002378,CUST_NAME,first_last_swapped,Helen Mitchell
+C3002378,DOB,month_day_swapped,1988-05-16
+C3002378,EMAIL_ADDR,missing_value,helen.mitchell@example.net
+C3002378,PH_HOME,missing_value_token,'NULL' replaced a value
+C3002378,SEX,non_standard_code,F as 'Female'
+C3002380,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002380,CONC_FLAG,non_standard_code,Y as '0'
+C3002380,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3002380,DOB,two_digit_year,1984-07-28
+C3002386,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3002390,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002390,CONC_CARD,missing_value_token,'N/A'
+C3002390,DOB,two_digit_year,1951-12-27
+C3002393,DOB,two_digit_year,1984-04-13
+C3002393,LAST_READ_DATE,two_digit_year,2026-10-24
+C3002393,PCODE,missing_value,5048
+C3002395,BALANCE,currency_formatting,0.00
+C3002395,EMAIL_ADDR,missing_value,george.green@example.net
+C3002395,PCODE,missing_value,5015
+C3002395,STATE,non_standard_code,South Australia
+C3002402,BALANCE,currency_formatting,674.09
+C3002402,PH_HOME,missing_value_token,'N/A' replaced a value
+C3002402,SEX,missing_value_token,'NULL' replaced a value
+C3002410,CONC_FLAG,non_standard_code,N as ''
+C3002410,CONNECT_DATE,two_digit_year,2020-11-23
+C3002410,LAST_READ_DATE,two_digit_year,2026-09-19
+C3002416,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002416,COMMENTS,pii_in_free_text,date of birth in comments
+C3002416,DOB,month_day_swapped,1956-02-08
+C3002416,LAST_READ_DATE,two_digit_year,2026-10-15
+C3002418,CONNECT_DATE,two_digit_year,2017-08-31
+C3002418,DOB,two_digit_year,1998-02-21
+C3002425,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002425,STATE,non_standard_code,South Australia
+C3002430,EMAIL_ADDR,domain_typo,ananya.nguyen@example.ogr
+C3002430,PH_HOME,missing_value_token,' ' replaced a value
+C3002430,SUBURB_TOWN,trailing_whitespace,
+C3002434,CONNECT_DATE,two_digit_year,2014-10-06
+C3002434,EMAIL_ADDR,missing_value,robert.bianchi626@example.org
+C3002434,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3002446,CONC_FLAG,non_standard_code,N as ''
+C3002446,CONNECT_DATE,two_digit_year,2013-07-30
+C3002446,METER_NO,shared_with_other_customer,also on C3000736
+C3002446,PCODE,missing_value,5022
+C3002446,STATE,non_standard_code,S.A.
+C3002454,CONNECT_DATE,two_digit_year,2019-04-02
+C3002454,EMAIL_ADDR,missing_value,michael.wright@example.com
+C3002454,STATE,non_standard_code,sa
+C3002455,DISCONNECT_DATE,two_digit_year,2017-08-06
+C3002455,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3002455,STATE,inconsistent_with_postcode,NSW with SA postcode 5066
+C3002456,LAST_READ_DATE,two_digit_year,2026-10-06
+C3002460,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002460,PH_HOME,missing_value_token,'UNKNOWN' replaced a value
+C3002466,ACCT_STATUS,non_standard_code,A as 'Active'
+C3002466,STATE,non_standard_code,sa
+C3002467,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002467,EMAIL_ADDR,placeholder_value,minh.wang@example.org
+C3002472,CONNECT_DATE,two_digit_year,2020-11-21
+C3002472,DOB,two_digit_year,1979-04-02
+C3002478,EMAIL_ADDR,missing_value,lucas.king@example.net
+C3002478,PH_MOB,leading_zero_lost,0491 570 071
+C3002483,BALANCE,currency_formatting,0.00
+C3002486,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3002486,CONNECT_DATE,two_digit_year,2022-05-13
+C3002486,DOB,two_digit_year,1982-11-28
+C3002486,PH_HOME,missing_value_token,'N/A' replaced a value
+C3002486,STATE,non_standard_code,S.A.
+C3002497,BALANCE,currency_formatting,330.39
+C3002497,DOB,two_digit_year,1972-05-08
+C3002497,SEX,non_standard_code,U as 'Unknown'
+C3002504,ACCT_STATUS,non_standard_code,A as 'act'
+C3002504,CONC_FLAG,non_standard_code,N as 'no'
+C3002504,SUPPLY_ADDR_1,missing_street_number,172 Henley Beach Rd
+C3002507,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002507,BALANCE,currency_formatting,35.27
+C3002507,CONNECT_DATE,two_digit_year,2013-09-03
+C3002507,EMAIL_ADDR,trailing_whitespace,
+C3002511,LAST_READ_DATE,two_digit_year,2026-09-27
+C3002511,STATE,non_standard_code,sa
+C3002512,EMAIL_ADDR,domain_typo,liam.li@example.ogr
+C3002512,METER_NO,shared_with_other_customer,also on C3002284
+C3002517,ACCT_STATUS,non_standard_code,A as 'a'
+C3002517,BALANCE,currency_formatting,355.80
+C3002517,PCODE,missing_value,5006
+C3002517,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3002524,EMAIL_ADDR,placeholder_value,tane.wilson@example.org
+C3002526,BANK_ACCT,excel_scientific_notation,88369696
+C3002526,LAST_READ_DATE,two_digit_year,2026-10-13
+C3002532,ACCT_STATUS,non_standard_code,A as 'act'
+C3002532,BALANCE,currency_formatting,0.00
+C3002532,CUST_NAME,extra_whitespace,
+C3002532,MAIL_ADDR,missing_value_token,' ' replaced a value
+C3002537,ACCT_STATUS,non_standard_code,I as 'Inactive'
+C3002537,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3002540,ACCT_STATUS,non_standard_code,A as 'Active'
+C3002540,EMAIL_ADDR,missing_value,jessica.hall@example.com
+C3002540,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3002542,ACCT_STATUS,non_standard_code,A as 'a'
+C3002543,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002543,CUST_NAME,extra_whitespace,
+C3002543,STATE,missing_value,
+C3002548,CONNECT_DATE,two_digit_year,2012-01-15
+C3002548,DISCONNECT_DATE,before_connect_date,
+C3002548,DISCONNECT_DATE,two_digit_year,2011-09-28
+C3002555,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002555,CONNECT_DATE,month_day_swapped,2016-11-11
+C3002555,LAST_READ_DATE,two_digit_year,2026-10-18
+C3002555,SEX,non_standard_code,F as 'Female'
+C3002562,BALANCE,currency_formatting,384.32
+C3002562,LAST_READ_DATE,month_day_swapped,2026-10-13
+C3002562,STATE,non_standard_code,S.A.
+C3002567,BANK_ACCT,excel_scientific_notation,55081695
+C3002574,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002574,CONC_FLAG,non_standard_code,Y as 'yes'
+C3002574,EMAIL_ADDR,inconsistent_case,nikolaos.zhang@example.net
+C3002578,PH_MOB,missing_value_token,'N/A' replaced a value
+C3002578,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3002578,STATE,non_standard_code,sa
+C3002582,CONC_CARD,missing_value_token,'UNKNOWN' replaced a value
+C3002582,DOB,placeholder_value,1968-04-17
+C3002582,EMAIL_ADDR,missing_value,hamid.ali@example.com
+C3002585,PH_HOME,missing_area_code,(08) 5550 2729
+C3002585,PH_HOME,missing_value_token,' ' replaced a value
+C3002587,BALANCE,currency_formatting,624.12
+C3002587,COMMENTS,pii_in_free_text,date of birth in comments
+C3002587,PH_MOB,missing_value_token,'NULL' replaced a value
+C3002589,CONC_FLAG,non_standard_code,N as 'false'
+C3002589,CUST_NAME,extra_whitespace,
+C3002589,DOB,placeholder_value,1953-09-09
+C3002593,CUST_NAME,first_last_swapped,Zoe Baker
+C3002593,DOB,month_day_swapped,2001-06-25
+C3002593,SEX,non_standard_code,F as 'f'
+C3002594,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3002594,CONC_CARD,missing_value_token,'N/A'
+C3002594,EMAIL_ADDR,missing_value,grace.tran@example.net
+C3002600,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002600,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3002600,DOB,two_digit_year,1945-12-04
+C3002602,CONC_FLAG,non_standard_code,N as 'no'
+C3002613,DOB,month_day_swapped,1975-12-03
+C3002618,CONC_FLAG,non_standard_code,N as 'no'
+C3002618,DOB,two_digit_year,1998-03-17
+C3002621,ACCT_NUM,inconsistent_case,WC-6025279
+C3002621,CONC_FLAG,non_standard_code,N as '0'
+C3002621,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3002621,STATE,missing_value,
+C3002625,BALANCE,currency_formatting,-149.65
+C3002625,PH_HOME,missing_value_token,'N/A'
+C3002629,LAST_READ_DATE,month_day_swapped,2026-10-04
+C3002629,PCODE,excel_number_format,5006
+C3002629,SUPPLY_ADDR_1,missing_street_number,8 Banksia Cres
+C3002643,CUST_NAME,first_last_swapped,James Jones
+C3002643,EMAIL_ADDR,missing_value,james.jones@example.org
+C3002643,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3002647,CONC_FLAG,non_standard_code,N as ''
+C3002647,CONNECT_DATE,two_digit_year,2012-11-30
+C3002647,DOB,two_digit_year,1992-09-12
+C3002647,PH_MOB,placeholder_value,0491 570 098
+C3002652,BALANCE,currency_formatting,208.57
+C3002652,EMAIL_ADDR,missing_value_token,' ' replaced a value
+C3002659,DOB,placeholder_value,1988-06-26
+C3002665,CONNECT_DATE,two_digit_year,2012-06-25
+C3002665,DOB,month_day_swapped,1964-08-12
+C3002665,EMAIL_ADDR,inconsistent_case,ahmed.rossi@example.net
+C3002668,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3002668,BALANCE,currency_formatting,790.03
+C3002668,CUST_NAME,extra_whitespace,
+C3002668,DISCONNECT_DATE,two_digit_year,2023-12-30
+C3002668,DOB,two_digit_year,1950-01-08
+C3002673,BALANCE,currency_formatting,817.11
+C3002673,EMAIL_ADDR,missing_value,matthew.campbell@example.org
+C3002673,SEX,missing_value_token,'-' replaced a value
+C3002676,ACCT_NUM,inconsistent_case,WC-3281638
+C3002676,DOB,two_digit_year,1976-01-10
+C3002676,EMAIL_ADDR,inconsistent_case,ngoc.wilson@example.net
+C3002682,BALANCE,currency_formatting,741.40
+C3002682,EMAIL_ADDR,missing_value_token,' ' replaced a value
+C3002682,SEX,missing_value_token,'-' replaced a value
+C3002685,CONC_FLAG,non_standard_code,N as '0'
+C3002685,CONNECT_DATE,two_digit_year,2013-08-27
+C3002685,PH_HOME,missing_area_code,(08) 5550 5954
+C3002685,SEX,non_standard_code, as 'Unknown'
+C3002685,SUPPLY_ADDR_2,missing_value_token,'NULL'
+C3002691,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3002691,EMAIL_ADDR,invalid_email,double @
+C3002696,BALANCE,currency_formatting,798.17
+C3002696,EMAIL_ADDR,missing_value,samuel.wright@example.net
+C3002696,PAY_METHOD,non_standard_code,CHQ as 'Cheque'
+C3002696,PH_MOB,placeholder_value,0491 570 049
+C3002696,STATE,non_standard_code,S.A.
+C3002702,BALANCE,currency_formatting,-68.93
+C3002702,CONNECT_DATE,two_digit_year,2026-03-04
+C3002702,DOB,two_digit_year,1997-04-09
+C3002702,LAST_READ_DATE,two_digit_year,2026-10-09
+C3002705,CONC_FLAG,non_standard_code,N as ''
+C3002705,DOB,two_digit_year,1979-01-25
+C3002710,CONNECT_DATE,two_digit_year,2022-01-12
+C3002714,CONC_CARD,missing_value_token,'N/A'
+C3002714,EMAIL_ADDR,trailing_whitespace,
+C3002714,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3002715,BALANCE,currency_formatting,644.10
+C3002715,CONNECT_DATE,month_day_swapped,2023-08-11
+C3002715,EMAIL_ADDR,invalid_email,missing @: kwame.king.example.net
+C3002715,EMAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3002715,LAST_READ_DATE,two_digit_year,2026-07-01
+C3002719,CONNECT_DATE,two_digit_year,2019-12-11
+C3002720,BALANCE,currency_formatting,241.42
+C3002720,EMAIL_ADDR,missing_value,kwame.patel@example.org
+C3002720,PCODE,inconsistent_with_suburb,Glenelg should be 5045
+C3002724,DOB,two_digit_year,1991-05-03
+C3002724,EMAIL_ADDR,placeholder_value,priya.haddad@example.com
+C3002724,STATE,inconsistent_with_postcode,NSW with SA postcode 5066
+C3002727,BALANCE,currency_formatting,0.00
+C3002727,DOB,placeholder_value,1972-04-14
+C3002727,LAST_READ_DATE,two_digit_year,2026-08-01
+C3002727,PAY_METHOD,non_standard_code,CP as 'Centrepay'
+C3002727,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3002734,CONC_FLAG,non_standard_code,N as '0'
+C3002734,DOB,two_digit_year,1980-05-21
+C3002734,STATE,non_standard_code,South Australia
+C3002741,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3002741,BALANCE,accounting_negative,-125.02
+C3002741,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3002747,CONNECT_DATE,two_digit_year,2016-08-02
+C3002747,PCODE,missing_value,5067
+C3002753,COMMENTS,pii_in_free_text,date of birth in comments
+C3002753,CONC_CARD,missing_value_token,'N/A' replaced a value
+C3002753,EMAIL_ADDR,invalid_email,missing @: arjun.jones.example.com
+C3002758,EMAIL_ADDR,trailing_whitespace,
+C3002758,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3002764,COMMENTS,pii_in_free_text,date of birth in comments
+C3002764,DOB,two_digit_year,1971-06-02
+C3002764,LAST_READ_DATE,two_digit_year,2026-07-03
+C3002764,PCODE,missing_value,5006
+C3002764,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3002764,SUPPLY_ADDR_2,missing_value_token,' '
+C3002769,ACCT_NUM,inconsistent_case,WC-9664549
+C3002769,LAST_READ_DATE,month_day_swapped,2026-09-11
+C3002773,MAIL_ADDR,missing_value_token,'-' replaced a value
+C3002774,COMMENTS,pii_in_free_text,date of birth in comments
+C3002774,EMAIL_ADDR,inconsistent_case,mei.johnson@example.net
+C3002774,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3002774,PH_HOME,missing_value_token,'N/A'
+C3002774,STATE,missing_value,
+C3002777,ACCT_STATUS,non_standard_code,A as 'a'
+C3002777,PH_MOB,placeholder_value,0491 570 155
+C3002777,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3002780,CONC_FLAG,non_standard_code,N as 'no'
+C3002780,CONNECT_DATE,month_day_swapped,2014-12-07
+C3002780,PCODE,inconsistent_with_suburb,Elizabeth should be 5112
+C3002780,SUBURB_TOWN,trailing_whitespace,
+C3002781,CONC_FLAG,non_standard_code,N as 'false'
+C3002785,CONNECT_DATE,two_digit_year,2014-12-03
+C3002785,EMAIL_ADDR,missing_value,ruby.mitchell@example.org
+C3002785,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3002785,STATE,non_standard_code,sa
+C3002791,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002791,CONC_FLAG,non_standard_code,N as '0'
+C3002791,DOB,two_digit_year,1940-04-22
+C3002791,EMAIL_ADDR,missing_value,thomas.li@example.net
+C3002791,LAST_READ_DATE,two_digit_year,2026-07-04
+C3002798,BALANCE,currency_formatting,0.00
+C3002798,EMAIL_ADDR,missing_value,hamid.ryan@example.com
+C3002808,CONC_CARD,missing_value_token,'N/A'
+C3002808,CONC_FLAG,non_standard_code,N as 'false'
+C3002808,CUST_NAME,first_last_swapped,Linh Jones
+C3002808,METER_NO,shared_with_other_customer,also on C3001582
+C3002808,PH_MOB,leading_zero_lost,0491 570 113
+C3002814,DOB,month_day_swapped,1974-04-02
+C3002814,LAST_READ_DATE,two_digit_year,2026-09-19
+C3002814,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3002820,STATE,missing_value,
+C3002821,*,exact_duplicate_row,
+C3002821,DOB,two_digit_year,1964-03-06
+C3002821,EMAIL_ADDR,invalid_email,missing @: mei.ali.example.com
+C3002824,DOB,two_digit_year,1964-01-04
+C3002826,BALANCE,currency_formatting,251.10
+C3002836,LAST_READ_DATE,month_day_swapped,2026-08-16
+C3002839,STATE,non_standard_code,South Australia
+C3002840,CONNECT_DATE,two_digit_year,2015-04-12
+C3002841,BALANCE,currency_formatting,890.77
+C3002841,CONC_FLAG,contradicts_conc_card,card present but flag N
+C3002841,CONC_FLAG,non_standard_code,N as '0'
+C3002841,DOB,two_digit_year,1976-07-21
+C3002841,EMAIL_ADDR,missing_value,ananya.young@example.com
+C3002841,EMAIL_ADDR,missing_value_token,'-'
+C3002842,CONC_FLAG,non_standard_code,N as 'no'
+C3002842,LAST_READ_DATE,two_digit_year,2026-08-20
+C3002845,EMAIL_ADDR,missing_value,kwame.walker@example.org
+C3002845,PH_HOME,missing_area_code,(08) 5550 5093
+C3002850,CONC_FLAG,non_standard_code,N as 'false'
+C3002850,STATE,inconsistent_with_postcode,NSW with SA postcode 5067
+C3002856,LAST_READ_DATE,two_digit_year,2026-10-04
+C3002862,PH_MOB,leading_zero_lost,0491 570 139
+C3002864,DISCONNECT_DATE,before_connect_date,
+C3002864,SEX,non_standard_code,M as '1'
+C3002864,SEX,missing_value_token,'N/A' replaced a value
+C3002871,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3002871,BALANCE,currency_formatting,863.15
+C3002871,CONNECT_DATE,two_digit_year,2013-07-02
+C3002872,BALANCE,currency_formatting,417.18
+C3002872,EMAIL_ADDR,inconsistent_case,fatima.baker@example.com
+C3002872,LAST_READ_DATE,two_digit_year,2026-09-18
+C3002874,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002874,CONNECT_DATE,two_digit_year,2019-11-28
+C3002874,CUST_NAME,first_last_swapped,Fatima Bianchi
+C3002874,DOB,two_digit_year,1968-11-06
+C3002874,EMAIL_ADDR,missing_value,fatima.bianchi@example.com
+C3002874,LAST_READ_DATE,month_day_swapped,2026-10-11
+C3002874,SUPPLY_ADDR_2,missing_value_token,' '
+C3002881,CONNECT_DATE,two_digit_year,2015-01-30
+C3002881,PCODE,inconsistent_with_suburb,Burnside should be 5066
+C3002883,ACCT_NUM,inconsistent_case,WC-3379593
+C3002883,CONC_CARD,missing_value_token,'-'
+C3002883,EMAIL_ADDR,missing_value,jarrah.martin@example.com
+C3002883,LAST_READ_DATE,two_digit_year,2026-10-07
+C3002886,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3002886,LAST_READ_DATE,two_digit_year,2026-08-06
+C3002899,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3002899,DOB,two_digit_year,1982-01-04
+C3002899,STATE,non_standard_code,South Australia
+C3002900,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002900,CUST_NAME,extra_whitespace,
+C3002900,DOB,two_digit_year,1955-04-07
+C3002900,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3002900,PCODE,inconsistent_with_suburb,Salisbury should be 5108
+C3002905,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3002905,EMAIL_ADDR,trailing_whitespace,
+C3002911,PH_MOB,missing_value_token,'NULL' replaced a value
+C3002911,STATE,non_standard_code,S.A.
+C3002916,CONNECT_DATE,two_digit_year,2018-08-09
+C3002916,CUST_NAME,extra_whitespace,
+C3002916,DOB,two_digit_year,1945-05-23
+C3002916,PCODE,truncated,5082
+C3002918,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3002918,EMAIL_ADDR,invalid_email,missing @: siobhan.murphy.example.com
+C3002918,SEX,non_standard_code, as '9'
+C3002918,STATE,missing_value,
+C3002923,ACCT_STATUS,non_standard_code,A as 'Active'
+C3002923,SUBURB_TOWN,typo_or_abbreviation,GLENELG -> GLENLEG
+C3002924,COMMENTS,pii_in_free_text,date of birth in comments
+C3002924,PH_MOB,missing_value_token,'NULL' replaced a value
+C3002927,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002927,BANK_ACCT,excel_scientific_notation,50820222
+C3002927,CONNECT_DATE,month_day_swapped,2017-03-01
+C3002934,CONC_FLAG,non_standard_code,N as '0'
+C3002934,STATE,non_standard_code,sa
+C3002936,PAY_METHOD,non_standard_code,DD as 'D/D'
+C3002936,PH_MOB,placeholder_value,0491 570 076
+C3002943,CONNECT_DATE,two_digit_year,2017-08-05
+C3002949,DOB,two_digit_year,1952-02-01
+C3002949,EMAIL_ADDR,missing_value,minh.ali@example.org
+C3002949,STATE,non_standard_code,sa
+C3002950,ACCT_STATUS,non_standard_code,I as 'i'
+C3002950,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3002950,STATE,non_standard_code,South Australia
+C3002950,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3002957,CONNECT_DATE,two_digit_year,2019-12-22
+C3002957,DOB,month_day_swapped,1976-01-05
+C3002957,EMAIL_ADDR,trailing_whitespace,
+C3002957,LAST_READ_DATE,month_day_swapped,2026-09-01
+C3002957,PH_HOME,missing_area_code,(08) 5550 0384
+C3002957,PH_HOME,missing_value_token,'N/A' replaced a value
+C3002964,CONC_CARD,missing_value_token,'-' replaced a value
+C3002964,EMAIL_ADDR,missing_value,ruby.wright@example.org
+C3002964,MAIL_ADDR,missing_value_token,'UNKNOWN' replaced a value
+C3002971,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3002971,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3002971,STATE,inconsistent_with_postcode,NSW with SA postcode 5067
+C3002971,SUBURB_TOWN,typo_or_abbreviation,NORWOOD -> NORWOD
+C3002976,ACCT_STATUS,non_standard_code,A as 'act'
+C3002976,ACCT_TYPE,non_standard_code,RES as 'R'
+C3002976,BALANCE,currency_formatting,668.83
+C3002976,COMMENTS,pii_in_free_text,date of birth in comments
+C3002976,CUST_NAME,mojibake,O'Connor -> Oâ€™Connor
+C3002977,EMAIL_ADDR,inconsistent_case,giuseppe.khan@example.net
+C3002977,PAY_METHOD,non_standard_code,DD as 'direct debit'
+C3002977,PCODE,missing_value,5251
+C3002980,ACCT_STATUS,non_standard_code,C as 'Closed '
+C3002980,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3002980,SUPPLY_ADDR_2,missing_value_token,' '
+C3002986,ACCT_NUM,inconsistent_case,WC-9455553
+C3002986,CONC_CARD,missing_value_token,'-'
+C3002993,EMAIL_ADDR,missing_value,lucy.papadopoulos@example.org
+C3002993,PH_MOB,placeholder_value,0491 570 159
+C3002993,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3002994,CUST_NAME,first_last_swapped,Maria Martin
+C3002994,PH_MOB,missing_value_token,' ' replaced a value
+C3002994,STATE,non_standard_code,sa
+C3003000,CONNECT_DATE,two_digit_year,2013-06-18
+C3003000,SEX,non_standard_code,F as 'f'
+C3003001,DOB,placeholder_value,1985-08-12
+C3003007,CONC_FLAG,non_standard_code,N as ''
+C3003007,LAST_READ_DATE,two_digit_year,2026-10-16
+C3003010,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003010,EMAIL_ADDR,missing_value,omar.haddad@example.org
+C3003015,PH_MOB,placeholder_value,0491 570 022
+C3003015,STATE,non_standard_code,sa
+C3003017,CUST_NAME,first_last_swapped,Jun Li
+C3003018,COMMENTS,pii_in_free_text,date of birth in comments
+C3003018,PH_HOME,missing_value_token,'-'
+C3003019,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003019,CONC_FLAG,non_standard_code,N as 'no'
+C3003019,PCODE,excel_number_format,5095
+C3003022,COMMENTS,pii_in_free_text,date of birth in comments
+C3003022,STATE,non_standard_code,S.A.
+C3003029,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3003029,BANK_ACCT,excel_scientific_notation,92413641
+C3003029,CONNECT_DATE,two_digit_year,2012-05-23
+C3003029,EMAIL_ADDR,invalid_email,double @
+C3003031,COMMENTS,pii_in_free_text,date of birth in comments
+C3003031,PH_MOB,leading_zero_lost,0491 570 081
+C3003038,ACCT_NUM,inconsistent_case,WC-3086441
+C3003038,SEX,missing_value_token,'NULL' replaced a value
+C3003045,CONNECT_DATE,two_digit_year,2015-04-08
+C3003045,EMAIL_ADDR,missing_value,lucas.king379@example.net
+C3003045,EMAIL_ADDR,missing_value_token,'NULL'
+C3003048,ACCT_NUM,inconsistent_case,WC-7307699
+C3003048,ACCT_STATUS,non_standard_code,A as 'act'
+C3003048,CONNECT_DATE,two_digit_year,2015-07-17
+C3003048,STATE,non_standard_code,sa
+C3003049,BALANCE,currency_formatting,0.00
+C3003049,PH_MOB,missing_value_token,' ' replaced a value
+C3003056,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3003056,PCODE,inconsistent_with_suburb,Noarlunga Centre should be 5168
+C3003058,COMMENTS,pii_in_free_text,date of birth in comments
+C3003058,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3003062,EMAIL_ADDR,missing_value,minh.tran@example.net
+C3003066,ACCT_NUM,inconsistent_case,WC-1969328
+C3003066,PCODE,missing_value,5022
+C3003066,STATE,inconsistent_with_postcode,NSW with SA postcode 5022
+C3003066,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3003070,BALANCE,currency_formatting,-128.75
+C3003070,LAST_READ_DATE,two_digit_year,2026-10-22
+C3003070,PCODE,missing_value,5168
+C3003070,PH_MOB,leading_zero_lost,0491 570 009
+C3003076,CONC_FLAG,non_standard_code,N as 'false'
+C3003076,PH_MOB,missing_value_token,'UNKNOWN'
+C3003082,ACCT_NUM,inconsistent_case,WC-8070300
+C3003082,ACCT_STATUS,non_standard_code,A as 'Active'
+C3003082,STATE,non_standard_code,sa
+C3003082,SUBURB_TOWN,typo_or_abbreviation,CAMPBELLTOWN -> CAMPBELTOWN
+C3003088,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003094,PCODE,inconsistent_with_suburb,Marion should be 5043
+C3003100,SEX,missing_value_token,' ' replaced a value
+C3003103,CONNECT_DATE,month_day_swapped,2017-07-28
+C3003103,LAST_READ_DATE,two_digit_year,2026-10-10
+C3003103,PAY_METHOD,non_standard_code,CHQ as 'Cheque'
+C3003109,BALANCE,currency_formatting,564.97
+C3003109,CONNECT_DATE,two_digit_year,2023-03-25
+C3003112,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3003112,STATE,non_standard_code,S.A.
+C3003113,EMAIL_ADDR,trailing_whitespace,
+C3003114,CONC_FLAG,non_standard_code,N as '0'
+C3003114,SUBURB_TOWN,trailing_whitespace,
+C3003118,ACCT_STATUS,non_standard_code,C as 'Closed '
+C3003118,BALANCE,currency_formatting,118.03
+C3003118,DISCONNECT_DATE,two_digit_year,2018-11-23
+C3003118,PH_HOME,missing_value_token,'N/A' replaced a value
+C3003120,BALANCE,currency_formatting,0.00
+C3003120,BANK_ACCT,excel_scientific_notation,40311398
+C3003120,LAST_READ_DATE,two_digit_year,2026-08-20
+C3003126,BALANCE,currency_formatting,366.34
+C3003126,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3003131,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3003131,CONNECT_DATE,month_day_swapped,2022-09-27
+C3003131,EMAIL_ADDR,missing_value,hamid.li303@example.com
+C3003138,CONNECT_DATE,two_digit_year,2021-11-11
+C3003138,EMAIL_ADDR,missing_value,lucas.taylor@example.org
+C3003143,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3003143,CONC_FLAG,non_standard_code,N as ''
+C3003143,LAST_READ_DATE,two_digit_year,2026-08-05
+C3003143,STATE,non_standard_code,S.A.
+C3003144,BALANCE,currency_formatting,0.87
+C3003144,EMAIL_ADDR,missing_value,patricia.williams@example.com
+C3003149,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003149,BALANCE,currency_formatting,0.00
+C3003149,CONNECT_DATE,two_digit_year,2021-10-18
+C3003149,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3003154,CONC_FLAG,non_standard_code,Y as 'yes'
+C3003154,DOB,month_day_swapped,1961-01-22
+C3003154,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3003155,CONNECT_DATE,two_digit_year,2018-09-23
+C3003155,DOB,two_digit_year,1947-04-07
+C3003162,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3003162,BALANCE,currency_formatting,59.75
+C3003162,EMAIL_ADDR,invalid_email,double @
+C3003164,BANK_ACCT,excel_scientific_notation,30724827
+C3003164,CONNECT_DATE,two_digit_year,2024-12-07
+C3003164,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3003165,EMAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3003165,PH_MOB,leading_zero_lost,0491 570 011
+C3003172,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3003176,BALANCE,currency_formatting,-141.55
+C3003182,BALANCE,currency_formatting,126.72
+C3003186,DOB,two_digit_year,1990-06-13
+C3003190,DOB,placeholder_value,1947-04-14
+C3003190,PH_HOME,missing_area_code,(08) 5550 1169
+C3003197,LAST_READ_DATE,two_digit_year,2026-07-02
+C3003201,PH_MOB,placeholder_value,0491 570 013
+C3003203,EMAIL_ADDR,missing_value,mia.king@example.com
+C3003203,STATE,missing_value,
+C3003214,PCODE,missing_value,5066
+C3003221,COMMENTS,pii_in_free_text,date of birth in comments
+C3003221,EMAIL_ADDR,trailing_whitespace,
+C3003221,EMAIL_ADDR,missing_value_token,'NULL' replaced a value
+C3003222,CUST_NAME,extra_whitespace,
+C3003223,COMMENTS,pii_in_free_text,date of birth in comments
+C3003223,LAST_READ_DATE,two_digit_year,2026-09-11
+C3003224,EMAIL_ADDR,missing_value_token,'-' replaced a value
+C3003224,SUPPLY_ADDR_1,missing_street_number,194 Portrush Rd
+C3003226,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3003226,DOB,two_digit_year,2003-06-03
+C3003226,STATE,non_standard_code,S.A.
+C3003233,BALANCE,currency_formatting,848.17
+C3003240,CUST_NAME,first_last_swapped,Charlotte Thompson
+C3003240,EMAIL_ADDR,missing_value,charlotte.thompson@example.org
+C3003240,PH_HOME,missing_value_token,'UNKNOWN' replaced a value
+C3003247,PH_MOB,missing_value_token,'UNKNOWN' replaced a value
+C3003247,SUBURB_TOWN,typo_or_abbreviation,MAWSON LAKES -> MAWSON LKS
+C3003253,COMMENTS,pii_in_free_text,date of birth in comments
+C3003253,SEX,missing_value_token,'UNKNOWN' replaced a value
+C3003258,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003258,DOB,two_digit_year,1994-11-26
+C3003261,DOB,two_digit_year,1984-04-24
+C3003261,EMAIL_ADDR,invalid_email,missing @: mei.chen.example.org
+C3003261,LAST_READ_DATE,two_digit_year,2026-10-09
+C3003262,BALANCE,currency_formatting,849.03
+C3003262,EMAIL_ADDR,placeholder_value,kiri.wilson@example.net
+C3003267,CONNECT_DATE,two_digit_year,2012-06-27
+C3003274,CUST_NAME,first_last_swapped,Matthew Ryan
+C3003274,EMAIL_ADDR,missing_value,matthew.ryan@example.com
+C3003274,PH_HOME,missing_value_token,' ' replaced a value
+C3003279,ACCT_NUM,inconsistent_case,WC-2756027
+C3003279,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003279,EMAIL_ADDR,missing_value,kwame.singh@example.org
+C3003279,SEX,missing_value_token,' ' replaced a value
+C3003284,EMAIL_ADDR,inconsistent_case,lucy.nguyen@example.net
+C3003284,PAY_METHOD,non_standard_code,CC as 'Credit Card'
+C3003284,PCODE,truncated,5253
+C3003291,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3003298,DOB,month_day_swapped,1956-10-25
+C3003298,LAST_READ_DATE,two_digit_year,2026-10-18
+C3003298,MAIL_ADDR,missing_value_token,' ' replaced a value
+C3003305,BALANCE,currency_formatting,0.00
+C3003305,CONNECT_DATE,two_digit_year,2020-03-12
+C3003305,EMAIL_ADDR,missing_value,fatima.williams@example.org
+C3003311,COMMENTS,pii_in_free_text,date of birth in comments
+C3003311,CONC_CARD,missing_value_token,'-' replaced a value
+C3003315,BALANCE,currency_formatting,679.88
+C3003321,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003321,COMMENTS,pii_in_free_text,date of birth in comments
+C3003321,DOB,two_digit_year,1982-04-30
+C3003321,PH_MOB,leading_zero_lost,0491 570 042
+C3003324,DOB,two_digit_year,1959-01-23
+C3003324,LAST_READ_DATE,two_digit_year,2026-08-04
+C3003324,PH_HOME,missing_area_code,(08) 5550 1536
+C3003329,BALANCE,currency_formatting,286.73
+C3003329,CONNECT_DATE,two_digit_year,2026-01-18
+C3003329,LAST_READ_DATE,two_digit_year,2026-09-22
+C3003331,CONNECT_DATE,two_digit_year,2019-09-04
+C3003331,SUPPLY_ADDR_2,missing_value_token,'-'
+C3003335,BALANCE,currency_formatting,0.00
+C3003335,PH_HOME,missing_area_code,(08) 5550 5892
+C3003344,CONNECT_DATE,two_digit_year,2025-11-08
+C3003344,LAST_READ_DATE,two_digit_year,2026-08-03
+C3003347,PCODE,inconsistent_with_suburb,Norwood should be 5067
+C3003349,LAST_READ_DATE,month_day_swapped,2026-09-07
+C3003350,BALANCE,currency_formatting,406.30
+C3003350,CONC_FLAG,non_standard_code,N as 'no'
+C3003350,CONNECT_DATE,two_digit_year,2022-11-09
+C3003350,LAST_READ_DATE,two_digit_year,2026-07-04
+C3003353,CONC_FLAG,non_standard_code,N as 'no'
+C3003353,CONNECT_DATE,two_digit_year,2013-05-02
+C3003353,DOB,two_digit_year,1965-09-30
+C3003357,DOB,two_digit_year,1955-10-09
+C3003357,PCODE,inconsistent_with_suburb,Henley Beach should be 5022
+C3003357,SUBURB_TOWN,trailing_whitespace,
+C3003363,CUST_NAME,extra_whitespace,
+C3003363,DOB,two_digit_year,1955-04-20
+C3003363,PH_MOB,leading_zero_lost,0491 570 157
+C3003370,CONNECT_DATE,two_digit_year,2018-06-17
+C3003370,EMAIL_ADDR,missing_value,jessica.wang@example.com
+C3003370,LAST_READ_DATE,two_digit_year,2026-07-18
+C3003371,COMMENTS,pii_in_free_text,date of birth in comments
+C3003371,CUST_NAME,first_last_swapped,Patricia Hall
+C3003373,BALANCE,currency_formatting,863.13
+C3003374,ACCT_TYPE,non_standard_code,BUS as 'Commercial'
+C3003374,EMAIL_ADDR,domain_typo,aisha.haddad@example.con
+C3003374,MAIL_ADDR,missing_value_token,'N/A' replaced a value
+C3003374,PAY_METHOD,non_standard_code,CHQ as 'Cheque'
+C3003374,PH_MOB,placeholder_value,0491 570 134
+C3003374,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3003376,BALANCE,currency_formatting,282.55
+C3003376,CONNECT_DATE,two_digit_year,2016-08-28
+C3003376,SUPPLY_ADDR_2,missing_value_token,'-'
+C3003383,LAST_READ_DATE,two_digit_year,2026-10-07
+C3003387,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003387,CONC_FLAG,non_standard_code,N as 'no'
+C3003387,CUST_NAME,first_last_swapped,Helen Tran
+C3003387,DOB,two_digit_year,2004-08-02
+C3003393,LAST_READ_DATE,two_digit_year,2026-10-11
+C3003398,CONC_FLAG,non_standard_code,N as ''
+C3003398,CONNECT_DATE,two_digit_year,2023-06-15
+C3003401,LAST_READ_DATE,two_digit_year,2026-07-18
+C3003401,PCODE,excel_number_format,5022
+C3003401,STATE,missing_value,
+C3003405,DOB,month_day_swapped,1965-05-25
+C3003405,LAST_READ_DATE,month_day_swapped,2026-07-19
+C3003406,CONNECT_DATE,two_digit_year,2024-02-26
+C3003406,STATE,non_standard_code,sa
+C3003413,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3003413,BANK_ACCT,excel_scientific_notation,62546858
+C3003413,PH_MOB,missing_value_token,' ' replaced a value
+C3003419,ACCT_NUM,inconsistent_case,WC-3350338
+C3003419,BALANCE,currency_formatting,789.86
+C3003419,STATE,non_standard_code,S.A.
+C3003422,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003422,PH_MOB,leading_zero_lost,0491 570 062
+C3003422,SUBURB_TOWN,typo_or_abbreviation,MOUNT BARKER -> MT BARKER
+C3003426,EMAIL_ADDR,inconsistent_case,linh.wilson@example.com
+C3003428,COMMENTS,pii_in_free_text,date of birth in comments
+C3003428,DOB,two_digit_year,1965-03-13
+C3003435,ACCT_STATUS,non_standard_code,C as 'Closed '
+C3003435,CONNECT_DATE,two_digit_year,2015-07-27
+C3003435,CUST_NAME,first_last_swapped,Priya King
+C3003435,DISCONNECT_DATE,before_connect_date,
+C3003435,DISCONNECT_DATE,two_digit_year,2015-03-15
+C3003439,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3003439,BALANCE,currency_formatting,412.41
+C3003439,DISCONNECT_DATE,two_digit_year,2015-07-23
+C3003446,ACCT_NUM,inconsistent_case,WC-1081266
+C3003446,ACCT_TYPE,non_standard_code,BUS as 'COM'
+C3003446,BALANCE,currency_formatting,741.62
+C3003453,DOB,month_day_swapped,1998-06-18
+C3003453,LAST_READ_DATE,two_digit_year,2026-09-12
+C3003453,STATE,non_standard_code,S.A.
+C3003460,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003460,LAST_READ_DATE,two_digit_year,2026-08-16
+C3003460,PCODE,missing_value,5045
+C3003465,BALANCE,currency_formatting,103.15
+C3003465,DOB,month_day_swapped,1971-06-05
+C3003465,EMAIL_ADDR,placeholder_value,peter.mitchell@example.org
+C3003465,SUBURB_TOWN,typo_or_abbreviation,BURNSIDE -> BURNSDE
+C3003472,*,not_in_crm,billing-only customer
+C3003472,DOB,two_digit_year,2002-01-07
+C3003473,*,not_in_crm,billing-only customer
+C3003473,BALANCE,currency_formatting,0.00
+C3003473,EMAIL_ADDR,invalid_email,missing @: 
+C3003473,SUBURB_TOWN,trailing_whitespace,
+C3003477,*,not_in_crm,billing-only customer
+C3003477,BALANCE,currency_formatting,139.87
+C3003477,EMAIL_ADDR,missing_value,
+C3003477,LAST_READ_DATE,two_digit_year,2026-09-20
+C3003477,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3003482,*,not_in_crm,billing-only customer
+C3003482,DOB,two_digit_year,1957-07-16
+C3003489,*,not_in_crm,billing-only customer
+C3003496,*,not_in_crm,billing-only customer
+C3003496,LAST_READ_DATE,two_digit_year,2026-07-04
+C3003500,*,not_in_crm,billing-only customer
+C3003507,*,not_in_crm,billing-only customer
+C3003507,ACCT_NUM,inconsistent_case,WC-8838451
+C3003507,BALANCE,currency_formatting,0.00
+C3003507,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3003508,*,not_in_crm,billing-only customer
+C3003508,CONC_FLAG,non_standard_code,N as 'no'
+C3003508,DOB,two_digit_year,1984-03-18
+C3003508,LAST_READ_DATE,two_digit_year,2026-09-05
+C3003508,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3003510,*,not_in_crm,billing-only customer
+C3003510,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003510,CONNECT_DATE,two_digit_year,2016-09-04
+C3003510,STATE,inconsistent_with_postcode,NSW with SA postcode 5095
+C3003511,*,not_in_crm,billing-only customer
+C3003511,ACCT_NUM,inconsistent_case,WC-8227404
+C3003511,EMAIL_ADDR,inconsistent_case,barry.fitzgerald85@example.net
+C3003512,*,not_in_crm,billing-only customer
+C3003512,COMMENTS,pii_in_free_text,date of birth in comments
+C3003512,CONC_FLAG,non_standard_code,Y as ''
+C3003512,DOB,two_digit_year,1965-06-14
+C3003512,STATE,non_standard_code,South Australia
+C3003515,*,not_in_crm,billing-only customer
+C3003515,ACCT_NUM,inconsistent_case,WC-5752646
+C3003515,EMAIL_ADDR,inconsistent_case,
+C3003522,*,not_in_crm,billing-only customer
+C3003522,EMAIL_ADDR,invalid_email,missing @: 
+C3003522,PH_HOME,missing_area_code,(08) 5550 6446
+C3003527,*,not_in_crm,billing-only customer
+C3003527,ACCT_STATUS,non_standard_code,A as 'ACTIVE'
+C3003527,LAST_READ_DATE,two_digit_year,2026-10-02
+C3003527,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3003528,*,not_in_crm,billing-only customer
+C3003528,ACCT_STATUS,non_standard_code,C as 'Closed '
+C3003528,DOB,two_digit_year,1988-02-24
+C3003529,*,not_in_crm,billing-only customer
+C3003529,COMMENTS,pii_in_free_text,date of birth in comments
+C3003529,LAST_READ_DATE,month_day_swapped,2026-09-24
+C3003529,SEX,non_standard_code,M as '1'
+C3003529,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3003534,*,not_in_crm,billing-only customer
+C3003534,BALANCE,currency_formatting,-99.73
+C3003534,CUST_NAME,extra_whitespace,
+C3003535,*,not_in_crm,billing-only customer
+C3003535,CUST_NAME,extra_whitespace,
+C3003535,EMAIL_ADDR,trailing_whitespace,
+C3003538,*,not_in_crm,billing-only customer
+C3003538,DOB,two_digit_year,2003-12-31
+C3003543,*,not_in_crm,billing-only customer
+C3003543,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3003543,CUST_NAME,extra_whitespace,
+C3003548,*,not_in_crm,billing-only customer
+C3003548,ACCT_NUM,inconsistent_case,WC-7994973
+C3003548,ACCT_TYPE,non_standard_code,RES as 'RESI'
+C3003548,EMAIL_ADDR,placeholder_value,
+C3003548,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3003549,*,not_in_crm,billing-only customer
+C3003549,DOB,two_digit_year,1989-02-15
+C3003555,*,not_in_crm,billing-only customer
+C3003555,EMAIL_ADDR,inconsistent_case,dulcie.duong21@example.net
+C3003561,*,not_in_crm,billing-only customer
+C3003561,ACCT_NUM,inconsistent_case,WC-7658534
+C3003561,DOB,two_digit_year,1950-10-20
+C3003561,EMAIL_ADDR,missing_value,
+C3003561,LAST_READ_DATE,month_day_swapped,2026-08-25
+C3003561,STATE,non_standard_code,S.A.
+C3003563,*,not_in_crm,billing-only customer
+C3003563,BALANCE,currency_formatting,624.75
+C3003563,LAST_READ_DATE,two_digit_year,2026-09-21
+C3003563,PCODE,missing_value,5082
+C3003566,*,not_in_crm,billing-only customer
+C3003566,BALANCE,currency_formatting,0.00
+C3003571,*,not_in_crm,billing-only customer
+C3003571,COMMENTS,pii_in_free_text,date of birth in comments
+C3003571,CONC_FLAG,non_standard_code,N as '0'
+C3003571,CONNECT_DATE,two_digit_year,2020-01-05
+C3003571,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3003573,*,not_in_crm,billing-only customer
+C3003573,CONNECT_DATE,two_digit_year,2019-03-20
+C3003573,EMAIL_ADDR,trailing_whitespace,
+C3003580,*,not_in_crm,billing-only customer
+C3003580,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3003580,CONNECT_DATE,two_digit_year,2018-03-12
+C3003580,PH_MOB,placeholder_value,0491 570 110
+C3003580,SUBURB_TOWN,trailing_whitespace,
+C3003581,*,not_in_crm,billing-only customer
+C3003581,BALANCE,accounting_negative,-126.62
+C3003581,PCODE,missing_value,5112
+C3003587,*,not_in_crm,billing-only customer
+C3003587,BALANCE,currency_formatting,0.00
+C3003587,LAST_READ_DATE,two_digit_year,2026-10-24
+C3003593,*,not_in_crm,billing-only customer
+C3003593,PH_MOB,leading_zero_lost,0491 570 115
+C3003600,*,not_in_crm,billing-only customer
+C3003600,DISCONNECT_DATE,two_digit_year,2029-10-27
+C3003604,*,not_in_crm,billing-only customer
+C3003604,EMAIL_ADDR,inconsistent_case,
+C3003610,*,not_in_crm,billing-only customer
+C3003610,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3003612,*,not_in_crm,billing-only customer
+C3003612,ACCT_STATUS,conflicts_with_crm,CRM says ACTIVE
+C3003612,BALANCE,currency_formatting,320.60
+C3003612,DISCONNECT_DATE,two_digit_year,2018-11-23
+C3003612,PAY_METHOD,non_standard_code,BPAY as 'B-PAY'
+C3003612,PCODE,excel_number_format,5022
+C3003612,STATE,non_standard_code,South Australia
+C3003614,*,not_in_crm,billing-only customer
+C3003614,CONC_FLAG,non_standard_code,N as '0'
+C3003614,EMAIL_ADDR,domain_typo,
+C3003614,METER_NO,shared_with_other_customer,also on C3003824
+C3003614,SEX,non_standard_code,F as 'Female'
+C3003617,*,not_in_crm,billing-only customer
+C3003617,CONC_FLAG,non_standard_code,N as ''
+C3003617,DOB,placeholder_value,1969-09-14
+C3003617,PH_MOB,leading_zero_lost,0491 570 112
+C3003617,SEX,non_standard_code,M as '1'
+C3003624,*,not_in_crm,billing-only customer
+C3003624,BANK_ACCT,excel_scientific_notation,21531219
+C3003624,CONNECT_DATE,month_day_swapped,2022-04-29
+C3003624,LAST_READ_DATE,two_digit_year,2026-08-04
+C3003624,PCODE,excel_number_format,5118
+C3003630,*,not_in_crm,billing-only customer
+C3003630,CONNECT_DATE,two_digit_year,2013-10-07
+C3003630,CUST_NAME,first_last_swapped,Trevor Hogan
+C3003630,SUBURB_TOWN,typo_or_abbreviation,NORTH ADELAIDE -> NTH ADELAIDE
+C3003635,*,not_in_crm,billing-only customer
+C3003635,CONNECT_DATE,two_digit_year,2015-01-26
+C3003635,EMAIL_ADDR,trailing_whitespace,
+C3003635,PCODE,missing_value,5061
+C3003635,STATE,inconsistent_with_postcode,NSW with SA postcode 5061
+C3003640,*,not_in_crm,billing-only customer
+C3003640,CONNECT_DATE,month_day_swapped,2012-01-23
+C3003640,EMAIL_ADDR,placeholder_value,shirley.pearce20@example.net
+C3003640,SUPPLY_ADDR_1,missing_street_number,8 Banksia Cres
+C3003643,*,not_in_crm,billing-only customer
+C3003643,DOB,two_digit_year,1985-02-02
+C3003646,*,not_in_crm,billing-only customer
+C3003646,CONNECT_DATE,two_digit_year,2019-03-03
+C3003646,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3003646,PH_HOME,missing_area_code,(08) 5550 1308
+C3003650,*,not_in_crm,billing-only customer
+C3003650,BALANCE,currency_formatting,681.87
+C3003650,STATE,missing_value,
+C3003657,*,not_in_crm,billing-only customer
+C3003657,PCODE,missing_value,5253
+C3003661,*,not_in_crm,billing-only customer
+C3003661,COMMENTS,pii_in_free_text,date of birth in comments
+C3003661,CONNECT_DATE,month_day_swapped,2020-04-18
+C3003666,*,not_in_crm,billing-only customer
+C3003666,ACCT_STATUS,non_standard_code,C as 'CLOSED'
+C3003666,CUST_NAME,first_last_swapped,Graham Kowalski
+C3003666,DOB,two_digit_year,1952-02-01
+C3003666,SEX,non_standard_code,M as '1'
+C3003670,*,not_in_crm,billing-only customer
+C3003670,CONC_FLAG,non_standard_code,N as '0'
+C3003670,SUBURB_TOWN,trailing_whitespace,
+C3003675,*,not_in_crm,billing-only customer
+C3003677,*,not_in_crm,billing-only customer
+C3003677,DOB,two_digit_year,1947-10-31
+C3003677,PAY_METHOD,non_standard_code,DD as 'D/D'
+C3003678,*,not_in_crm,billing-only customer
+C3003678,EMAIL_ADDR,trailing_whitespace,
+C3003678,STATE,missing_value,
+C3003678,SUPPLY_ADDR_1,missing_street_number,191 Acacia Way
+C3003685,*,not_in_crm,billing-only customer
+C3003685,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003685,DOB,two_digit_year,1974-01-09
+C3003685,STATE,non_standard_code,S.A.
+C3003690,*,not_in_crm,billing-only customer
+C3003690,ACCT_STATUS,non_standard_code,C as 'c'
+C3003690,SEX,non_standard_code,M as 'Male'
+C3003690,STATE,non_standard_code,South Australia
+C3003694,*,not_in_crm,billing-only customer
+C3003694,CONC_FLAG,non_standard_code,N as '0'
+C3003694,PAY_METHOD,non_standard_code,DD as 'Direct Debit'
+C3003701,*,not_in_crm,billing-only customer
+C3003701,LAST_READ_DATE,two_digit_year,2026-09-18
+C3003701,PAY_METHOD,non_standard_code,CC as 'CARD'
+C3003701,STATE,non_standard_code,S.A.
+C3003708,*,not_in_crm,billing-only customer
+C3003708,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003708,CONNECT_DATE,two_digit_year,2026-01-12
+C3003713,*,not_in_crm,billing-only customer
+C3003713,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003713,PAY_METHOD,non_standard_code,BPAY as 'BPay'
+C3003713,SUBURB_TOWN,typo_or_abbreviation,HENLEY BEACH -> HENLEY BCH
+C3003716,*,not_in_crm,billing-only customer
+C3003716,BALANCE,currency_formatting,428.42
+C3003716,CONNECT_DATE,month_day_swapped,2012-10-16
+C3003716,DISCONNECT_DATE,two_digit_year,2017-08-26
+C3003716,SEX,non_standard_code,M as 'Male'
+C3003722,*,not_in_crm,billing-only customer
+C3003722,BALANCE,currency_formatting,417.17
+C3003722,CONNECT_DATE,month_day_swapped,2015-12-18
+C3003722,DISCONNECT_DATE,two_digit_year,2019-07-06
+C3003722,LAST_READ_DATE,two_digit_year,2026-09-12
+C3003724,*,not_in_crm,billing-only customer
+C3003724,ACCT_NUM,inconsistent_case,WC-2695068
+C3003724,ACCT_STATUS,non_standard_code,C as 'c'
+C3003724,BALANCE,currency_formatting,0.00
+C3003724,LAST_READ_DATE,two_digit_year,2026-07-01
+C3003724,PCODE,missing_value,5000
+C3003726,*,not_in_crm,billing-only customer
+C3003726,CONNECT_DATE,two_digit_year,2016-01-21
+C3003726,DISCONNECT_DATE,two_digit_year,2018-03-03
+C3003733,*,not_in_crm,billing-only customer
+C3003733,DOB,month_day_swapped,1950-01-08
+C3003735,*,not_in_crm,billing-only customer
+C3003735,CUST_NAME,extra_whitespace,
+C3003735,EMAIL_ADDR,missing_value,noelene.fitzgerald32@example.net
+C3003735,PCODE,missing_value,5045
+C3003735,STATE,non_standard_code,S.A.
+C3003740,*,not_in_crm,billing-only customer
+C3003740,PAY_METHOD,non_standard_code,CC as 'CARD'
+C3003740,SEX,non_standard_code,F as 'f'
+C3003746,*,not_in_crm,billing-only customer
+C3003746,ACCT_STATUS,non_standard_code,I as 'INACT'
+C3003746,BALANCE,currency_formatting,492.43
+C3003746,CUST_NAME,first_last_swapped,Neville Schultz
+C3003746,DOB,month_day_swapped,1947-11-02
+C3003746,EMAIL_ADDR,inconsistent_case,
+C3003746,STATE,non_standard_code,sa
+C3003751,*,not_in_crm,billing-only customer
+C3003751,CONNECT_DATE,two_digit_year,2018-01-07
+C3003751,STATE,non_standard_code,sa
+C3003757,*,not_in_crm,billing-only customer
+C3003757,LAST_READ_DATE,month_day_swapped,2026-09-07
+C3003762,*,not_in_crm,billing-only customer
+C3003766,*,not_in_crm,billing-only customer
+C3003766,BALANCE,currency_formatting,784.13
+C3003773,*,not_in_crm,billing-only customer
+C3003773,DOB,two_digit_year,1955-06-15
+C3003773,SUBURB_TOWN,typo_or_abbreviation,SALISBURY -> SALSIBURY
+C3003774,*,not_in_crm,billing-only customer
+C3003774,BALANCE,currency_formatting,647.06
+C3003774,COMMENTS,pii_in_free_text,date of birth in comments
+C3003778,*,not_in_crm,billing-only customer
+C3003778,ACCT_NUM,inconsistent_case,WC-6262230
+C3003778,EMAIL_ADDR,placeholder_value,
+C3003781,*,not_in_crm,billing-only customer
+C3003781,LAST_READ_DATE,two_digit_year,2026-10-18
+C3003785,*,not_in_crm,billing-only customer
+C3003785,PCODE,missing_value,5000
+C3003786,*,not_in_crm,billing-only customer
+C3003786,CONNECT_DATE,month_day_swapped,2016-12-19
+C3003786,DOB,two_digit_year,1986-08-02
+C3003787,*,not_in_crm,billing-only customer
+C3003787,EMAIL_ADDR,missing_value,barry.vlahos26@example.net
+C3003787,PCODE,inconsistent_with_suburb,Henley Beach should be 5022
+C3003787,PH_HOME,missing_area_code,(08) 5550 2388
+C3003792,*,not_in_crm,billing-only customer
+C3003792,BALANCE,currency_formatting,0.00
+C3003792,CONNECT_DATE,two_digit_year,2024-11-24
+C3003795,*,not_in_crm,billing-only customer
+C3003795,BALANCE,currency_formatting,342.81
+C3003795,DOB,two_digit_year,1983-06-21
+C3003795,EMAIL_ADDR,domain_typo,barry.mcdonald31@example.nte
+C3003795,PCODE,inconsistent_with_suburb,Port Adelaide should be 5015
+C3003799,*,not_in_crm,billing-only customer
+C3003799,ACCT_STATUS,non_standard_code,C as 'CLS'
+C3003799,DISCONNECT_DATE,two_digit_year,2019-02-06
+C3003799,DOB,month_day_swapped,1964-04-15
+C3003799,LAST_READ_DATE,month_day_swapped,2026-10-15
+C3003805,*,not_in_crm,billing-only customer
+C3003805,BALANCE,currency_formatting,0.00
+C3003805,DOB,two_digit_year,1987-04-16
+C3003811,*,not_in_crm,billing-only customer
+C3003811,BALANCE,currency_formatting,179.54
+C3003811,DOB,two_digit_year,1953-10-06
+C3003815,*,not_in_crm,billing-only customer
+C3003818,*,not_in_crm,billing-only customer
+C3003818,BANK_ACCT,excel_scientific_notation,28451679
+C3003818,CONNECT_DATE,two_digit_year,2026-02-08
+C3003818,SUBURB_TOWN,typo_or_abbreviation,BURNSIDE -> BURNSDE
+C3003819,*,not_in_crm,billing-only customer
+C3003819,ACCT_STATUS,non_standard_code,A as 'act'
+C3003819,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003819,BALANCE,currency_formatting,847.31
+C3003819,LAST_READ_DATE,two_digit_year,2026-07-15
+C3003824,*,not_in_crm,billing-only customer
+C3003824,ACCT_STATUS,non_standard_code,A as 'act'
+C3003824,BANK_ACCT,excel_scientific_notation,78004540
+C3003825,*,not_in_crm,billing-only customer
+C3003825,ACCT_STATUS,non_standard_code,A as 'a'
+C3003827,*,not_in_crm,billing-only customer
+C3003827,EMAIL_ADDR,missing_value,shirley.mcdonald49@example.net
+C3003834,*,not_in_crm,billing-only customer
+C3003834,CONC_FLAG,non_standard_code,N as ''
+C3003834,CONNECT_DATE,month_day_swapped,2022-11-23
+C3003834,STATE,inconsistent_with_postcode,NSW with SA postcode 5000
+C3003841,*,not_in_crm,billing-only customer
+C3003841,DOB,two_digit_year,1996-03-06
+C3003841,EMAIL_ADDR,missing_value,graham.kowalski92@example.net
+C3003845,*,not_in_crm,billing-only customer
+C3003845,*,exact_duplicate_row,
+C3003845,DOB,future_date,1996-07-06
+C3003845,EMAIL_ADDR,inconsistent_case,
+C3003845,LAST_READ_DATE,two_digit_year,2026-08-26
+C3003847,*,not_in_crm,billing-only customer
+C3003847,EMAIL_ADDR,inconsistent_case,
+C3003847,PH_MOB,leading_zero_lost,0491 570 092
+C3003849,*,not_in_crm,billing-only customer
+C3003849,CONNECT_DATE,two_digit_year,2014-04-16
+C3003849,STATE,non_standard_code,S.A.
+C3003851,*,not_in_crm,billing-only customer
+C3003851,BALANCE,currency_formatting,558.19
+C3003851,DOB,two_digit_year,1962-11-26
+C3003851,SEX,non_standard_code,U as '9'
+C3003856,*,not_in_crm,billing-only customer
+C3003856,ACCT_NUM,inconsistent_case,WC-2293509
+C3003856,BALANCE,currency_formatting,370.43
+C3003856,DISCONNECT_DATE,two_digit_year,2022-04-24
+C3003856,SEX,non_standard_code,M as 'm'
+C3003857,*,not_in_crm,billing-only customer
+C3003857,ACCT_STATUS,non_standard_code,A as 'a'
+C3003864,*,not_in_crm,billing-only customer
+C3003864,DOB,placeholder_value,1952-04-02
+C3003867,*,not_in_crm,billing-only customer
+C3003867,CONNECT_DATE,two_digit_year,2015-05-08
+C3003871,*,not_in_crm,billing-only customer
+C3003871,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003871,BALANCE,currency_formatting,-80.76
+C3003871,CONC_FLAG,non_standard_code,Y as 'TRUE'
+C3003871,SUBURB_TOWN,trailing_whitespace,
+C3003872,*,not_in_crm,billing-only customer
+C3003872,CONNECT_DATE,two_digit_year,2020-03-27
+C3003879,*,not_in_crm,billing-only customer
+C3003879,BALANCE,currency_formatting,0.00
+C3003879,CONNECT_DATE,two_digit_year,2023-11-07
+C3003883,*,not_in_crm,billing-only customer
+C3003883,BALANCE,currency_formatting,772.13
+C3003883,EMAIL_ADDR,missing_value,beryl.mcdonald75@example.net
+C3003890,*,not_in_crm,billing-only customer
+C3003890,CONC_FLAG,non_standard_code,N as ''
+C3003890,SUBURB_TOWN,typo_or_abbreviation,PORT ADELAIDE -> PT ADELAIDE
+C3003895,*,not_in_crm,billing-only customer
+C3003895,EMAIL_ADDR,missing_value,
+C3003902,*,not_in_crm,billing-only customer
+C3003902,CONNECT_DATE,month_day_swapped,2015-11-09
+C3003902,DOB,month_day_swapped,1950-06-28
+C3003906,*,not_in_crm,billing-only customer
+C3003906,ACCT_STATUS,non_standard_code,C as 'CLOSED'
+C3003906,EMAIL_ADDR,placeholder_value,noelene.mcdonald99@example.net
+C3003906,LAST_READ_DATE,month_day_swapped,2026-10-28
+C3003912,*,not_in_crm,billing-only customer
+C3003912,DISCONNECT_DATE,two_digit_year,2016-09-23
+C3003912,PH_MOB,placeholder_value,0491 570 013
+C3003919,*,not_in_crm,billing-only customer
+C3003919,PCODE,missing_value,5066
+C3003923,*,not_in_crm,billing-only customer
+C3003923,ACCT_NUM,inconsistent_case,WC-3791496
+C3003923,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003923,PH_MOB,placeholder_value,0491 570 055
+C3003925,*,not_in_crm,billing-only customer
+C3003925,PAY_METHOD,non_standard_code,CP as 'Centrepay'
+C3003925,STATE,non_standard_code,S.A.
+C3003927,*,not_in_crm,billing-only customer
+C3003927,DOB,placeholder_value,1982-11-28
+C3003927,PCODE,missing_value,5000
+C3003927,SUBURB_TOWN,trailing_whitespace,
+C3003934,*,not_in_crm,billing-only customer
+C3003934,CUST_NAME,first_last_swapped,Shirley Vlahos
+C3003934,EMAIL_ADDR,inconsistent_case,
+C3003939,*,not_in_crm,billing-only customer
+C3003939,ACCT_STATUS,non_standard_code,A as 'Active'
+C3003939,ACCT_TYPE,non_standard_code,RES as 'Residential'
+C3003946,*,not_in_crm,billing-only customer
+C3003946,ACCT_STATUS,non_standard_code,C as 'CLOSED'
+C3003946,CONNECT_DATE,two_digit_year,2018-12-06
+C3003948,*,not_in_crm,billing-only customer
+C3003949,*,not_in_crm,billing-only customer
+C3003952,*,not_in_crm,billing-only customer
+C3003952,CONC_FLAG,non_standard_code,Y as '1'
+C3003952,PCODE,inconsistent_with_suburb,Elizabeth should be 5112
+C3003957,*,not_in_crm,billing-only customer
+C3003957,ACCT_TYPE,non_standard_code,RES as 'R'
+C3003957,BALANCE,currency_formatting,77.45
+C3003957,LAST_READ_DATE,two_digit_year,2026-09-19
+C3003963,*,not_in_crm,billing-only customer
+C3003963,CUST_NAME,extra_whitespace,
+C3003963,DOB,two_digit_year,1989-02-15
+C3003963,PCODE,missing_value,5082
+C3003964,*,duplicate_customer,same customer as C3003082
+C3003966,*,duplicate_customer,same customer as C3000646
+C3003973,*,duplicate_customer,same customer as C3001268
+C3003975,*,duplicate_customer,same customer as C3002390
+C3003982,*,duplicate_customer,same customer as C3000414
+C3003985,*,duplicate_customer,same customer as C3001682
+C3003986,*,duplicate_customer,same customer as C3000651
+C3003987,*,duplicate_customer,same customer as C3001315
+C3003991,*,duplicate_customer,same customer as C3000693
+C3003994,*,duplicate_customer,same customer as C3000656
+C3003998,*,duplicate_customer,same customer as C3000432
+C3003999,*,duplicate_customer,same customer as C3002472
+C3004006,*,duplicate_customer,same customer as C3001249
+C3004007,*,duplicate_customer,same customer as C3001984
+C3004014,*,duplicate_customer,same customer as C3001120
+C3004019,*,duplicate_customer,same customer as C3002325
+C3004025,*,duplicate_customer,same customer as C3002097
+C3004026,*,duplicate_customer,same customer as C3002639
+C3004032,*,duplicate_customer,same customer as C3001878
+C3004033,*,duplicate_customer,same customer as C3002594
+C3004035,*,duplicate_customer,same customer as C3002148
+C3004038,*,duplicate_customer,same customer as C3002030
+C3004038,*,exact_duplicate_row,
+C3004045,*,duplicate_customer,same customer as C3000752
+C3004051,*,duplicate_customer,same customer as C3001099
+C3004053,*,duplicate_customer,same customer as C3001276
+C3004057,*,duplicate_customer,same customer as C3002916
+C3004060,*,duplicate_customer,same customer as C3001532
+C3004067,*,duplicate_customer,same customer as C3001949
+C3004074,*,duplicate_customer,same customer as C3001453
+C3004078,*,duplicate_customer,same customer as C3003017
+C3004082,*,duplicate_customer,same customer as C3002714
+C3004087,*,duplicate_customer,same customer as C3002497
+C3004091,*,duplicate_customer,same customer as C3001954
+C3004092,*,duplicate_customer,same customer as C3001447
+C3004099,*,duplicate_customer,same customer as C3001564
+C3004106,*,duplicate_customer,same customer as C3000494
+C3004112,*,duplicate_customer,same customer as C3001363
+C3004114,*,duplicate_customer,same customer as C3003143
+C3004117,*,duplicate_customer,same customer as C3000346
+C3004123,*,duplicate_customer,same customer as C3002276

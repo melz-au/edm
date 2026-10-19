@@ -10,7 +10,7 @@ PII detection, reference data and master data features.
 | --- | --- |
 | Personal data (PII) | `first_name`, `last_name`, `preferred_name`, `date_of_birth`, `gender`, `email`, `mobile_phone`, `home_phone`, `street_address`, `latitude`/`longitude` (home location), `concession_card_number`, `bsb`, `bank_account_number`, `portal_username`, `last_login_ip`, `created_by`/`last_modified_by`/`account_manager` |
 | Categorical | `customer_type`, `customer_status`, `segment`, `lead_source`, `preferred_contact_method`, `marketing_opt_in`, `concession_type`, `payment_method`, `title`, `state`, `suburb` |
-| Other | `customer_id`, `customer_account_no`, `company_name`, `lifetime_value`, dates, and free-text `notes` (some notes contain a phone number, which column-level detection doesn't catch) |
+| Other | `customer_id`, `customer_account_no`, `company_name`, `lifetime_value`, dates, and free-text `notes` (some contain a phone number, which the free-text PII check flags without showing the text) |
 
 **Nothing in it is real.** It comes from `generate_customers.py` with a fixed
 seed, built from name lists, real Adelaide suburbs and postcodes, and random

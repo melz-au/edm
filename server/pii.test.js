@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { assess, detectByName, detectByValues, luhn, mask, samplesSql, validTfn, valueColumns } from './pii.js';
+import { assess, detectByName, detectByValues, detectInFreeText, luhn, mask, samplesSql, validTfn, valueColumns } from './pii.js';
 import { profileTable } from './profile.js';
 
 test('column names map to PII types across naming styles', () => {
@@ -15,6 +15,9 @@ test('column names map to PII types across naming styles', () => {
     street_address: 'address', CHANGEBY: 'person_id', created_by: 'person_id', username: 'person_id',
     latitude: 'location', postcode: 'location',
     concession_card_number: 'government_id', preferred_name: 'person_name', account_manager: 'person_id',
+    // Legacy billing-system names.
+    CUST_NAME: 'person_name', CONC_CARD: 'government_id', BANK_ACCT: 'financial', SUPPLY_ADDR_1: 'address',
+    MAIL_ADDR: 'address', PCODE: 'location', LAST_UPD_USER: 'person_id',
   };
   for (const [name, type] of Object.entries(cases)) assert.equal(detectByName(name), type, name);
   for (const name of ['status', 'assettype', 'description', 'serialnum', 'siteid', 'glaccount', 'product_name', 'orgid', 'location', 'notes']) {
@@ -95,4 +98,20 @@ test('profileTable flags PII, masks categorical top values, and ignores asset co
   assert.equal(by.latitude.pii, null, 'no direct identifiers → coordinates are not personal data');
   assert.equal(by.status.pii, null);
   assert.deepEqual(by.status.topValues.map((v) => v.value), ['OPEN', 'CLOSED']);
+});
+
+test('personal data inside free text is reported by kind, never by value', () => {
+  const notes = [
+    'Prefers contact after 5pm.', 'Requested paper bills.', 'Call back on 0491 570 118 re payment plan.',
+    'Leak allowance applied.', 'CUST DOB 1987-05-02', 'Reported low water pressure.', 'Meter access via side gate.',
+  ];
+  const found = detectInFreeText(notes);
+  assert.ok(found.some((f) => f.startsWith('a phone number')));
+  assert.ok(found.some((f) => f.startsWith('a date of birth')));
+  const r = assess('COMMENTS', notes);
+  assert.equal(r.type, 'free_text');
+  assert.deepEqual(r.examples, []);
+  assert.equal(assess('COMMENTS', ['HARDSHIP - SEE FILE', 'OWNER OCCUPIER', 'TENANT - BILL OWNER', 'PAYMENT ARRANGEMENT $20/FN', 'CONVERTED FROM LEGACY SYSTEM 2009']), null);
+  assert.equal(detectInFreeText(['20260205015300', '20260116084400', '20260818182800', '20260616011900', '20261001120000']), null);
+  assert.equal(detectInFreeText(['Asset 100001 serviced', 'Pump replaced 2024-03-01', 'Valve 4500 checked', 'Reading 123456789', 'ok']), null);
 });

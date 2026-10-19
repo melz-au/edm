@@ -54,6 +54,9 @@ two kinds of evidence:
   numbers, card numbers that pass the Luhn check, IP/MAC addresses, IBANs, US
   SSNs and formatted AU TFNs (with checksum). A column named `contact` that
   holds email addresses is still caught.
+- **Free text** (notes, comments): values are scanned for embedded email
+  addresses, phone numbers, card numbers and "DOB …" mentions. The finding
+  only says what kind of data was found, with no examples.
 
 Each finding has a type, a **sensitivity** and a **confidence**. High
 sensitivity covers IDs, financial data, credentials, birth dates and special
@@ -101,6 +104,17 @@ which is created on first use:
 Users are identified by the email Databricks Apps forwards for the signed-in
 user (`X-Forwarded-Email`). Outside Databricks Apps that header is just a
 request header, so don't expose a locally run server to other people.
+
+## Sample data
+
+`sample-data/` has two fictional sources for the same water utility, for trying
+the features end to end:
+
+- `crm/`: a clean CRM customer table (1,000 rows).
+- `billing/`: a legacy billing extract of the same customers, with injected
+  data quality issues and a ground-truth issue list.
+
+Each folder has a README with load steps for Lakebase and Unity Catalog.
 
 ## Architecture
 
