@@ -361,7 +361,7 @@ export default function App() {
         )}
       </header>
 
-      {page === 'refdata' && <ReferenceData onChanged={refreshPending} />}
+      {page === 'refdata' && <ReferenceData me={me} onChanged={refreshPending} />}
       {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
 
       <div className="body" hidden={page !== 'diagram'}>

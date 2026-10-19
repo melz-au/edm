@@ -446,3 +446,17 @@ pre.json { font-size: 11px; max-width: 420px; overflow: auto; background: var(--
 .sql-box { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12px; }
 .sql-box pre { margin: 6px 0 0; white-space: pre-wrap; font-size: 12px; }
 .mapping-group { margin-bottom: 18px; }
+
+/* Unity Catalog sync */
+.uc-panel { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--bg); font-size: 13px; }
+.uc-panel__title { font-weight: 600; margin-bottom: 4px; }
+.uc-panel p { margin: 0 0 6px; }
+.uc-panel code { font-size: 11px; }
+.uc-panel .field { margin: 6px 0; }
+.uc-panel__actions { display: flex; gap: 6px; justify-content: flex-end; margin: 8px 0; }
+.uc-panel__last { margin-top: 6px; padding: 6px 8px; border-radius: 6px; background: var(--panel); border-left: 3px solid var(--border); }
+.uc-panel__last.succeeded { border-left-color: var(--ok); }
+.uc-panel__last.failed { border-left-color: #f04438; }
+.uc-panel__last.running { border-left-color: var(--warn); }
+.uc-panel__runs { list-style: none; padding: 0; margin: 6px 0 0; font-size: 11px; }
+.uc-panel__runs li { padding: 2px 0; }

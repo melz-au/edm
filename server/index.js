@@ -9,6 +9,7 @@ import { demoModel, inferRelationships } from './model.js';
 import * as profile from './profile.js';
 import * as pii from './pii.js';
 import { suggestMappings } from './mapping.js';
+import * as ucpublish from './ucpublish.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 
@@ -231,6 +232,36 @@ app.post('/api/refdata/changes/:id/review', wrap(async (req, res) => {
 app.post('/api/refdata/changes/:id/cancel', wrap(async (req, res) => {
   res.json(await refdata.cancelChange(Number(req.params.id), currentUser(req)));
 }));
+
+// Publishing reference data to Unity Catalog
+app.get('/api/refdata/publish', wrap(async (_req, res) => {
+  const wh = await warehouse.resolveWarehouse();
+  res.json({
+    settings: await refdata.getPublishSettings(),
+    warehouse: wh ? { name: wh.name, source: wh.source } : null,
+    running: ucpublish.isRunning(),
+    runs: await refdata.listPublishRuns(10),
+  });
+}));
+
+app.put('/api/refdata/publish/settings', wrap(async (req, res) => {
+  res.json(await refdata.setPublishSettings(req.body ?? {}, currentUser(req)));
+}));
+
+app.post('/api/refdata/publish', wrap(async (req, res) => {
+  const user = currentUser(req);
+  if (!refdata.isSteward(user)) throw Object.assign(new Error('Only data stewards can publish'), { status: 403 });
+  res.json(await ucpublish.publish({ trigger: 'manual', user }));
+}));
+
+// Auto-publish after approved reference data changes, when enabled.
+const PUBLISHED_KINDS = new Set(['code_set', 'code_value', 'code_mapping']);
+refdata.onApplied(async (change) => {
+  if (!PUBLISHED_KINDS.has(change.kind)) return;
+  const settings = await refdata.getPublishSettings();
+  if (!settings.auto || !ucpublish.validTarget(settings.target)) return;
+  await ucpublish.publish({ trigger: `auto after #${change.id}`, user: change.reviewed_by ?? 'system' });
+});
 
 app.get('/api/refdata/audit', wrap(async (req, res) => res.json(await refdata.auditLog({ limit: req.query.limit }))));
 

@@ -9,6 +9,8 @@
 //   code_mapping    raw source values (system/table/column/value) mapped to a
 //                   code value, or to NULL meaning "treat as missing"
 //   code_mapping_v  the same, joined to set name, code and label, for pipelines
+//   setting         app settings (e.g. the Unity Catalog publish target)
+//   publish_log     each publish of reference data to Unity Catalog
 //
 // Workflow: any user proposes a change → it waits as "pending" → a data
 // steward approves (it is applied in the same transaction and audited) or
@@ -117,6 +119,23 @@ CREATE OR REPLACE VIEW ${S}.code_mapping_v AS
   FROM ${S}.code_mapping m
   JOIN ${S}.code_set s ON s.id = m.code_set_id
   LEFT JOIN ${S}.code_value v ON v.id = m.code_value_id;
+CREATE TABLE IF NOT EXISTS ${S}.setting (
+  key        text PRIMARY KEY,
+  value      jsonb NOT NULL,
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  updated_by text NOT NULL
+);
+CREATE TABLE IF NOT EXISTS ${S}.publish_log (
+  id           serial PRIMARY KEY,
+  target       text NOT NULL,
+  trigger      text NOT NULL,
+  triggered_by text NOT NULL,
+  started_at   timestamptz NOT NULL DEFAULT now(),
+  finished_at  timestamptz,
+  status       text NOT NULL DEFAULT 'running',
+  counts       jsonb,
+  error        text
+);
 CREATE TABLE IF NOT EXISTS ${S}.audit_log (
   id                bigserial PRIMARY KEY,
   change_request_id int REFERENCES ${S}.change_request(id),
@@ -223,6 +242,82 @@ async function mappingSnapshot(db, codeSetId, source, values, lock = false) {
   );
   const found = new Map(rows.map((r) => [r.source_value, { codeValueId: r.code_value_id }]));
   return Object.fromEntries(values.map((v) => [v, found.get(v) ?? null]));
+}
+
+// --- Unity Catalog publishing support --------------------------------------
+
+export async function getPublishSettings() {
+  await ensureSchema();
+  const { rows } = await lakebase.query(`SELECT value, updated_at, updated_by FROM ${S}.setting WHERE key = 'uc_publish'`);
+  const stored = rows[0]?.value ?? {};
+  return {
+    target: stored.target ?? process.env.ERD_UC_REFDATA_TARGET ?? '',
+    auto: stored.auto ?? process.env.ERD_UC_AUTO_PUBLISH === 'true',
+    updatedAt: rows[0]?.updated_at ?? null,
+    updatedBy: rows[0]?.updated_by ?? null,
+  };
+}
+
+export async function setPublishSettings({ target, auto }, user) {
+  await ensureSchema();
+  if (!isSteward(user)) throw new RefdataError('Only data stewards can change publishing settings', 403);
+  const value = { target: String(target ?? '').trim(), auto: Boolean(auto) };
+  if (value.target && !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(value.target)) {
+    throw new RefdataError('Target must be catalog.schema, e.g. main.refdata');
+  }
+  await lakebase.query(
+    `INSERT INTO ${S}.setting (key, value, updated_by) VALUES ('uc_publish', $1, $2)
+     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now(), updated_by = EXCLUDED.updated_by`,
+    [value, user],
+  );
+  return getPublishSettings();
+}
+
+export async function startPublishRun(target, trigger, user) {
+  await ensureSchema();
+  const { rows } = await lakebase.query(
+    `INSERT INTO ${S}.publish_log (target, trigger, triggered_by) VALUES ($1, $2, $3) RETURNING *`,
+    [target, trigger, user],
+  );
+  return rows[0];
+}
+
+export async function finishPublishRun(id, { status, counts = null, error = null }) {
+  const { rows } = await lakebase.query(
+    `UPDATE ${S}.publish_log SET status = $2, counts = $3, error = $4, finished_at = now() WHERE id = $1 RETURNING *`,
+    [id, status, counts, error],
+  );
+  return rows[0];
+}
+
+export async function listPublishRuns(limit = 10) {
+  await ensureSchema();
+  const { rows } = await lakebase.query(`SELECT * FROM ${S}.publish_log ORDER BY id DESC LIMIT ${Number(limit) || 10}`);
+  return rows;
+}
+
+/** Everything that gets published, shaped like the Unity Catalog tables. */
+export async function exportSnapshot() {
+  await ensureSchema();
+  const [sets, values, mappings] = await Promise.all([
+    lakebase.query(`SELECT id, name, description, source_system, source_table, source_column, updated_at, updated_by
+                    FROM ${S}.code_set ORDER BY id`),
+    lakebase.query(`SELECT v.id, v.code_set_id, s.name AS code_set, v.code, v.label, v.description, v.sort_order, v.active,
+                           v.updated_at, v.updated_by
+                    FROM ${S}.code_value v JOIN ${S}.code_set s ON s.id = v.code_set_id ORDER BY v.code_set_id, v.id`),
+    lakebase.query(`SELECT m.id, m.code_set_id, s.name AS code_set, m.source_system, m.source_table, m.source_column,
+                           m.source_value, m.code_value_id, v.code, v.label, (m.code_value_id IS NULL) AS maps_to_missing,
+                           m.updated_at, m.updated_by
+                    FROM ${S}.code_mapping m JOIN ${S}.code_set s ON s.id = m.code_set_id
+                    LEFT JOIN ${S}.code_value v ON v.id = m.code_value_id ORDER BY m.id`),
+  ]);
+  return { code_set: sets.rows, code_value: values.rows, code_mapping: mappings.rows };
+}
+
+// Listeners called after a change request is applied (e.g. to auto-publish).
+const appliedListeners = [];
+export function onApplied(fn) {
+  appliedListeners.push(fn);
 }
 
 export async function listChanges({ status, kind, limit = 200 } = {}) {
@@ -609,7 +704,8 @@ export async function reviewChange(id, { decision, comment }, user) {
   if (!['approve', 'reject'].includes(decision)) throw new RefdataError('decision must be approve or reject');
   if (!isSteward(user)) throw new RefdataError('Only data stewards can review changes', 403);
 
-  return lakebase.transaction(async (db) => {
+  let applied = null;
+  const result = await lakebase.transaction(async (db) => {
     const { rows } = await db.query(`SELECT * FROM ${S}.change_request WHERE id = $1 FOR UPDATE`, [id]);
     const cr = rows[0];
     if (!cr) throw new RefdataError(`Change request ${id} not found`, 404);
@@ -640,6 +736,7 @@ export async function reviewChange(id, { decision, comment }, user) {
          WHERE id = $1 RETURNING *`,
         [id, user, comment || null, result.target],
       );
+      applied = done[0];
       return done[0];
     } catch (err) {
       await db.query('ROLLBACK TO SAVEPOINT apply_change');
@@ -651,4 +748,13 @@ export async function reviewChange(id, { decision, comment }, user) {
       return failed[0];
     }
   });
+  // After commit: notify listeners without delaying or failing the review.
+  if (applied) {
+    for (const fn of appliedListeners) {
+      Promise.resolve()
+        .then(() => fn(applied))
+        .catch((err) => console.error('applied listener failed:', err.message));
+    }
+  }
+  return result;
 }
