@@ -1,6 +1,93 @@
 const CARDINALITY_TEXT = { 'N:1': 'many-to-one', '1:1': 'one-to-one', 'M:N': 'many-to-many' };
 
-export default function TableDetails({ table, level, relationships, tablesById, onSelect, onClose }) {
+import { useState } from 'react';
+
+function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreateCodeSet }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  if (!canProfile && !profile) return null;
+
+  const run = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await onProfile();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const categorical = profile?.columns.filter((c) => c.categorical) ?? [];
+  const linkedBy = new Map((linked ?? []).map((l) => [l.source_column, l]));
+
+  return (
+    <>
+      <h4>Categorical fields</h4>
+      {!profile ? (
+        <button className="btn small" disabled={busy} onClick={run}>
+          {busy ? 'Profiling…' : 'Detect categorical fields'}
+        </button>
+      ) : (
+        <>
+          <p className="muted small">
+            {categorical.length} found in a sample of {profile.sampled.toLocaleString()} rows
+            {canProfile && (
+              <>
+                {' · '}
+                <button className="link" disabled={busy} onClick={run}>{busy ? 'profiling…' : 're-run'}</button>
+              </>
+            )}
+          </p>
+          {categorical.map((c) => (
+            <div key={c.name} className="cat-field">
+              <div className="cat-field__head">
+                <code>{c.name}</code>
+                <span className={`tag ${c.confidence === 'high' ? 'ok' : ''}`}>{c.confidence}</span>
+                <span className="grow" />
+                {linkedBy.has(c.name) ? (
+                  <span className="tag ok" title="Managed as reference data">code set: {linkedBy.get(c.name).name}</span>
+                ) : (
+                  onCreateCodeSet && (
+                    <button className="btn small" onClick={() => onCreateCodeSet(c.name)}>
+                      Create code set
+                    </button>
+                  )
+                )}
+              </div>
+              <div className="muted small">{c.reason}</div>
+              <div className="chips">
+                {c.topValues.map((v) => (
+                  <span key={v.value} className="chip" title={`${v.count} rows`}>
+                    {v.value} <em>{v.count}</em>
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+      {error && <div className="error inline">{error}</div>}
+    </>
+  );
+}
+
+export default function TableDetails({
+  table,
+  level,
+  relationships,
+  tablesById,
+  onSelect,
+  onClose,
+  profile,
+  canProfile,
+  onProfile,
+  linked,
+  onCreateCodeSet,
+  onEditData,
+}) {
+  const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
   const physical = level === 'physical';
   const outgoing = relationships.filter((r) => r.from.table === table.id);
   const incoming = relationships.filter((r) => r.to.table === table.id && r.from.table !== table.id);
@@ -42,6 +129,11 @@ export default function TableDetails({ table, level, relationships, tablesById, 
         <button className="icon-btn" onClick={onClose} aria-label="Close details">×</button>
       </div>
       {table.comment && <p className="details__comment">{table.comment}</p>}
+      {onEditData && (
+        <button className="btn small" onClick={onEditData}>
+          Edit master data
+        </button>
+      )}
 
       <h4>{physical ? 'Columns' : 'Attributes'}</h4>
       <table className="details__columns">
@@ -51,6 +143,7 @@ export default function TableDetails({ table, level, relationships, tablesById, 
               <td className="keys">
                 {c.pk && <span className="key pk">PK</span>}
                 {c.fk && <span className="key fk">FK</span>}
+                {categorical.has(c.name) && <span className="key cat">CAT</span>}
               </td>
               <td className={c.nullable ? '' : 'required'}>{c.label ?? c.name}</td>
               <td className="type">{c.displayType ?? c.type}</td>
@@ -58,6 +151,15 @@ export default function TableDetails({ table, level, relationships, tablesById, 
           ))}
         </tbody>
       </table>
+
+      <ProfileSection
+        table={table}
+        profile={profile}
+        canProfile={canProfile}
+        onProfile={onProfile}
+        linked={linked}
+        onCreateCodeSet={onCreateCodeSet}
+      />
 
       {outgoing.length > 0 && (
         <>

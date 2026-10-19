@@ -101,6 +101,29 @@ export async function apiGet(path, params = {}, userToken = null) {
   return res.json();
 }
 
+/** POST JSON to a Databricks REST endpoint (same auth rules as apiGet). */
+export async function apiPost(path, body, userToken = null) {
+  const host = getHost();
+  if (!host) throw new DatabricksError('DATABRICKS_HOST is not set', 500);
+  const token = userToken || (await getServicePrincipalToken());
+  if (!token) throw new DatabricksError('No Databricks credentials found.', 500);
+  const res = await fetch(`${host}${path}`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    let message = await res.text();
+    try {
+      message = JSON.parse(message).message ?? message;
+    } catch {
+      // keep raw text
+    }
+    throw new DatabricksError(`Databricks API ${path} failed (${res.status}): ${message}`, res.status);
+  }
+  return res.json();
+}
+
 /** Follows next_page_token pagination and concatenates `key` arrays. */
 export async function apiGetAll(path, key, params = {}, userToken = null) {
   const items = [];

@@ -55,6 +55,18 @@ export function attributeName(columnName) {
   return words(columnName).map(titleWord).join(' ');
 }
 
+/** "asset" + "assettype" → "Asset Type"; "asset" + "status" → "Asset Status". */
+export function codeSetName(tableName, column) {
+  const entity = entityName(tableName);
+  const flatEntity = entity.replace(/\s+/g, '').toLowerCase();
+  const col = String(column);
+  if (col.toLowerCase().startsWith(flatEntity) && col.length > flatEntity.length) {
+    const rest = col.slice(flatEntity.length).replace(/^[_\s-]+/, '');
+    return `${entity} ${attributeName(rest)}`;
+  }
+  return `${entity} ${attributeName(col)}`;
+}
+
 /** Maps Spark/Delta and Postgres types onto a small set of logical types. */
 export function logicalType(physical = '') {
   const t = physical.toLowerCase();

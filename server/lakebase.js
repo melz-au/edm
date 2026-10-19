@@ -6,6 +6,10 @@ import { getServicePrincipalToken } from './databricks.js';
 // The service principal's OAuth token is used as the password unless an
 // explicit PGPASSWORD is provided (e.g. for local development).
 
+// Keep DATE / TIMESTAMP values as Postgres prints them so editing a row
+// round-trips exactly (no timezone shifts through JavaScript Date).
+for (const oid of [1082, 1083, 1114, 1184, 1266]) pg.types.setTypeParser(oid, (v) => v);
+
 let pool = null;
 
 export function isConfigured() {
@@ -171,4 +175,78 @@ export function buildModelFromPgRows(schema, columns, constraints) {
 export async function close() {
   if (pool) await pool.end();
   pool = null;
+}
+
+// ---------------------------------------------------------------------------
+// Shared helpers for profiling, master data editing and the refdata store.
+
+/** Quotes a Postgres identifier. Only used on names validated against pg_catalog. */
+export const ident = (name) => `"${String(name).replace(/"/g, '""')}"`;
+
+export async function query(sql, params = []) {
+  return getPool().query(sql, params);
+}
+
+/** Runs `fn(client)` inside a transaction. */
+export async function transaction(fn) {
+  const client = await getPool().connect();
+  try {
+    await client.query('BEGIN');
+    const result = await fn(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+/**
+ * Columns and primary key of one table, read from pg_catalog. Throws 404 when
+ * the table doesn't exist, which also guards every identifier the API accepts.
+ */
+export async function tableMeta(schema, table) {
+  const { rows } = await query(
+    `SELECT a.attname::text AS name,
+            format_type(a.atttypid, a.atttypmod) AS type,
+            NOT a.attnotnull AS nullable,
+            a.atthasdef AS has_default,
+            a.attidentity <> '' OR a.attgenerated <> '' AS generated,
+            COALESCE(a.attnum = ANY(pk.conkey), false) AS pk,
+            EXISTS (SELECT 1 FROM pg_constraint f
+                    WHERE f.conrelid = c.oid AND f.contype = 'f' AND a.attnum = ANY(f.conkey)) AS fk
+     FROM pg_class c
+     JOIN pg_namespace n ON n.oid = c.relnamespace
+     JOIN pg_attribute a ON a.attrelid = c.oid AND a.attnum > 0 AND NOT a.attisdropped
+     LEFT JOIN pg_constraint pk ON pk.conrelid = c.oid AND pk.contype = 'p'
+     WHERE n.nspname = $1 AND c.relname = $2 AND c.relkind IN ('r', 'p', 'v', 'm', 'f')
+     ORDER BY a.attnum`,
+    [schema, table],
+  );
+  if (!rows.length) {
+    throw Object.assign(new Error(`Table ${schema}.${table} not found`), { status: 404 });
+  }
+  return { schema, table, columns: rows, primaryKey: rows.filter((r) => r.pk).map((r) => r.name) };
+}
+
+/** A page of rows, optionally filtered by a case-insensitive search over text columns. */
+export async function listRows(schema, table, { limit = 50, offset = 0, search = '' } = {}) {
+  const meta = await tableMeta(schema, table);
+  const from = `${ident(schema)}.${ident(table)}`;
+  const params = [];
+  let where = '';
+  if (search) {
+    params.push(`%${search}%`);
+    where = `WHERE ${meta.columns.map((c) => `${ident(c.name)}::text ILIKE $1`).join(' OR ')}`;
+  }
+  const order = meta.primaryKey.length ? `ORDER BY ${meta.primaryKey.map(ident).join(', ')}` : '';
+  const lim = Math.min(Math.max(Number(limit) || 50, 1), 500);
+  const off = Math.max(Number(offset) || 0, 0);
+  const [{ rows }, { rows: count }] = await Promise.all([
+    query(`SELECT * FROM ${from} ${where} ${order} LIMIT ${lim} OFFSET ${off}`, params),
+    query(`SELECT count(*)::int AS total FROM ${from} ${where}`, params),
+  ]);
+  return { ...meta, rows, total: count[0].total, limit: lim, offset: off };
 }

@@ -6,6 +6,9 @@ import * as databricks from './databricks.js';
 import * as uc from './unityCatalog.js';
 import * as lakebase from './lakebase.js';
 import { demoModel, inferRelationships } from './model.js';
+import * as profile from './profile.js';
+import * as refdata from './refdata.js';
+import * as warehouse from './warehouse.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '..', 'dist');
@@ -13,6 +16,12 @@ const port = Number(process.env.DATABRICKS_APP_PORT || process.env.PORT || 8000)
 
 const app = express();
 app.disable('x-powered-by');
+app.use(express.json({ limit: '2mb' }));
+
+// Databricks Apps sets these headers for the signed-in user. Outside Databricks
+// (local development) ERD_DEV_USER stands in.
+const currentUser = (req) =>
+  req.get('x-forwarded-email') || req.get('x-forwarded-preferred-username') || process.env.ERD_DEV_USER || 'local-user';
 
 // By default Unity Catalog is queried as the app's service principal. Set
 // ERD_USE_USER_TOKEN=true to query as the signed-in user instead; this needs
@@ -61,6 +70,8 @@ app.get('/api/config', (req, res) => {
         identity: ucIdentity(req),
       },
       lakebase: { available: lakebase.isConfigured(), ...lakebase.getConnectionInfo() },
+      warehouse: { available: warehouse.isConfigured() },
+      refdata: { available: lakebase.isConfigured(), schema: refdata.SCHEMA },
       demo: { available: true },
     },
   });
@@ -91,6 +102,111 @@ app.get('/api/lakebase/erd', wrap(async (req, res) => {
   required(req, 'schema');
   res.json(withInference(req, await lakebase.getErd(req.query.schema)));
 }));
+
+// Profiling: categorical column detection
+const pgRun = async (sql) => (await lakebase.query(sql)).rows;
+
+app.get('/api/lakebase/profile', wrap(async (req, res) => {
+  required(req, 'schema', 'table');
+  const meta = await lakebase.tableMeta(req.query.schema, req.query.table);
+  res.json(await profile.profileTable({
+    dialect: 'pg',
+    ref: profile.tableRef('pg', [meta.schema, meta.table]),
+    columns: meta.columns,
+    primaryKey: meta.primaryKey,
+    run: pgRun,
+  }));
+}));
+
+app.get('/api/uc/profile', wrap(async (req, res) => {
+  required(req, 'catalog', 'schema', 'table');
+  const { catalog, schema, table } = req.query;
+  const meta = await uc.getTable(catalog, schema, table, userToken(req));
+  res.json(await profile.profileTable({
+    dialect: 'spark',
+    ref: profile.tableRef('spark', [catalog, schema, table]),
+    columns: meta.columns,
+    primaryKey: meta.primaryKey,
+    run: (sql) => warehouse.runSql(sql, { userToken: userToken(req) }),
+  }));
+}));
+
+const assertColumn = (meta, column) => {
+  if (!meta.columns.some((c) => c.name === column)) {
+    throw Object.assign(new Error(`Column ${column} not found`), { status: 404 });
+  }
+};
+
+app.get('/api/lakebase/values', wrap(async (req, res) => {
+  required(req, 'schema', 'table', 'column');
+  const meta = await lakebase.tableMeta(req.query.schema, req.query.table);
+  assertColumn(meta, req.query.column);
+  const rows = await pgRun(
+    profile.distinctValuesSql('pg', profile.tableRef('pg', [meta.schema, meta.table]), req.query.column),
+  );
+  res.json(rows.map((r) => ({ value: r.v, count: Number(r.n) })));
+}));
+
+app.get('/api/uc/values', wrap(async (req, res) => {
+  required(req, 'catalog', 'schema', 'table', 'column');
+  const { catalog, schema, table, column } = req.query;
+  const meta = await uc.getTable(catalog, schema, table, userToken(req));
+  assertColumn(meta, column);
+  const rows = await warehouse.runSql(
+    profile.distinctValuesSql('spark', profile.tableRef('spark', [catalog, schema, table]), column),
+    { userToken: userToken(req) },
+  );
+  res.json(rows.map((r) => ({ value: r.v, count: Number(r.n) })));
+}));
+
+// Master data rows (Lakebase only)
+app.get('/api/lakebase/rows', wrap(async (req, res) => {
+  required(req, 'schema', 'table');
+  const { schema, table, limit, offset, search } = req.query;
+  res.json(await lakebase.listRows(schema, table, { limit, offset, search }));
+}));
+
+// Reference data and change requests
+app.get('/api/me', (req, res) => {
+  const user = currentUser(req);
+  res.json({
+    user,
+    isSteward: refdata.isSteward(user),
+    stewardsConfigured: refdata.stewards().length > 0,
+    selfApproval: process.env.ERD_ALLOW_SELF_APPROVAL === 'true',
+  });
+});
+
+app.get('/api/refdata/code-sets', wrap(async (_req, res) => res.json(await refdata.listCodeSets())));
+
+app.get('/api/refdata/code-sets/:id', wrap(async (req, res) => {
+  res.json(await refdata.getCodeSet(Number(req.params.id)));
+}));
+
+app.get('/api/refdata/linked', wrap(async (req, res) => {
+  required(req, 'system', 'table');
+  res.json(await refdata.codeSetsForSource(req.query.system, req.query.table));
+}));
+
+app.get('/api/refdata/changes', wrap(async (req, res) => {
+  res.json(await refdata.listChanges({ status: req.query.status, kind: req.query.kind, limit: req.query.limit }));
+}));
+
+app.get('/api/refdata/pending-count', wrap(async (_req, res) => res.json({ pending: await refdata.pendingCount() })));
+
+app.post('/api/refdata/changes', wrap(async (req, res) => {
+  res.status(201).json(await refdata.proposeChange(req.body ?? {}, currentUser(req)));
+}));
+
+app.post('/api/refdata/changes/:id/review', wrap(async (req, res) => {
+  res.json(await refdata.reviewChange(Number(req.params.id), req.body ?? {}, currentUser(req)));
+}));
+
+app.post('/api/refdata/changes/:id/cancel', wrap(async (req, res) => {
+  res.json(await refdata.cancelChange(Number(req.params.id), currentUser(req)));
+}));
+
+app.get('/api/refdata/audit', wrap(async (req, res) => res.json(await refdata.auditLog({ limit: req.query.limit }))));
 
 // Demo
 app.get('/api/demo/erd', (req, res) => res.json(withInference(req, demoModel())));

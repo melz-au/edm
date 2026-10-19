@@ -10,7 +10,11 @@ import {
 import TableNode from './components/TableNode.jsx';
 import TableDetails from './components/TableDetails.jsx';
 import ErdMarkers from './components/ErdMarkers.jsx';
-import { api } from './lib/api.js';
+import CodeSetDialog from './components/CodeSetDialog.jsx';
+import MasterDataEditor from './components/MasterDataEditor.jsx';
+import ReferenceData from './pages/ReferenceData.jsx';
+import Approvals from './pages/Approvals.jsx';
+import { api, sourceTableName } from './lib/api.js';
 import { buildGraph } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
 
@@ -20,6 +24,12 @@ const SOURCES = [
   { id: 'uc', label: 'Unity Catalog' },
   { id: 'lakebase', label: 'Lakebase' },
   { id: 'demo', label: 'Demo' },
+];
+
+const PAGES = [
+  { id: 'diagram', label: 'Diagram' },
+  { id: 'refdata', label: 'Reference data' },
+  { id: 'approvals', label: 'Approvals' },
 ];
 
 const matchesQuery = (table, query) =>
@@ -47,6 +57,14 @@ export default function App() {
   const requestId = useRef(0);
   const canvasRef = useRef(null);
   const defaults = useRef({});
+  const [page, setPage] = useState('diagram');
+  const [me, setMe] = useState(null);
+  const [pending, setPending] = useState(0);
+  const [profiles, setProfiles] = useState(() => new Map());
+  const [profiling, setProfiling] = useState(null); // { done, total } while profiling a schema
+  const [dialog, setDialog] = useState(null);
+  const [linked, setLinked] = useState([]);
+  const [notice, setNotice] = useState(null);
 
   // Runs an async loader, ignoring results from superseded requests.
   const run = useCallback(async (loader, onResult) => {
@@ -77,6 +95,19 @@ export default function App() {
         setSource('demo');
       });
   }, []);
+
+  const refdataAvailable = Boolean(config?.sources.refdata?.available);
+
+  const refreshPending = useCallback(() => {
+    if (!refdataAvailable) return;
+    api.pendingCount().then((r) => setPending(r.pending)).catch(() => {});
+  }, [refdataAvailable]);
+
+  useEffect(() => {
+    if (!refdataAvailable) return;
+    api.me().then(setMe).catch(() => {});
+    refreshPending();
+  }, [refdataAvailable, refreshPending]);
 
   // Source changed: reset and load the first level of choices.
   useEffect(() => {
@@ -149,6 +180,47 @@ export default function App() {
 
   useEffect(layout, [layout]);
 
+  // Profiles belong to the loaded schema.
+  useEffect(() => setProfiles(new Map()), [model]);
+
+  const canProfile = source === 'lakebase' || (source === 'uc' && Boolean(config?.sources.warehouse?.available));
+
+  const profileOne = useCallback(
+    async (table) => {
+      const result = await api.profile(source, table);
+      setProfiles((m) => new Map(m).set(table.id, result));
+      return result;
+    },
+    [source],
+  );
+
+  const profileAll = useCallback(async () => {
+    const tables = (model?.tables ?? []).filter((t) => !t.external);
+    setProfiling({ done: 0, total: tables.length });
+    setError(null);
+    const queue = [...tables];
+    const failures = [];
+    const worker = async () => {
+      while (queue.length) {
+        const t = queue.shift();
+        try {
+          await profileOne(t);
+        } catch (err) {
+          failures.push(`${t.name}: ${err.message}`);
+        }
+        setProfiling((p) => p && { ...p, done: p.done + 1 });
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    setProfiling(null);
+    if (failures.length) setError(`Profiling failed for ${failures.length} table(s). ${failures[0]}`);
+  }, [model, profileOne]);
+
+  const categoricalCount = useMemo(
+    () => [...profiles.values()].reduce((n, p) => n + p.columns.filter((c) => c.categorical).length, 0),
+    [profiles],
+  );
+
   const tablesById = useMemo(
     () => new Map((view?.tables ?? []).map((t) => [t.id, t])),
     [view],
@@ -160,6 +232,14 @@ export default function App() {
       rf.fitView({ nodes: [{ id }], duration: 500, padding: 0.6, maxZoom: 1.2 });
     },
     [rf],
+  );
+
+  const categoricalByTable = useMemo(
+    () =>
+      new Map(
+        [...profiles].map(([id, p]) => [id, new Set(p.columns.filter((c) => c.categorical).map((c) => c.name))]),
+      ),
+    [profiles],
   );
 
   // Highlight the active table, its neighbours and connecting edges.
@@ -202,12 +282,12 @@ export default function App() {
         ...n,
         selected: n.id === selectedId,
         className: classes.join(' '),
-        data: { ...n.data, highlightColumns: columnsByTable.get(n.id) },
+        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id) },
       };
     });
 
     return { displayNodes, displayEdges };
-  }, [nodes, edges, activeId, selectedId, query]);
+  }, [nodes, edges, activeId, selectedId, query, categoricalByTable]);
 
   const filteredTables = useMemo(
     () =>
@@ -218,6 +298,18 @@ export default function App() {
   );
 
   const selectedTable = selectedId ? tablesById.get(selectedId) : null;
+
+  // Code sets already created from the selected table's columns.
+  useEffect(() => {
+    setLinked([]);
+    if (!selectedTable || !refdataAvailable || source === 'demo' || selectedTable.external) return;
+    api.linkedCodeSets(source, sourceTableName(source, selectedTable)).then(setLinked).catch(() => {});
+  }, [selectedTable, refdataAvailable, source]);
+
+  const submitted = (change) => {
+    setNotice(`Submitted for approval: ${change.summary}`);
+    refreshPending();
+  };
   const inferredCount = view?.relationships.filter((r) => r.inferred).length ?? 0;
   const physical = level === 'physical';
 
@@ -237,10 +329,28 @@ export default function App() {
             </span>
           </div>
         )}
-        {config?.user && <div className="user">{config.user}</div>}
+        {refdataAvailable && (
+          <nav className="tabs">
+            {PAGES.map((p) => (
+              <button key={p.id} className={page === p.id ? 'active' : ''} onClick={() => setPage(p.id)}>
+                {p.label}
+                {p.id === 'approvals' && pending > 0 && <span className="badge">{pending}</span>}
+              </button>
+            ))}
+          </nav>
+        )}
+        {(me?.user || config?.user) && (
+          <div className="user">
+            {me?.user ?? config.user}
+            {me?.isSteward && <span className="tag steward">steward</span>}
+          </div>
+        )}
       </header>
 
-      <div className="body">
+      {page === 'refdata' && <ReferenceData onChanged={refreshPending} />}
+      {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
+
+      <div className="body" hidden={page !== 'diagram'}>
         <aside className="sidebar">
           <section>
             <label className="label">Source</label>
@@ -333,7 +443,27 @@ export default function App() {
             </select>
           </section>
 
+          {canProfile && model && (
+            <section>
+              <label className="label">Data</label>
+              <button className="btn block" disabled={Boolean(profiling)} onClick={profileAll}>
+                {profiling ? `Profiling ${profiling.done}/${profiling.total} tables…` : 'Detect categorical fields'}
+              </button>
+              {profiles.size > 0 && !profiling && (
+                <div className="muted small" style={{ marginTop: 6 }}>
+                  {categoricalCount} categorical field{categoricalCount === 1 ? '' : 's'} in {profiles.size} profiled table
+                  {profiles.size === 1 ? '' : 's'} · marked <span className="key cat">CAT</span>
+                </div>
+              )}
+            </section>
+          )}
+
           {error && <div className="error">{error}</div>}
+          {notice && (
+            <div className="notice" onClick={() => setNotice(null)}>
+              {notice}
+            </div>
+          )}
 
           {model && (
             <section className="tables">
@@ -415,10 +545,33 @@ export default function App() {
               tablesById={tablesById}
               onSelect={focusTable}
               onClose={() => setSelectedId(null)}
+              profile={profiles.get(selectedTable.id)}
+              canProfile={canProfile && !selectedTable.external}
+              onProfile={() => profileOne(selectedTable)}
+              linked={linked}
+              onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
+              onEditData={
+                refdataAvailable && source === 'lakebase' && !selectedTable.external
+                  ? () => setDialog({ type: 'masterData', table: selectedTable })
+                  : null
+              }
             />
           )}
         </main>
       </div>
+
+      {dialog?.type === 'codeSet' && (
+        <CodeSetDialog
+          source={source}
+          table={dialog.table}
+          column={dialog.column}
+          onClose={() => setDialog(null)}
+          onSubmitted={submitted}
+        />
+      )}
+      {dialog?.type === 'masterData' && (
+        <MasterDataEditor table={dialog.table} onClose={() => setDialog(null)} onSubmitted={submitted} />
+      )}
     </div>
   );
 }
