@@ -14,6 +14,7 @@ test('column names map to PII types across naming styles', () => {
     password_hash: 'credential', gender: 'special_category',
     street_address: 'address', CHANGEBY: 'person_id', created_by: 'person_id', username: 'person_id',
     latitude: 'location', postcode: 'location',
+    concession_card_number: 'government_id', preferred_name: 'person_name', account_manager: 'person_id',
   };
   for (const [name, type] of Object.entries(cases)) assert.equal(detectByName(name), type, name);
   for (const name of ['status', 'assettype', 'description', 'serialnum', 'siteid', 'glaccount', 'product_name', 'orgid', 'location', 'notes']) {

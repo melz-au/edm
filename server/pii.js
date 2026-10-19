@@ -42,19 +42,19 @@ export const DIRECT_IDENTIFIERS = new Set([
 // ("First_Name" → "firstname"), so snake_case, camelCase and SHOUTING all work.
 const NAME_PATTERNS = [
   ['credential', /(password|passwd|pwd$|secret|apikey|accesstoken|authtoken|privatekey)/],
-  ['government_id', /(ssn$|socialsecurity|^tfn|taxfile|taxid|medicare|passport|licen[cs]eno|licen[cs]enum|driverslicen|driverlicen|nationalid|^nino?$)/],
+  ['government_id', /(ssn$|socialsecurity|^tfn|taxfile|taxid|medicare|passport|licen[cs]eno|licen[cs]enum|driverslicen|driverlicen|nationalid|^nino?$|concessioncard|pensioncard|healthcarecard|centrelink|^crn$|veteranscard|dvacard)/],
   ['financial', /(creditcard|cardnumber|cardno|cardnum|^ccn$|^pan$|iban|^bsb|bankaccount|accountnumber|^accountno|routingnumber|sortcode)/],
   ['date_of_birth', /(^dob$|dateofbirth|birthdate|birthday|^dob[a-z]*$)/],
   ['special_category', /(gender|^sex$|ethnic|^race$|religio|health|diagnos|disabilit|sexualorient|medicalcond|criminal)/],
   ['email', /(e?mail(address)?$|^email)/],
   ['phone', /(phone|mobile|cellno|^cell$|^tel$|telephone|^fax)/],
-  ['person_name', /(firstname|lastname|surname|givenname|fullname|middlename|maidenname|forename|familyname|(contact|customer|employee|person|patient|student|staff|member)name$)/],
+  ['person_name', /(firstname|lastname|surname|givenname|fullname|middlename|maidenname|forename|familyname|preferredname|nickname|(contact|customer|employee|person|patient|student|staff|member)name$)/],
   ['address', /(address(line)?\d?$|^addr|street|suburb|postaladdr|homeaddr|residential)/],
   ['location', /(^latitude|^longitude|^lat$|^lon$|^lng$|latitude[xy]?$|longitude[xy]?$|geolocation|coordinates|postcode|zipcode|^zip$|postalcode)/],
   ['ip_address', /(ipaddr|^ip$|ipv4|ipv6|macaddr|deviceid)/],
   [
     'person_id',
-    /(username|^login|^userid$|^user$|employeeid|^empno|personid|staffid|customerid|patientid|studentid|(created|changed|modified|updated|requested|approved|entered|reported|assigned)by$|^changeby$|^createby$|^owner$|ownedby|assignedto)/,
+    /(username|^login|^userid$|^user$|employeeid|^empno|personid|staffid|customerid|patientid|studentid|(created|changed|modified|updated|requested|approved|entered|reported|assigned)by$|^changeby$|^createby$|^owner$|ownedby|assignedto|(account|relationship|case)manager$)/,
   ],
 ];
 
