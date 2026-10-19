@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { landingVolume, loadSql, loadUpload, safeFileName, sqlString, validateLoad } from './ingest.js';
+import { createSchema, landingVolume, loadSql, loadUpload, safeFileName, sqlString, validateLoad } from './ingest.js';
 
 const LOAD_ID = '0b6c1f9e-1d2a-4c3b-9e8f-123456789abc';
 const request = (over = {}) => ({
@@ -92,4 +92,37 @@ test('loadUpload checks the target table against the mode and reports the row co
   });
   assert.equal(statements.length, 2);
   assert.match(statements[1], new RegExp(`WHERE _load_id = '${LOAD_ID}'`));
+});
+
+test('createSchema validates the name, creates it if missing and explains permission errors', async () => {
+  const statements = [];
+  const runSql = async (sql) => {
+    statements.push(sql);
+    return [];
+  };
+  await assert.rejects(createSchema({ catalog: 'main', schema: 'Raw Files', user: 'u', runSql }), /Schema names/);
+  await assert.rejects(createSchema({ catalog: '', schema: 'bronze', user: 'u', runSql }), /catalog/);
+  assert.equal(statements.length, 0);
+
+  assert.deepEqual(await createSchema({ catalog: 'main', schema: 'bronze', user: "o'neil@example.com", runSql }), {
+    catalog: 'main',
+    schema: 'bronze',
+  });
+  assert.match(statements[0], /^CREATE SCHEMA IF NOT EXISTS `main`\.`bronze` COMMENT 'Created by o\\'neil@example\.com/);
+
+  const denied = async () => {
+    throw new Error('SQL warehouse query failed: [PERMISSION_DENIED] User does not have CREATE SCHEMA on Catalog main');
+  };
+  await assert.rejects(createSchema({ catalog: 'main', schema: 'bronze', user: 'u', runSql: denied }), (err) => {
+    assert.equal(err.status, 403);
+    assert.match(err.message, /isn't allowed to create schemas in main/);
+    return true;
+  });
+
+  process.env.ERD_UPLOAD_CREATE_SCHEMA = 'false';
+  try {
+    await assert.rejects(createSchema({ catalog: 'main', schema: 'bronze', user: 'u', runSql }), /turned off/);
+  } finally {
+    delete process.env.ERD_UPLOAD_CREATE_SCHEMA;
+  }
 });

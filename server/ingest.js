@@ -47,6 +47,32 @@ export const safeFileName = (name) =>
     .replace(/^[._]+/, '')
     .slice(-120) || 'upload.csv';
 
+/** Whether people may create new schemas from the upload page (ERD_UPLOAD_CREATE_SCHEMA, default true). */
+export const canCreateSchema = () => process.env.ERD_UPLOAD_CREATE_SCHEMA !== 'false';
+
+/** Creates catalog.schema for uploads if it doesn't exist yet. */
+export async function createSchema({ catalog, schema, user, runSql }) {
+  if (!canCreateSchema()) throw Object.assign(new Error('Creating schemas from the upload page is turned off.'), { status: 403 });
+  if (!catalog) throw badRequest('Choose a catalog.');
+  if (!NAME_RE.test(schema ?? '')) {
+    throw badRequest('Schema names may only use lower-case letters, numbers and underscores, and must not start with a number.');
+  }
+  try {
+    await runSql(
+      `CREATE SCHEMA IF NOT EXISTS ${tableRef('spark', [catalog, schema])} COMMENT ${sqlString(`Created by ${user} from the EDM app upload page`)}`,
+    );
+  } catch (err) {
+    if (/PERMISSION_DENIED|privilege|not authorized/i.test(err.message)) {
+      throw Object.assign(
+        new Error(`The app isn't allowed to create schemas in ${catalog}. Choose an existing schema, or ask an admin to grant the app CREATE SCHEMA on this catalog.`),
+        { status: 403 },
+      );
+    }
+    throw err;
+  }
+  return { catalog, schema };
+}
+
 /** Stores the raw file in the landing volume and returns where it went. */
 export async function storeUpload({ catalog, schema, fileName, body, runSql, userToken }) {
   if (!catalog || !schema) throw badRequest('Choose a catalog and schema first.');
