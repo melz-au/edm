@@ -432,3 +432,17 @@ pre.json { font-size: 11px; max-width: 420px; overflow: auto; background: var(--
 .pii-field.medium { border-left-color: #f38744; }
 .pii-field.low { border-left-color: #fdb022; }
 .chip.masked { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+/* Code mapping */
+.coverage { height: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; margin-top: 4px; }
+.coverage > div { height: 100%; background: var(--ok); transition: width 200ms; }
+.grid select { border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; font-size: 13px; max-width: 280px; }
+.grid tr.unmapped td:first-child code { color: var(--pii); }
+.field select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; color: var(--text); }
+.check.small { font-size: 12px; margin: 8px 0; }
+.page-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 8px 0 12px; }
+.page-tabs button { border: 0; background: none; padding: 8px 12px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; }
+.page-tabs button.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 500; }
+.sql-box { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12px; }
+.sql-box pre { margin: 6px 0 0; white-space: pre-wrap; font-size: 12px; }
+.mapping-group { margin-bottom: 18px; }

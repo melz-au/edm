@@ -8,6 +8,7 @@ import * as lakebase from './lakebase.js';
 import { demoModel, inferRelationships } from './model.js';
 import * as profile from './profile.js';
 import * as pii from './pii.js';
+import { suggestMappings } from './mapping.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 
@@ -189,6 +190,23 @@ app.get('/api/refdata/code-sets', wrap(async (_req, res) => res.json(await refda
 
 app.get('/api/refdata/code-sets/:id', wrap(async (req, res) => {
   res.json(await refdata.getCodeSet(Number(req.params.id)));
+}));
+
+app.get('/api/refdata/code-sets/:id/mappings', wrap(async (req, res) => {
+  res.json(await refdata.listMappings(Number(req.params.id)));
+}));
+
+// Suggested target codes for raw source values: body { values: [string] }.
+app.post('/api/refdata/code-sets/:id/suggest', wrap(async (req, res) => {
+  const set = await refdata.getCodeSet(Number(req.params.id));
+  const values = (req.body?.values ?? []).map(String).slice(0, 5000);
+  const known = await refdata.listMappings(set.id);
+  res.json(suggestMappings(values, set.values, known));
+}));
+
+app.get('/api/refdata/mappings', wrap(async (req, res) => {
+  required(req, 'system', 'table');
+  res.json(await refdata.mappingsForSource(req.query.system, req.query.table, req.query.column));
 }));
 
 app.get('/api/refdata/linked', wrap(async (req, res) => {

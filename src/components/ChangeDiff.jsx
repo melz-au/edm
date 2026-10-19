@@ -27,6 +27,31 @@ export default function ChangeDiff({ change }) {
     );
   }
 
+  if (kind === 'code_mapping') {
+    const codes = payload.codes ?? {};
+    const name = (m) => (!m ? <span className="muted">(unmapped)</span> : m.codeValueId === null ? '∅ missing' : codes[m.codeValueId] ?? `#${m.codeValueId}`);
+    const rows =
+      action === 'delete'
+        ? payload.values.map((v) => ({ value: v, from: previous?.[v], to: null }))
+        : payload.mappings.map((m) => ({ value: m.value, from: previous?.[m.value], to: { codeValueId: m.codeValueId } }));
+    return (
+      <table className="grid compact diff">
+        <thead>
+          <tr><th>Source value ({change.target.source?.table}.{change.target.source?.column})</th><th>Current</th><th>Proposed</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.value}>
+              <th><code>{r.value === '' ? '(empty)' : r.value.replace(/^ +| +$/g, (m) => '␣'.repeat(m.length))}</code></th>
+              <td className={r.from ? 'old' : ''}>{name(r.from)}</td>
+              <td className="new">{name(r.to)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  }
+
   if (action === 'delete') {
     return (
       <table className="grid compact diff">

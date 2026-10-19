@@ -133,3 +133,55 @@ test('guards: own requests, unknown columns, protected schema, cancel and reject
   assert.equal((await refdata.cancelChange(mine.id, 'a@x.com')).status, 'cancelled');
   assert.equal(await refdata.pendingCount(), 0);
 });
+
+test('code mappings: propose, approve, conflict check, view, remove', { skip: !enabled }, async () => {
+  const set = await refdata.proposeChange(
+    { kind: 'code_set', action: 'create', payload: { name: 'Account Status', values: [{ code: 'ACTIVE' }, { code: 'CLOSED' }] } },
+    'analyst@x.com',
+  );
+  const { target: { codeSetId } } = await refdata.reviewChange(set.id, { decision: 'approve' }, 'steward@x.com');
+  const codes = Object.fromEntries((await refdata.getCodeSet(codeSetId)).values.map((v) => [v.code, v.id]));
+  const source = { system: 'lakebase', table: 'billing.customer_master', column: 'ACCT_STATUS' };
+
+  const cr = await refdata.proposeChange(
+    {
+      kind: 'code_mapping',
+      action: 'create',
+      target: { codeSetId, source },
+      payload: { mappings: [{ value: 'A', codeValueId: codes.ACTIVE }, { value: 'Closed ', codeValueId: codes.CLOSED }, { value: 'N/A', codeValueId: null }] },
+    },
+    'analyst@x.com',
+  );
+  assert.match(cr.summary, /Map 3 values of billing.customer_master.ACCT_STATUS to Account Status/);
+  assert.equal(cr.payload.codes[codes.ACTIVE], 'ACTIVE');
+  assert.equal((await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+
+  const { rows } = await lakebase.query(
+    `SELECT source_value, code, maps_to_missing FROM ${REF}.code_mapping_v WHERE source_column = 'ACCT_STATUS' ORDER BY 1`,
+  );
+  assert.deepEqual(rows.map((r) => [r.source_value, r.code, r.maps_to_missing]), [
+    ['A', 'ACTIVE', false], ['Closed ', 'CLOSED', false], ['N/A', null, true],
+  ]);
+
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: codes.ACTIVE }] } }, 'a@x.com'),
+    /already mapped that way/,
+  );
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'X', codeValueId: 99999 }] } }, 'a@x.com'),
+    /is not in Account Status/,
+  );
+
+  // Two competing remaps: the second approval fails the conflict check.
+  const r1 = await refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: codes.CLOSED }] } }, 'a@x.com');
+  const r2 = await refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: null }] } }, 'b@x.com');
+  assert.equal((await refdata.reviewChange(r1.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+  const failed = await refdata.reviewChange(r2.id, { decision: 'approve' }, 'steward@x.com');
+  assert.equal(failed.status, 'failed');
+  assert.match(failed.error, /Mappings changed/);
+
+  const del = await refdata.proposeChange({ kind: 'code_mapping', action: 'delete', target: { codeSetId, source }, payload: { values: ['N/A'] } }, 'a@x.com');
+  assert.equal((await refdata.reviewChange(del.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+  assert.deepEqual((await refdata.listMappings(codeSetId)).map((m) => m.source_value), ['A', 'Closed ']);
+  assert.equal((await refdata.mappingsForSource('lakebase', 'billing.customer_master', 'ACCT_STATUS')).length, 2);
+});

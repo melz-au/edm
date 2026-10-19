@@ -2,7 +2,7 @@ const CARDINALITY_TEXT = { 'N:1': 'many-to-one', '1:1': 'one-to-one', 'M:N': 'ma
 
 import { useState } from 'react';
 
-function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreateCodeSet }) {
+function ProfileSection({ table, profile, canProfile, onProfile, linked, mapped, onCreateCodeSet, onMapCodes }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   if (!canProfile && !profile) return null;
@@ -22,6 +22,12 @@ function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreat
   const categorical = profile?.columns.filter((c) => c.categorical) ?? [];
   const personal = profile?.columns.filter((c) => c.pii) ?? [];
   const linkedBy = new Map((linked ?? []).map((l) => [l.source_column, l]));
+  const mappedBy = new Map();
+  for (const m of mapped ?? []) {
+    const key = m.source_column;
+    if (!mappedBy.has(key)) mappedBy.set(key, { name: m.code_set_name, count: 0 });
+    mappedBy.get(key).count += 1;
+  }
   const rank = { high: 0, medium: 1, low: 2 };
 
   return (
@@ -77,14 +83,27 @@ function ProfileSection({ table, profile, canProfile, onProfile, linked, onCreat
                 ) : linkedBy.has(c.name) ? (
                   <span className="tag ok" title="Managed as reference data">code set: {linkedBy.get(c.name).name}</span>
                 ) : (
-                  onCreateCodeSet && (
-                    <button className="btn small" onClick={() => onCreateCodeSet(c.name)}>
-                      Create code set
-                    </button>
-                  )
+                  <>
+                    {onMapCodes && (
+                      <button className="btn small" onClick={() => onMapCodes(c.name)}>
+                        {mappedBy.has(c.name) ? 'Edit mapping' : 'Map to code set'}
+                      </button>
+                    )}
+                    {onCreateCodeSet && !mappedBy.has(c.name) && (
+                      <button className="btn small" onClick={() => onCreateCodeSet(c.name)}>
+                        Create code set
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
               <div className="muted small">{c.reason}</div>
+              {mappedBy.has(c.name) && (
+                <div className="small">
+                  <span className="tag ok">mapped → {mappedBy.get(c.name).name}</span>{' '}
+                  <span className="muted">{mappedBy.get(c.name).count} source values mapped</span>
+                </div>
+              )}
               <div className="chips">
                 {c.topValues.map((v) => (
                   <span key={v.value} className="chip" title={`${v.count} rows`}>
@@ -112,7 +131,9 @@ export default function TableDetails({
   canProfile,
   onProfile,
   linked,
+  mapped,
   onCreateCodeSet,
+  onMapCodes,
   onEditData,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
@@ -188,7 +209,9 @@ export default function TableDetails({
         canProfile={canProfile}
         onProfile={onProfile}
         linked={linked}
+        mapped={mapped}
         onCreateCodeSet={onCreateCodeSet}
+        onMapCodes={onMapCodes}
       />
 
       {outgoing.length > 0 && (

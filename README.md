@@ -73,6 +73,28 @@ compliance guarantee: review the results.
 add labels and descriptions, and submit. The **Reference data** tab lists code
 sets, where codes can be added, edited, deactivated and reactivated.
 
+**Code mapping.** Other systems often use different codes for the same thing,
+such as billing `A`, `act` and `Active` versus CRM `ACTIVE`. To standardise
+them, use *Map to code set* on a categorical field from the other source. This
+loads every distinct value with its row count and suggests a target code for
+each one:
+
+- exact match, ignoring case, spaces and punctuation (`Closed ` → CLOSED, `S.A.` → SA)
+- abbreviation (`act` → ACTIVE)
+- initials (`DD` → Direct Debit)
+- a word of the value (`Credit Card` → CARD)
+- letters in order (`CHQ` → CHEQUE)
+- small typos
+- missing-value tokens (`N/A`, `NULL`, `-` → *treat as missing*)
+- earlier decisions for the same value in another source
+
+Ties and anything without a match are left for you to decide, and a coverage
+bar shows the share of rows mapped. The result is submitted for approval like
+any other change, with a conflict check on approval. Approved mappings live in
+`refdata.code_mapping`. The **Source mappings** tab of each code set lists
+them, and the view `refdata.code_mapping_v` (raw value → code, label,
+`maps_to_missing`) is ready for pipelines to join.
+
 **Master data.** For Lakebase tables with a primary key, *Edit master data* in
 the details panel opens a row browser with search and paging. You can propose
 new rows, edits and deletes.
@@ -98,6 +120,8 @@ which is created on first use:
 | --- | --- |
 | `code_set` | Named code lists, optionally linked to the source column |
 | `code_value` | Codes with label, description, sort order and active flag |
+| `code_mapping` | Raw source values (system, table, column, value) mapped to a code, or to *missing* |
+| `code_mapping_v` | View joining the mappings to set name, code and label, for pipelines |
 | `change_request` | Every proposed change, its status and review |
 | `audit_log` | Every applied change with before/after JSON |
 
@@ -128,7 +152,8 @@ server/   Express: serves dist/ and the /api endpoints
   profile.js       categorical field detection (SQL for Postgres and Databricks SQL)
   pii.js           personal data detection (name patterns, value formats, masking)
   warehouse.js     Statement Execution API client for Unity Catalog profiling
-  refdata.js       code sets, change requests, approvals and audit log (Lakebase)
+  refdata.js       code sets, mappings, change requests, approvals and audit log (Lakebase)
+  mapping.js       suggests standard codes for raw source values
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
@@ -148,6 +173,8 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/refdata/code-sets[/:id]` | Code sets and their values |
 | `GET /api/refdata/changes?status=` · `POST /api/refdata/changes` | List or propose change requests |
 | `POST /api/refdata/changes/:id/review` · `…/cancel` | Approve/reject (`{decision, comment}`) or cancel |
+| `GET /api/refdata/code-sets/:id/mappings` · `GET /api/refdata/mappings?system=&table=` | Mappings by code set or by source table |
+| `POST /api/refdata/code-sets/:id/suggest` | Suggested codes for `{values: [...]}` |
 | `GET /api/refdata/audit` | Change history |
 
 ## Deploy as a Databricks App
