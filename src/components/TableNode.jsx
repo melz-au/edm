@@ -18,7 +18,7 @@ const TYPE_BADGE = {
 };
 
 function TableNode({ data }) {
-  const { table, columnMode, level, highlightColumns, categorical, pii } = data;
+  const { table, columnMode, level, highlightColumns, categorical, pii, dq } = data;
   const columns = visibleColumns(table, columnMode);
   const hidden = table.columns.length - columns.length;
   const badge = TYPE_BADGE[table.type];
@@ -32,6 +32,14 @@ function TableNode({ data }) {
         <span className="table-node__name">{table.label ?? table.name}</span>
         {badge && level === 'physical' && <span className="table-node__badge">{badge}</span>}
         {table.external && <span className="table-node__schema">{table.schema}</span>}
+        {dq && (
+          <span
+            className={`table-node__dq ${dq.score >= 0.98 ? 'ok' : dq.score >= 0.9 ? 'warn' : 'bad'}`}
+            title={`Data quality: ${dq.rules} rules, ${dq.failing} failing`}
+          >
+            DQ {Math.round(dq.score * 100)}%
+          </span>
+        )}
         <Handle type="source" position={Position.Right} id={TABLE_HANDLE_OUT} className="erd-handle" />
       </div>
       {columns.map((c) => (

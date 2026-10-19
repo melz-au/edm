@@ -10,6 +10,8 @@ import * as profile from './profile.js';
 import * as pii from './pii.js';
 import { suggestMappings } from './mapping.js';
 import * as ucpublish from './ucpublish.js';
+import * as dq from './dq.js';
+import * as dqstore from './dqstore.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 
@@ -231,6 +233,101 @@ app.post('/api/refdata/changes/:id/review', wrap(async (req, res) => {
 
 app.post('/api/refdata/changes/:id/cancel', wrap(async (req, res) => {
   res.json(await refdata.cancelChange(Number(req.params.id), currentUser(req)));
+}));
+
+// Data quality: suggest rules from a profile, store them, run them.
+
+/** Everything needed to profile or check one table, for either source. */
+async function tableContext(req, { system, catalog, schema, table }) {
+  if (system === 'uc') {
+    const token = userToken(req);
+    const meta = await uc.getTable(catalog, schema, table, token);
+    return {
+      name: `${catalog}.${schema}.${table}`,
+      dialect: 'spark',
+      ref: dq.tableRef('spark', [catalog, schema, table]),
+      columns: meta.columns,
+      primaryKey: meta.primaryKey,
+      exec: (sql) => warehouse.runSql(sql, { userToken: token }),
+      parentRef: async (name) => {
+        const [c, s2, t] = name.split('.');
+        await uc.getTable(c, s2, t, token);
+        return dq.tableRef('spark', [c, s2, t]);
+      },
+      relationships: async () => (await uc.getErd(catalog, schema, token)).relationships,
+    };
+  }
+  if (system === 'lakebase') {
+    const meta = await lakebase.tableMeta(schema, table);
+    return {
+      name: `${schema}.${table}`,
+      dialect: 'pg',
+      ref: dq.tableRef('pg', [schema, table]),
+      columns: meta.columns,
+      primaryKey: meta.primaryKey,
+      exec: pgRun,
+      parentRef: async (name) => {
+        const [s2, t] = name.split('.');
+        await lakebase.tableMeta(s2, t);
+        return dq.tableRef('pg', [s2, t]);
+      },
+      relationships: async () => (await lakebase.getErd(schema)).relationships,
+    };
+  }
+  throw Object.assign(new Error('system must be uc or lakebase'), { status: 400 });
+}
+
+const tableParams = (src) => ({ system: src.system, catalog: src.catalog, schema: src.schema, table: src.table });
+
+app.get('/api/dq/suggest', wrap(async (req, res) => {
+  required(req, 'system', 'schema', 'table');
+  const ctx = await tableContext(req, tableParams(req.query));
+  const prof = await profile.profileTable({
+    dialect: ctx.dialect, ref: ctx.ref, columns: ctx.columns, primaryKey: ctx.primaryKey, run: ctx.exec,
+  });
+  const relationships = (await ctx.relationships()).filter((r) => r.from.table === ctx.name);
+  const [linked, mapped, existing] = await Promise.all([
+    refdata.codeSetsForSource(req.query.system, ctx.name),
+    refdata.mappingsForSource(req.query.system, ctx.name),
+    dqstore.listRules(req.query.system, ctx.name),
+  ]);
+  const codeSets = [
+    ...mapped.map((m) => ({ column: m.source_column, codeSetId: m.code_set_id, name: m.code_set_name, from: 'mapping' })),
+    ...linked.map((l) => ({ column: l.source_column, codeSetId: l.id, name: l.name, from: 'code_set' })),
+  ];
+  const existingKeys = new Set(existing.map((r) => `${r.column_name}|${r.rule_type}`));
+  const suggestions = dq
+    .suggestRules({ table: { id: ctx.name, columns: ctx.columns }, profile: prof, relationships, codeSets })
+    .map((s) => ({ ...s, exists: existingKeys.has(`${s.column}|${s.rule_type}`) }));
+  res.json({ table: ctx.name, sampled: prof.sampled, suggestions });
+}));
+
+app.get('/api/dq/rules', wrap(async (req, res) => {
+  required(req, 'system', 'table');
+  res.json(await dqstore.listRules(req.query.system, req.query.table));
+}));
+
+app.post('/api/dq/rules', wrap(async (req, res) => {
+  const { system, table, rules } = req.body ?? {};
+  if (!system || !table || !Array.isArray(rules)) {
+    throw Object.assign(new Error('system, table and rules are required'), { status: 400 });
+  }
+  res.status(201).json(await dqstore.addRules(system, table, rules, currentUser(req)));
+}));
+
+app.delete('/api/dq/rules/:id', wrap(async (req, res) => {
+  await dqstore.deleteRule(Number(req.params.id));
+  res.json({ ok: true });
+}));
+
+app.post('/api/dq/run', wrap(async (req, res) => {
+  const ctx = await tableContext(req, tableParams(req.body ?? {}));
+  res.json(await dqstore.runRules({ system: req.body.system, table: ctx.name, ...ctx }));
+}));
+
+app.get('/api/dq/summary', wrap(async (req, res) => {
+  required(req, 'system', 'prefix');
+  res.json(await dqstore.summary(req.query.system, req.query.prefix));
 }));
 
 // Publishing reference data to Unity Catalog

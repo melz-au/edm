@@ -68,6 +68,37 @@ profile, in categorical top values and in the distinct-values endpoint, and
 PII columns aren't offered as code sets. Detection is a heuristic aid, not a
 compliance guarantee: review the results.
 
+**Data quality checks.** In a table's details panel, **Data quality →
+Suggest rules** profiles the table and proposes checks. Each comes with the
+reason it was suggested:
+
+| Rule | Suggested when |
+| --- | --- |
+| Unique | Primary keys, and identifier-like columns (`*_NO`, `*_ID`, email) that are at least 90% distinct, so the repeats get caught |
+| Not null | Primary keys, and columns at least 95% filled. Blanks and tokens like `N/A`, `NULL` and `-` count as missing |
+| Allowed values | Categorical columns. Values come from the linked code set, the approved code mappings, or the dominant values. In a clean list every value stays allowed; in a dirty one, spelling variants fold into the main spelling (`S.A.`, `sa` → `SA`) and the variants fail |
+| Format | The dominant value shape (`AA9999999`, `99/99/9999`, `999-999`) for structured columns, plus email and Australian phone formats for detected PII |
+| Not in the future | Date columns for past events (birth, created, install, connect, …) |
+| References | Declared foreign keys: the value must exist in the parent table. This is useful for Unity Catalog, where keys aren't enforced |
+
+You pick which suggestions to add, then **Run checks**. Each rule shows its pass
+rate, failing row count and most common failing values (masked for PII). Rules
+other than not null judge present values only. The table gets an overall score,
+also shown as a **DQ %** badge on the diagram. Rules and their latest results are
+stored in `refdata.dq_rule` in Lakebase. Checks run directly on Lakebase, or
+through the SQL warehouse for Unity Catalog tables.
+
+On `sample-data/billing` the suggested rules catch the injected issues, for
+example:
+
+- the 10 exact duplicate rows
+- duplicate account numbers and shared meters
+- every non-standard `STATE`, `ACCT_TYPE` and `CONC_FLAG` value
+- the 27 home phones without an area code
+- the 16 bank accounts in scientific notation
+- invalid and badly formatted emails
+- mixed date formats
+
 **Reference data.** Any categorical field can become a managed **code set**:
 *Create code set* reads all of the column's distinct values. Review the codes,
 add labels and descriptions, and submit. The **Reference data** tab lists code
@@ -166,6 +197,7 @@ which is created on first use:
 | `code_mapping` | Raw source values (system, table, column, value) mapped to a code, or to *missing* |
 | `code_mapping_v` | View joining the mappings to set name, code and label, for pipelines |
 | `setting`, `publish_log` | Unity Catalog publish settings and run history |
+| `dq_rule` | Data quality rules per table, with their latest result |
 | `change_request` | Every proposed change, its status and review |
 | `audit_log` | Every applied change with before/after JSON |
 
@@ -199,6 +231,8 @@ server/   Express: serves dist/ and the /api endpoints
   refdata.js       code sets, mappings, change requests, approvals and audit log (Lakebase)
   mapping.js       suggests standard codes for raw source values
   ucpublish.js     publishes reference data to Unity Catalog as Delta tables
+  dq.js            data quality rule suggestions and check SQL (Postgres and Databricks SQL)
+  dqstore.js       stores data quality rules and runs them
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
@@ -221,6 +255,9 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/refdata/code-sets/:id/mappings` · `GET /api/refdata/mappings?system=&table=` | Mappings by code set or by source table |
 | `POST /api/refdata/code-sets/:id/suggest` | Suggested codes for `{values: [...]}` |
 | `GET /api/refdata/publish` · `PUT …/publish/settings` · `POST /api/refdata/publish` | Unity Catalog publish status, settings and run (stewards) |
+| `GET /api/dq/suggest?system=&schema=&table=` | Profile a table and suggest data quality rules |
+| `GET/POST /api/dq/rules` · `DELETE /api/dq/rules/:id` | List, add or remove a table's rules |
+| `POST /api/dq/run` · `GET /api/dq/summary?system=&prefix=` | Run a table's rules; scores per table |
 | `GET /api/refdata/audit` | Change history |
 
 ## Deploy as a Databricks App

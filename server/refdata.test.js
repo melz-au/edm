@@ -228,3 +228,42 @@ test('publishing: settings, snapshot, run log, serialised runs and the applied h
   await new Promise((r) => setTimeout(r, 50));
   assert.deepEqual(seen, ['code_set']);
 });
+
+test('data quality rules run against Postgres, including orphaned references', { skip: !enabled }, async () => {
+  const dqstore = await import('./dqstore.js');
+  const dq = await import('./dq.js');
+  await lakebase.query(`CREATE TABLE ${MASTER}.region (id int PRIMARY KEY);
+    INSERT INTO ${MASTER}.region VALUES (1), (2);
+    CREATE TABLE ${MASTER}.cust (id int, email text, region_id int, state text);
+    INSERT INTO ${MASTER}.cust VALUES (1, 'a@x.com', 1, 'SA'), (2, 'bad-email', 2, 'S.A.'), (2, '', 9, 'N/A'), (4, NULL, NULL, 'SA');`);
+  const table = `${MASTER}.cust`;
+  await dqstore.addRules('lakebase', table, [
+    { column: 'id', rule_type: 'unique', params: { columns: ['id'] }, severity: 'error', description: 'id unique' },
+    { column: 'email', rule_type: 'not_null', params: {}, description: 'email filled' },
+    { column: 'email', rule_type: 'format', params: { regex: '^[^@ ]+@[^@ ]+[.][A-Za-z]{2,}$', piiType: 'email' }, description: 'email format' },
+    { column: 'region_id', rule_type: 'references', params: { parentTable: `${MASTER}.region`, parentColumn: 'id' }, description: 'region exists' },
+    { column: 'state', rule_type: 'allowed_values', params: { values: ['SA'] }, description: 'state' },
+    { column: 'nope', rule_type: 'not_null', params: {}, description: 'gone' },
+  ], 'a@x.com');
+  const results = await dqstore.runRules({
+    system: 'lakebase',
+    table,
+    exec: async (sql) => (await lakebase.query(sql)).rows,
+    dialect: 'pg',
+    ref: dq.tableRef('pg', [MASTER, 'cust']),
+    columns: [{ name: 'id' }, { name: 'email' }, { name: 'region_id' }, { name: 'state' }],
+    parentRef: async (name) => dq.tableRef('pg', name.split('.')),
+  });
+  const by = Object.fromEntries(results.map((r) => [`${r.column_name}:${r.rule_type}`, r]));
+  assert.equal(by['id:unique'].last_failed, 2);
+  assert.equal(by['email:not_null'].last_failed, 2, "'' and NULL");
+  assert.equal(by['email:format'].last_failed, 1, 'only present values are judged');
+  assert.equal(by['email:format'].last_samples[0].value, 'b•••l', 'personal data is masked');
+  assert.equal(by['region_id:references'].last_failed, 1, 'region 9 is orphaned');
+  assert.equal(by['state:allowed_values'].last_failed, 1, "S.A. fails; 'N/A' is left to not_null");
+  assert.match(by['nope:not_null'].last_error, /no longer exists/);
+  assert.equal(by['id:unique'].last_total, 4);
+  const [summary] = await dqstore.summary('lakebase', `${MASTER}.`);
+  assert.equal(summary.rules, 6);
+  assert.equal(summary.failing, 5);
+});

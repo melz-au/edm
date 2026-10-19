@@ -67,6 +67,8 @@ export default function App() {
   const [linked, setLinked] = useState([]);
   const [mapped, setMapped] = useState([]);
   const [mappingsVersion, setMappingsVersion] = useState(0);
+  const [dqScores, setDqScores] = useState(new Map());
+  const [dqVersion, setDqVersion] = useState(0);
   const [notice, setNotice] = useState(null);
 
   // Runs an async loader, ignoring results from superseded requests.
@@ -186,6 +188,17 @@ export default function App() {
   // Profiles belong to the loaded schema.
   useEffect(() => setProfiles(new Map()), [model]);
 
+  // Data quality scores per table, for the diagram badges.
+  const dqPrefix = source === 'uc' ? (catalog && schema ? `${catalog}.${schema}.` : null) : source === 'lakebase' && schema ? `${schema}.` : null;
+  useEffect(() => {
+    setDqScores(new Map());
+    if (!model || !dqPrefix || !config?.sources.refdata?.available) return;
+    api
+      .dqSummary(source, dqPrefix)
+      .then((rows) => setDqScores(new Map(rows.filter((r) => r.score !== null).map((r) => [r.source_table, r]))))
+      .catch(() => {});
+  }, [model, source, dqPrefix, config, dqVersion]);
+
   const canProfile = source === 'lakebase' || (source === 'uc' && Boolean(config?.sources.warehouse?.available));
 
   const profileOne = useCallback(
@@ -293,12 +306,12 @@ export default function App() {
         ...n,
         selected: n.id === selectedId,
         className: classes.join(' '),
-        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id), pii: piiByTable.get(n.id) },
+        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id), pii: piiByTable.get(n.id), dq: dqScores.get(n.id) },
       };
     });
 
     return { displayNodes, displayEdges };
-  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable]);
+  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable, dqScores]);
 
   const filteredTables = useMemo(
     () =>
@@ -578,6 +591,8 @@ export default function App() {
               mapped={mapped}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
               onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
+              dqSource={refdataAvailable && canProfile ? source : null}
+              onDqChanged={() => setDqVersion((v) => v + 1)}
               onEditData={
                 refdataAvailable && source === 'lakebase' && !selectedTable.external
                   ? () => setDialog({ type: 'masterData', table: selectedTable })

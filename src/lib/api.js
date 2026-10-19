@@ -36,6 +36,15 @@ export const api = {
       : get('lakebase/values', { schema: table.schema, table: table.name, column }),
   rows: (schema, table, params) => get('lakebase/rows', { schema, table, ...params }),
 
+  // Data quality. `system` is 'uc' | 'lakebase'; `tableName` as sourceTableName().
+  dqSuggest: (system, table) =>
+    get('dq/suggest', { system, catalog: table.catalog, schema: table.schema, table: table.name }),
+  dqRules: (system, tableName) => get('dq/rules', { system, table: tableName }),
+  dqAddRules: (system, tableName, rules) => post('dq/rules', { system, table: tableName, rules }),
+  dqDeleteRule: (id) => request('DELETE', `dq/rules/${id}`),
+  dqRun: (system, table) => post('dq/run', { system, catalog: table.catalog, schema: table.schema, table: table.name }),
+  dqSummary: (system, prefix) => get('dq/summary', { system, prefix }),
+
   codeSets: () => get('refdata/code-sets'),
   codeSet: (id) => get(`refdata/code-sets/${id}`),
   linkedCodeSets: (system, table) => get('refdata/linked', { system, table }),
