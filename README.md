@@ -173,7 +173,38 @@ Users are identified by the email Databricks Apps forwards for the signed-in
 user (`X-Forwarded-Email`). Outside Databricks Apps that header is just a
 request header, so don't expose a locally run server to other people.
 
-## Sample data
+## Upload a CSV to a bronze table
+
+The **Upload CSV** tab lets anyone, without writing SQL, turn a spreadsheet
+export into a **bronze** Unity Catalog table: a raw copy of the file that data
+engineers clean up into silver later.
+
+1. **Choose your file:** drag a `.csv`, `.tsv` or `.txt` file onto the page (or
+   browse). It is read in the browser first: the separator (comma, semicolon,
+   tab or pipe) is detected, and rows are counted.
+2. **Check your data:** each column gets a database-safe name (`Customer ID`
+   → `customer_id`, duplicates get `_2`), with a hint of what it holds
+   (number, date, yes/no, text) and example values. Any name can be changed,
+   and problems such as rows with a different number of values are explained in
+   plain language.
+3. **Choose where to save it:** pick a catalog and schema (`bronze` is
+   preselected when it exists) and a table name (suggested from the file name).
+   If the table exists, choose to **add the rows** to it (only offered when its
+   columns match) or **replace** it.
+
+On **Load to bronze table** the file is uploaded unchanged to a landing volume,
+`/Volumes/<catalog>/<schema>/landing/uploads/<date>/<load id>_<file>`, and a
+SQL warehouse writes the table with `read_files()`:
+
+- Every column is `STRING`, exactly as in the file. Columns are read by
+  position, so the chosen names replace the file's header.
+- Four lineage columns are added: `_source_file`, `_ingested_at`,
+  `_ingested_by` (the signed-in user) and `_load_id`.
+- The table gets the property `quality = bronze` and a comment naming the file
+  and uploader.
+
+The result page shows how many rows were loaded and the query for that load.
+
 
 `sample-data/` has two fictional sources for the same water utility, for trying
 the features end to end:
@@ -198,6 +229,7 @@ server/   Express: serves dist/ and the /api endpoints
   warehouse.js     Statement Execution API client for Unity Catalog profiling
   refdata.js       code sets, mappings, change requests, approvals and audit log (Lakebase)
   mapping.js       suggests standard codes for raw source values
+  ingest.js        CSV upload to a landing volume and bronze table load
   ucpublish.js     publishes reference data to Unity Catalog as Delta tables
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
@@ -222,6 +254,9 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `POST /api/refdata/code-sets/:id/suggest` | Suggested codes for `{values: [...]}` |
 | `GET /api/refdata/publish` · `PUT …/publish/settings` · `POST /api/refdata/publish` | Unity Catalog publish status, settings and run (stewards) |
 | `GET /api/refdata/audit` | Change history |
+| `GET /api/ingest/table?catalog=&schema=&table=` | Whether an upload's target table exists, and its columns |
+| `PUT /api/ingest/upload?catalog=&schema=&fileName=` | Store a raw CSV (request body) in the landing volume |
+| `POST /api/ingest/load` | Write a stored upload to a bronze table (`{catalog, schema, table, path, loadId, columns, delimiter, header, mode}`) |
 
 ## Deploy as a Databricks App
 
@@ -261,6 +296,20 @@ app.yaml  Databricks Apps entry point (npm run start)
    GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA maximo TO "<sp-client-id>";
    ```
    Set `ERD_STEWARDS` to the emails of the people who approve changes.
+7. **CSV upload:** this needs the SQL warehouse from step 5. Grant the service
+   principal, on each schema people upload into:
+   ```sql
+   GRANT USE CATALOG ON CATALOG main TO `<sp-client-id>`;
+   GRANT USE SCHEMA, CREATE TABLE, CREATE VOLUME, SELECT, MODIFY
+     ON SCHEMA main.bronze TO `<sp-client-id>`;
+   ```
+   The app creates the `landing` volume on first use. To use an existing volume
+   instead, set `ERD_UPLOAD_VOLUME=catalog.schema.volume` and grant
+   `READ VOLUME` and `WRITE VOLUME` on it (then `CREATE VOLUME` isn't needed).
+   `ERD_BRONZE_CATALOG` and `ERD_BRONZE_SCHEMA` (default `bronze`) preselect
+   the target, and `ERD_UPLOAD_MAX_MB` (default 100) caps the file size.
+   Tables are created as the service principal, so anyone who can open the app
+   can write to those schemas: grant only the schemas meant for uploads.
 
 To declare keys in Unity Catalog so they show up as solid relationships:
 
