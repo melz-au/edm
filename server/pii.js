@@ -29,6 +29,7 @@ export const PII_TYPES = {
   credential: { label: 'Password / secret', sensitivity: 'high' },
   special_category: { label: 'Sensitive attribute (health, gender, ethnicity, ...)', sensitivity: 'high' },
   location: { label: 'Precise location / postcode', sensitivity: 'low' },
+  free_text: { label: 'Personal data inside free text', sensitivity: 'medium' },
 };
 
 /** Types that only count as personal data in a table describing people. */
@@ -42,19 +43,19 @@ export const DIRECT_IDENTIFIERS = new Set([
 // ("First_Name" → "firstname"), so snake_case, camelCase and SHOUTING all work.
 const NAME_PATTERNS = [
   ['credential', /(password|passwd|pwd$|secret|apikey|accesstoken|authtoken|privatekey)/],
-  ['government_id', /(ssn$|socialsecurity|^tfn|taxfile|taxid|medicare|passport|licen[cs]eno|licen[cs]enum|driverslicen|driverlicen|nationalid|^nino?$)/],
-  ['financial', /(creditcard|cardnumber|cardno|cardnum|^ccn$|^pan$|iban|^bsb|bankaccount|accountnumber|^accountno|routingnumber|sortcode)/],
+  ['government_id', /(ssn$|socialsecurity|^tfn|taxfile|taxid|medicare|passport|licen[cs]eno|licen[cs]enum|driverslicen|driverlicen|nationalid|^nino?$|concessioncard|pensioncard|healthcarecard|centrelink|^crn$|veteranscard|dvacard|conccard|pensionno)/],
+  ['financial', /(creditcard|cardnumber|cardno|cardnum|^ccn$|^pan$|iban|^bsb|bankaccount|bankacct|accountnumber|^accountno|routingnumber|sortcode)/],
   ['date_of_birth', /(^dob$|dateofbirth|birthdate|birthday|^dob[a-z]*$)/],
   ['special_category', /(gender|^sex$|ethnic|^race$|religio|health|diagnos|disabilit|sexualorient|medicalcond|criminal)/],
   ['email', /(e?mail(address)?$|^email)/],
   ['phone', /(phone|mobile|cellno|^cell$|^tel$|telephone|^fax)/],
-  ['person_name', /(firstname|lastname|surname|givenname|fullname|middlename|maidenname|forename|familyname|(contact|customer|employee|person|patient|student|staff|member)name$)/],
-  ['address', /(address(line)?\d?$|^addr|street|suburb|postaladdr|homeaddr|residential)/],
-  ['location', /(^latitude|^longitude|^lat$|^lon$|^lng$|latitude[xy]?$|longitude[xy]?$|geolocation|coordinates|postcode|zipcode|^zip$|postalcode)/],
+  ['person_name', /(firstname|lastname|surname|givenname|fullname|middlename|maidenname|forename|familyname|preferredname|nickname|(contact|customer|cust|client|employee|emp|person|patient|student|staff|member)name$)/],
+  ['address', /(address(line)?\d?$|^addr|addr(line)?\d*$|street|suburb|postaladdr|homeaddr|residential)/],
+  ['location', /(^latitude|^longitude|^lat$|^lon$|^lng$|latitude[xy]?$|longitude[xy]?$|geolocation|coordinates|postcode|zipcode|^zip$|postalcode|^pcode$|postcd)/],
   ['ip_address', /(ipaddr|^ip$|ipv4|ipv6|macaddr|deviceid)/],
   [
     'person_id',
-    /(username|^login|^userid$|^user$|employeeid|^empno|personid|staffid|customerid|patientid|studentid|(created|changed|modified|updated|requested|approved|entered|reported|assigned)by$|^changeby$|^createby$|^owner$|ownedby|assignedto)/,
+    /(username|^login|^userid$|^user$|employeeid|^empno|personid|staffid|customerid|patientid|studentid|(created|changed|modified|updated|requested|approved|entered|reported|assigned)by$|^changeby$|^createby$|^owner$|ownedby|assignedto|(account|relationship|case)manager$|(upd|update|created?|changed?|modified|entered)user$|^lastuser$)/,
   ],
 ];
 
@@ -144,6 +145,37 @@ export function detectByValues(values) {
   return best;
 }
 
+// --- personal data inside free text ---------------------------------------
+
+const FREE_TEXT_PATTERNS = [
+  ['an email address', /[^\s@]+@[^\s@]+\.[a-z]{2,}/i],
+  ['a phone number', /(\+?61[\s-]?|\b0)[2-478]([\s-]?\d){8}\b|\(0\d\)\s?\d{4}\s?\d{4}/],
+  ['a date of birth', /\b(dob|d\.o\.b|birth|born)\b\W*\d/i],
+  ['a card number', /\b(?:\d[ -]?){13,19}\b/],
+];
+const FREE_TEXT_MIN_RATE = 0.03;
+
+/**
+ * Looks for personal data embedded in longer text (notes, comments). Returns
+ * what kinds were found, never the values themselves.
+ */
+export function detectInFreeText(values) {
+  // Only real text (several words); bare codes and numbers are handled by detectByValues.
+  const vals = values.map((v) => String(v).trim()).filter((v) => /\S\s+\S/.test(v));
+  if (vals.length < 5) return null;
+  const found = [];
+  for (const [what, re] of FREE_TEXT_PATTERNS) {
+    const hits = vals.filter((v) => {
+      const m = v.match(re);
+      if (!m) return false;
+      if (what === 'a card number') return luhn(m[0].replace(/\D/g, ''));
+      return true;
+    }).length;
+    if (hits / vals.length >= FREE_TEXT_MIN_RATE) found.push(`${what} (${hits} of ${vals.length} sampled)`);
+  }
+  return found.length ? found : null;
+}
+
 // --- masking ----------------------------------------------------------------
 
 export function mask(value, type) {
@@ -170,7 +202,18 @@ export function mask(value, type) {
 export function assess(name, values = []) {
   const byName = detectByName(name);
   const byValues = values.length ? detectByValues(values) : null;
-  if (!byName && !byValues) return null;
+  if (!byName && !byValues) {
+    const inText = values.length ? detectInFreeText(values) : null;
+    if (!inText) return null;
+    return {
+      type: 'free_text',
+      label: PII_TYPES.free_text.label,
+      sensitivity: PII_TYPES.free_text.sensitivity,
+      confidence: 'medium',
+      evidence: `values contain ${inText.join(', ')}`,
+      examples: [], // free text is never echoed, even masked
+    };
+  }
 
   const type = byValues?.type ?? byName;
   const evidence = [];

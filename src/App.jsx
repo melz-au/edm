@@ -11,6 +11,7 @@ import TableNode from './components/TableNode.jsx';
 import TableDetails from './components/TableDetails.jsx';
 import ErdMarkers from './components/ErdMarkers.jsx';
 import CodeSetDialog from './components/CodeSetDialog.jsx';
+import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
@@ -64,6 +65,8 @@ export default function App() {
   const [profiling, setProfiling] = useState(null); // { done, total } while profiling a schema
   const [dialog, setDialog] = useState(null);
   const [linked, setLinked] = useState([]);
+  const [mapped, setMapped] = useState([]);
+  const [mappingsVersion, setMappingsVersion] = useState(0);
   const [notice, setNotice] = useState(null);
 
   // Runs an async loader, ignoring results from superseded requests.
@@ -310,9 +313,12 @@ export default function App() {
   // Code sets already created from the selected table's columns.
   useEffect(() => {
     setLinked([]);
+    setMapped([]);
     if (!selectedTable || !refdataAvailable || source === 'demo' || selectedTable.external) return;
-    api.linkedCodeSets(source, sourceTableName(source, selectedTable)).then(setLinked).catch(() => {});
-  }, [selectedTable, refdataAvailable, source]);
+    const name = sourceTableName(source, selectedTable);
+    api.linkedCodeSets(source, name).then(setLinked).catch(() => {});
+    api.sourceMappings(source, name).then(setMapped).catch(() => {});
+  }, [selectedTable, refdataAvailable, source, mappingsVersion]);
 
   const submitted = (change) => {
     setNotice(`Submitted for approval: ${change.summary}`);
@@ -355,7 +361,7 @@ export default function App() {
         )}
       </header>
 
-      {page === 'refdata' && <ReferenceData onChanged={refreshPending} />}
+      {page === 'refdata' && <ReferenceData me={me} onChanged={refreshPending} />}
       {page === 'approvals' && <Approvals me={me} onChanged={refreshPending} />}
 
       <div className="body" hidden={page !== 'diagram'}>
@@ -569,7 +575,9 @@ export default function App() {
               canProfile={canProfile && !selectedTable.external}
               onProfile={() => profileOne(selectedTable)}
               linked={linked}
+              mapped={mapped}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
+              onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
               onEditData={
                 refdataAvailable && source === 'lakebase' && !selectedTable.external
                   ? () => setDialog({ type: 'masterData', table: selectedTable })
@@ -586,6 +594,18 @@ export default function App() {
           table={dialog.table}
           column={dialog.column}
           onClose={() => setDialog(null)}
+          onSubmitted={submitted}
+        />
+      )}
+      {dialog?.type === 'mapping' && (
+        <CodeMappingDialog
+          source={source}
+          table={dialog.table}
+          column={dialog.column}
+          onClose={() => {
+            setDialog(null);
+            setMappingsVersion((v) => v + 1);
+          }}
           onSubmitted={submitted}
         />
       )}

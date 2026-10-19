@@ -133,3 +133,98 @@ test('guards: own requests, unknown columns, protected schema, cancel and reject
   assert.equal((await refdata.cancelChange(mine.id, 'a@x.com')).status, 'cancelled');
   assert.equal(await refdata.pendingCount(), 0);
 });
+
+test('code mappings: propose, approve, conflict check, view, remove', { skip: !enabled }, async () => {
+  const set = await refdata.proposeChange(
+    { kind: 'code_set', action: 'create', payload: { name: 'Account Status', values: [{ code: 'ACTIVE' }, { code: 'CLOSED' }] } },
+    'analyst@x.com',
+  );
+  const { target: { codeSetId } } = await refdata.reviewChange(set.id, { decision: 'approve' }, 'steward@x.com');
+  const codes = Object.fromEntries((await refdata.getCodeSet(codeSetId)).values.map((v) => [v.code, v.id]));
+  const source = { system: 'lakebase', table: 'billing.customer_master', column: 'ACCT_STATUS' };
+
+  const cr = await refdata.proposeChange(
+    {
+      kind: 'code_mapping',
+      action: 'create',
+      target: { codeSetId, source },
+      payload: { mappings: [{ value: 'A', codeValueId: codes.ACTIVE }, { value: 'Closed ', codeValueId: codes.CLOSED }, { value: 'N/A', codeValueId: null }] },
+    },
+    'analyst@x.com',
+  );
+  assert.match(cr.summary, /Map 3 values of billing.customer_master.ACCT_STATUS to Account Status/);
+  assert.equal(cr.payload.codes[codes.ACTIVE], 'ACTIVE');
+  assert.equal((await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+
+  const { rows } = await lakebase.query(
+    `SELECT source_value, code, maps_to_missing FROM ${REF}.code_mapping_v WHERE source_column = 'ACCT_STATUS' ORDER BY 1`,
+  );
+  assert.deepEqual(rows.map((r) => [r.source_value, r.code, r.maps_to_missing]), [
+    ['A', 'ACTIVE', false], ['Closed ', 'CLOSED', false], ['N/A', null, true],
+  ]);
+
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: codes.ACTIVE }] } }, 'a@x.com'),
+    /already mapped that way/,
+  );
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'X', codeValueId: 99999 }] } }, 'a@x.com'),
+    /is not in Account Status/,
+  );
+
+  // Two competing remaps: the second approval fails the conflict check.
+  const r1 = await refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: codes.CLOSED }] } }, 'a@x.com');
+  const r2 = await refdata.proposeChange({ kind: 'code_mapping', action: 'create', target: { codeSetId, source }, payload: { mappings: [{ value: 'A', codeValueId: null }] } }, 'b@x.com');
+  assert.equal((await refdata.reviewChange(r1.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+  const failed = await refdata.reviewChange(r2.id, { decision: 'approve' }, 'steward@x.com');
+  assert.equal(failed.status, 'failed');
+  assert.match(failed.error, /Mappings changed/);
+
+  const del = await refdata.proposeChange({ kind: 'code_mapping', action: 'delete', target: { codeSetId, source }, payload: { values: ['N/A'] } }, 'a@x.com');
+  assert.equal((await refdata.reviewChange(del.id, { decision: 'approve' }, 'steward@x.com')).status, 'applied');
+  assert.deepEqual((await refdata.listMappings(codeSetId)).map((m) => m.source_value), ['A', 'Closed ']);
+  assert.equal((await refdata.mappingsForSource('lakebase', 'billing.customer_master', 'ACCT_STATUS')).length, 2);
+});
+
+test('publishing: settings, snapshot, run log, serialised runs and the applied hook', { skip: !enabled }, async () => {
+  const ucpublish = await import('./ucpublish.js');
+  await assert.rejects(refdata.setPublishSettings({ target: 'main.refdata' }, 'analyst@x.com'), /Only data stewards/);
+  await assert.rejects(refdata.setPublishSettings({ target: 'nope' }, 'steward@x.com'), /catalog\.schema/);
+  const settings = await refdata.setPublishSettings({ target: 'main.refdata', auto: true }, 'steward@x.com');
+  assert.deepEqual([settings.target, settings.auto], ['main.refdata', true]);
+
+  const statements = [];
+  const fakeRun = async (sql) => {
+    statements.push(sql);
+    await new Promise((r) => setTimeout(r, 20));
+    return [];
+  };
+  const run = await ucpublish.publish({ trigger: 'manual', user: 'steward@x.com', run: fakeRun });
+  assert.equal(run.status, 'succeeded');
+  assert.ok(run.counts.code_set >= 2 && run.counts.code_mapping >= 1, JSON.stringify(run.counts));
+  assert.equal(statements.length, 3);
+  assert.ok(statements.every((s) => s.startsWith('CREATE OR REPLACE TABLE `main`.`refdata`.')));
+
+  // A publish requested while one runs is queued once, not run in parallel.
+  statements.length = 0;
+  const first = ucpublish.publish({ run: fakeRun });
+  const second = ucpublish.publish({ run: fakeRun });
+  assert.equal(first, second);
+  await first;
+  await new Promise((r) => setTimeout(r, 300));
+  assert.equal(statements.length, 6, 'one queued re-run after the first');
+
+  const failed = await ucpublish.publish({ run: async () => { throw new Error('PERMISSION_DENIED'); } }).catch((e) => e);
+  assert.match(failed.message, /PERMISSION_DENIED/);
+  const runs = await refdata.listPublishRuns();
+  assert.equal(runs[0].status, 'failed');
+  assert.match(runs[0].error, /PERMISSION_DENIED/);
+
+  // The applied hook fires after an approval commits.
+  const seen = [];
+  refdata.onApplied((cr) => seen.push(cr.kind));
+  const cr = await refdata.proposeChange({ kind: 'code_set', action: 'create', payload: { name: 'Hooked', values: [] } }, 'a@x.com');
+  await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com');
+  await new Promise((r) => setTimeout(r, 50));
+  assert.deepEqual(seen, ['code_set']);
+});

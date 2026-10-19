@@ -3,6 +3,100 @@ import Modal from '../components/Modal.jsx';
 import CodeSetDialog from '../components/CodeSetDialog.jsx';
 import ChangeDiff from '../components/ChangeDiff.jsx';
 import { api } from '../lib/api.js';
+import { showRaw } from '../components/CodeMappingDialog.jsx';
+import UcPublishPanel from '../components/UcPublishPanel.jsx';
+
+function MappingsTab({ set, mappings, onSubmitted, onError }) {
+  const [selected, setSelected] = useState(new Set());
+  const groups = new Map();
+  for (const m of mappings) {
+    const key = `${m.source_system}|${m.source_table}|${m.source_column}`;
+    if (!groups.has(key)) groups.set(key, { system: m.source_system, table: m.source_table, column: m.source_column, rows: [] });
+    groups.get(key).rows.push(m);
+  }
+
+  const remove = async (group) => {
+    const values = group.rows.filter((r) => selected.has(r.id)).map((r) => r.source_value);
+    try {
+      onSubmitted(
+        await api.proposeChange({
+          kind: 'code_mapping',
+          action: 'delete',
+          target: { codeSetId: set.id, source: { system: group.system, table: group.table, column: group.column } },
+          payload: { values },
+        }),
+      );
+      setSelected(new Set());
+    } catch (err) {
+      onError(err.message);
+    }
+  };
+
+  if (!mappings.length) {
+    return (
+      <p className="muted">
+        No source values are mapped to {set.name} yet. In the Diagram, open a table from another system, profile it, and use{' '}
+        <strong>Map to code set</strong> on a categorical field.
+      </p>
+    );
+  }
+
+  return (
+    <>
+      {[...groups.values()].map((g) => {
+        const chosen = g.rows.filter((r) => selected.has(r.id)).length;
+        return (
+          <div key={`${g.system}|${g.table}|${g.column}`} className="mapping-group">
+            <div className="page__header">
+              <div>
+                <strong>{g.table}.{g.column}</strong> <span className="muted small">({g.system}) · {g.rows.length} values</span>
+              </div>
+              <button className="btn small danger" disabled={!chosen} onClick={() => remove(g)}>
+                Propose removal{chosen ? ` of ${chosen}` : ''}
+              </button>
+            </div>
+            <table className="grid">
+              <thead>
+                <tr><th style={{ width: 32 }} /><th>Source value</th><th>Maps to</th><th>Updated</th></tr>
+              </thead>
+              <tbody>
+                {g.rows.map((r) => (
+                  <tr key={r.id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selected.has(r.id)}
+                        onChange={(e) => {
+                          const next = new Set(selected);
+                          e.target.checked ? next.add(r.id) : next.delete(r.id);
+                          setSelected(next);
+                        }}
+                      />
+                    </td>
+                    <td>{showRaw(r.source_value)}</td>
+                    <td>{r.code_value_id === null ? <span className="muted">∅ treat as missing</span> : <><code>{r.code}</code> {r.label && r.label !== r.code && <span className="muted">{r.label}</span>}</>}</td>
+                    <td className="muted small">{new Date(r.updated_at).toLocaleDateString()} · {r.updated_by}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      })}
+      <div className="sql-box">
+        <strong>Use in a pipeline</strong>: join raw values to the mapping view (in Lakebase, or sync it to Unity Catalog):
+        <pre>{`SELECT src.*, m.code AS ${set.name.toLowerCase().replace(/[^a-z0-9]+/g, '_')}
+FROM <source table> src
+LEFT JOIN refdata.code_mapping_v m
+  ON  m.code_set = '${set.name.replace(/'/g, "''")}'
+  AND m.source_table = '<schema.table>' AND m.source_column = '<column>'
+  AND m.source_value = src.<column>;
+-- m.code IS NULL AND m.maps_to_missing  → deliberately mapped to missing
+-- m.source_value IS NULL               → value not mapped yet`}</pre>
+      </div>
+    </>
+  );
+}
 
 function ValueDialog({ set, value, onClose, onSubmitted }) {
   const creating = !value;
@@ -69,7 +163,7 @@ function ValueDialog({ set, value, onClose, onSubmitted }) {
   );
 }
 
-export default function ReferenceData({ onChanged }) {
+export default function ReferenceData({ me, onChanged }) {
   const [sets, setSets] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
   const [detail, setDetail] = useState(null);
@@ -78,6 +172,8 @@ export default function ReferenceData({ onChanged }) {
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
   const [filter, setFilter] = useState('');
+  const [tab, setTab] = useState('codes');
+  const [mappings, setMappings] = useState([]);
 
   const loadSets = useCallback(() => {
     api
@@ -92,6 +188,7 @@ export default function ReferenceData({ onChanged }) {
   const loadDetail = useCallback(() => {
     if (!selectedId) return setDetail(null);
     api.codeSet(selectedId).then(setDetail).catch((err) => setError(err.message));
+    api.mappings(selectedId).then(setMappings).catch(() => setMappings([]));
     api
       .changes({ status: 'pending' })
       .then((list) => setPending(list.filter((c) => Number(c.target.codeSetId) === selectedId)))
@@ -151,6 +248,8 @@ export default function ReferenceData({ onChanged }) {
             </li>
           ))}
         </ul>
+        <span className="grow" />
+        <UcPublishPanel me={me} />
       </aside>
 
       <section className="page__main">
@@ -186,6 +285,18 @@ export default function ReferenceData({ onChanged }) {
               </details>
             )}
 
+            <div className="page-tabs">
+              <button className={tab === 'codes' ? 'active' : ''} onClick={() => setTab('codes')}>
+                Codes ({detail.values.length})
+              </button>
+              <button className={tab === 'mappings' ? 'active' : ''} onClick={() => setTab('mappings')}>
+                Source mappings ({mappings.length})
+              </button>
+            </div>
+
+            {tab === 'mappings' ? (
+              <MappingsTab set={detail} mappings={mappings} onSubmitted={submitted} onError={setError} />
+            ) : (
             <table className="grid">
               <thead>
                 <tr>
@@ -218,6 +329,7 @@ export default function ReferenceData({ onChanged }) {
                 ))}
               </tbody>
             </table>
+            )}
           </>
         ) : (
           sets?.length > 0 && <p className="muted">Select a code set.</p>

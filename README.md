@@ -54,6 +54,9 @@ two kinds of evidence:
   numbers, card numbers that pass the Luhn check, IP/MAC addresses, IBANs, US
   SSNs and formatted AU TFNs (with checksum). A column named `contact` that
   holds email addresses is still caught.
+- **Free text** (notes, comments): values are scanned for embedded email
+  addresses, phone numbers, card numbers and "DOB …" mentions. The finding
+  only says what kind of data was found, with no examples.
 
 Each finding has a type, a **sensitivity** and a **confidence**. High
 sensitivity covers IDs, financial data, credentials, birth dates and special
@@ -69,6 +72,71 @@ compliance guarantee: review the results.
 *Create code set* reads all of the column's distinct values. Review the codes,
 add labels and descriptions, and submit. The **Reference data** tab lists code
 sets, where codes can be added, edited, deactivated and reactivated.
+
+**Code mapping.** Other systems often use different codes for the same thing,
+such as billing `A`, `act` and `Active` versus CRM `ACTIVE`. To standardise
+them, use *Map to code set* on a categorical field from the other source. This
+loads every distinct value with its row count and suggests a target code for
+each one:
+
+- exact match, ignoring case, spaces and punctuation (`Closed ` → CLOSED, `S.A.` → SA)
+- abbreviation (`act` → ACTIVE)
+- initials (`DD` → Direct Debit)
+- a word of the value (`Credit Card` → CARD)
+- letters in order (`CHQ` → CHEQUE)
+- small typos
+- missing-value tokens (`N/A`, `NULL`, `-` → *treat as missing*)
+- earlier decisions for the same value in another source
+
+Ties and anything without a match are left for you to decide, and a coverage
+bar shows the share of rows mapped. The result is submitted for approval like
+any other change, with a conflict check on approval. Approved mappings live in
+`refdata.code_mapping`. The **Source mappings** tab of each code set lists
+them, and the view `refdata.code_mapping_v` (raw value → code, label,
+`maps_to_missing`) is ready for pipelines to join.
+
+**Sync to Unity Catalog.** Reference data is managed in Lakebase, and there
+are two ways to make it available in Unity Catalog.
+
+1. **Publish as Delta tables (built in).** On the **Reference data** page, a
+   steward sets a target `catalog.schema` (e.g. `main.refdata`) in the **Unity
+   Catalog sync** panel, then clicks **Publish now**, or turns on *Publish
+   automatically after each approved change*. The app writes three Delta
+   tables through its SQL warehouse:
+
+   | Table | Contents |
+   | --- | --- |
+   | `code_set` | Code sets and their source column |
+   | `code_value` | Codes, labels, order and active flag, with the set name |
+   | `code_mapping` | `source_system`, `source_table`, `source_column`, `source_value` → `code`, `label`, `maps_to_missing` |
+
+   Each table is replaced in a single `CREATE OR REPLACE TABLE … AS SELECT`, so
+   readers never see a half-written table. Delta history keeps every published
+   version (`DESCRIBE HISTORY`, `VERSION AS OF`). Runs are serialised, logged
+   in `refdata.publish_log`, and shown in the panel. The service principal
+   needs these grants on the target schema:
+   ```sql
+   GRANT USE CATALOG ON CATALOG main TO `<sp-application-id>`;
+   GRANT USE SCHEMA, CREATE TABLE, MODIFY, SELECT ON SCHEMA main.refdata TO `<sp-application-id>`;
+   ```
+   Standardise source codes in a notebook or pipeline:
+   ```sql
+   SELECT b.*, coalesce(m.code, CASE WHEN m.maps_to_missing THEN NULL ELSE 'UNMAPPED' END) AS account_status
+   FROM main.billing.customer_master b
+   LEFT JOIN main.refdata.code_mapping m
+     ON  m.source_table = 'billing.customer_master' AND m.source_column = 'ACCT_STATUS'
+     AND m.source_value = b.ACCT_STATUS;
+   ```
+   The defaults can also be set with `ERD_UC_REFDATA_TARGET` and
+   `ERD_UC_AUTO_PUBLISH=true`.
+
+2. **Register the Lakebase database in Unity Catalog (no copy, read-only).**
+   In Catalog Explorer, create a catalog of type *Lakebase Postgres* for your
+   database. The `refdata` tables and the `code_mapping_v` view can then be
+   queried live from Databricks SQL. This needs a serverless SQL warehouse; see
+   [Register a Lakebase database in Unity Catalog](https://docs.databricks.com/aws/en/oltp/projects/register-uc).
+   Option 1 suits pipelines that want versioned Delta tables, and option 2
+   suits live lookups.
 
 **Master data.** For Lakebase tables with a primary key, *Edit master data* in
 the details panel opens a row browser with search and paging. You can propose
@@ -95,12 +163,26 @@ which is created on first use:
 | --- | --- |
 | `code_set` | Named code lists, optionally linked to the source column |
 | `code_value` | Codes with label, description, sort order and active flag |
+| `code_mapping` | Raw source values (system, table, column, value) mapped to a code, or to *missing* |
+| `code_mapping_v` | View joining the mappings to set name, code and label, for pipelines |
+| `setting`, `publish_log` | Unity Catalog publish settings and run history |
 | `change_request` | Every proposed change, its status and review |
 | `audit_log` | Every applied change with before/after JSON |
 
 Users are identified by the email Databricks Apps forwards for the signed-in
 user (`X-Forwarded-Email`). Outside Databricks Apps that header is just a
 request header, so don't expose a locally run server to other people.
+
+## Sample data
+
+`sample-data/` has two fictional sources for the same water utility, for trying
+the features end to end:
+
+- `crm/`: a clean CRM customer table (1,000 rows).
+- `billing/`: a legacy billing extract of the same customers, with injected
+  data quality issues and a ground-truth issue list.
+
+Each folder has a README with load steps for Lakebase and Unity Catalog.
 
 ## Architecture
 
@@ -114,7 +196,9 @@ server/   Express: serves dist/ and the /api endpoints
   profile.js       categorical field detection (SQL for Postgres and Databricks SQL)
   pii.js           personal data detection (name patterns, value formats, masking)
   warehouse.js     Statement Execution API client for Unity Catalog profiling
-  refdata.js       code sets, change requests, approvals and audit log (Lakebase)
+  refdata.js       code sets, mappings, change requests, approvals and audit log (Lakebase)
+  mapping.js       suggests standard codes for raw source values
+  ucpublish.js     publishes reference data to Unity Catalog as Delta tables
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
@@ -134,6 +218,9 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/refdata/code-sets[/:id]` | Code sets and their values |
 | `GET /api/refdata/changes?status=` · `POST /api/refdata/changes` | List or propose change requests |
 | `POST /api/refdata/changes/:id/review` · `…/cancel` | Approve/reject (`{decision, comment}`) or cancel |
+| `GET /api/refdata/code-sets/:id/mappings` · `GET /api/refdata/mappings?system=&table=` | Mappings by code set or by source table |
+| `POST /api/refdata/code-sets/:id/suggest` | Suggested codes for `{values: [...]}` |
+| `GET /api/refdata/publish` · `PUT …/publish/settings` · `POST /api/refdata/publish` | Unity Catalog publish status, settings and run (stewards) |
 | `GET /api/refdata/audit` | Change history |
 
 ## Deploy as a Databricks App
