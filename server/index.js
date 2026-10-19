@@ -7,6 +7,7 @@ import * as uc from './unityCatalog.js';
 import * as lakebase from './lakebase.js';
 import { demoModel, inferRelationships } from './model.js';
 import * as profile from './profile.js';
+import * as pii from './pii.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 
@@ -132,6 +133,12 @@ app.get('/api/uc/profile', wrap(async (req, res) => {
   }));
 }));
 
+// Distinct values of a column, masked if the column holds personal data.
+const maskedValues = (column, rows) => {
+  const found = pii.assess(column, rows.slice(0, pii.VALUE_SAMPLE_PER_COLUMN).map((r) => r.v));
+  return rows.map((r) => ({ value: found ? pii.mask(r.v, found.type) : r.v, count: Number(r.n), masked: Boolean(found) }));
+};
+
 const assertColumn = (meta, column) => {
   if (!meta.columns.some((c) => c.name === column)) {
     throw Object.assign(new Error(`Column ${column} not found`), { status: 404 });
@@ -145,7 +152,7 @@ app.get('/api/lakebase/values', wrap(async (req, res) => {
   const rows = await pgRun(
     profile.distinctValuesSql('pg', profile.tableRef('pg', [meta.schema, meta.table]), req.query.column),
   );
-  res.json(rows.map((r) => ({ value: r.v, count: Number(r.n) })));
+  res.json(maskedValues(req.query.column, rows));
 }));
 
 app.get('/api/uc/values', wrap(async (req, res) => {
@@ -157,7 +164,7 @@ app.get('/api/uc/values', wrap(async (req, res) => {
     profile.distinctValuesSql('spark', profile.tableRef('spark', [catalog, schema, table]), column),
     { userToken: userToken(req) },
   );
-  res.json(rows.map((r) => ({ value: r.v, count: Number(r.n) })));
+  res.json(maskedValues(column, rows));
 }));
 
 // Master data rows (Lakebase only)

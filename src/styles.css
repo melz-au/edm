@@ -420,3 +420,15 @@ button, input, select { font: inherit; color: inherit; }
 .diff tr.removed th, .diff tr.removed td { color: #b42318; text-decoration: line-through; }
 .diff th { width: 180px; color: var(--muted); font-weight: 500; }
 pre.json { font-size: 11px; max-width: 420px; overflow: auto; background: var(--bg); padding: 8px; border-radius: 6px; }
+
+/* PII */
+:root { --pii: #b42318; --pii-bg: #fee4e2; }
+.key.pii { color: var(--pii); background: var(--pii-bg); }
+.key.pii.low { color: var(--warn); background: var(--warn-bg); }
+.tag.pii { background: var(--pii-bg); color: var(--pii); }
+.tag.pii.medium { background: #fff1e6; color: #c4320a; }
+.tag.pii.low { background: var(--warn-bg); color: var(--warn); }
+.pii-field { border-left: 3px solid var(--pii); }
+.pii-field.medium { border-left-color: #f38744; }
+.pii-field.low { border-left-color: #fdb022; }
+.chip.masked { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }

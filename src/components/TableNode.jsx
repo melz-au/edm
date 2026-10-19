@@ -18,7 +18,7 @@ const TYPE_BADGE = {
 };
 
 function TableNode({ data }) {
-  const { table, columnMode, level, highlightColumns, categorical } = data;
+  const { table, columnMode, level, highlightColumns, categorical, pii } = data;
   const columns = visibleColumns(table, columnMode);
   const hidden = table.columns.length - columns.length;
   const badge = TYPE_BADGE[table.type];
@@ -44,7 +44,10 @@ function TableNode({ data }) {
           <span className="table-node__keys">
             {c.pk && <span className="key pk" title="Primary key">PK</span>}
             {c.fk && <span className="key fk" title="Foreign key">FK</span>}
-            {categorical?.has(c.name) && <span className="key cat" title="Categorical field">CAT</span>}
+            {pii?.has(c.name) && (
+              <span className={`key pii ${pii.get(c.name).sensitivity}`} title={`Personal data: ${pii.get(c.name).label}`}>PII</span>
+            )}
+            {categorical?.has(c.name) && !pii?.has(c.name) && <span className="key cat" title="Categorical field">CAT</span>}
           </span>
           <span className={`table-node__col${c.nullable ? '' : ' required'}`}>{c.label ?? c.name}</span>
           <span className="table-node__type">{c.displayType ?? c.type}</span>

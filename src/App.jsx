@@ -220,6 +220,10 @@ export default function App() {
     () => [...profiles.values()].reduce((n, p) => n + p.columns.filter((c) => c.categorical).length, 0),
     [profiles],
   );
+  const piiCount = useMemo(
+    () => [...profiles.values()].reduce((n, p) => n + p.columns.filter((c) => c.pii).length, 0),
+    [profiles],
+  );
 
   const tablesById = useMemo(
     () => new Map((view?.tables ?? []).map((t) => [t.id, t])),
@@ -239,6 +243,10 @@ export default function App() {
       new Map(
         [...profiles].map(([id, p]) => [id, new Set(p.columns.filter((c) => c.categorical).map((c) => c.name))]),
       ),
+    [profiles],
+  );
+  const piiByTable = useMemo(
+    () => new Map([...profiles].map(([id, p]) => [id, new Map(p.columns.filter((c) => c.pii).map((c) => [c.name, c.pii]))])),
     [profiles],
   );
 
@@ -282,12 +290,12 @@ export default function App() {
         ...n,
         selected: n.id === selectedId,
         className: classes.join(' '),
-        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id) },
+        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id), pii: piiByTable.get(n.id) },
       };
     });
 
     return { displayNodes, displayEdges };
-  }, [nodes, edges, activeId, selectedId, query, categoricalByTable]);
+  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable]);
 
   const filteredTables = useMemo(
     () =>
@@ -447,7 +455,7 @@ export default function App() {
             <section>
               <label className="label">Data</label>
               <button className="btn block" disabled={!canProfile || Boolean(profiling)} onClick={profileAll}>
-                {profiling ? `Profiling ${profiling.done}/${profiling.total} tables…` : 'Detect categorical fields'}
+                {profiling ? `Profiling ${profiling.done}/${profiling.total} tables…` : 'Profile data'}
               </button>
               {!canProfile && (
                 <div className="muted small" style={{ marginTop: 6 }}>
@@ -455,13 +463,16 @@ export default function App() {
                   resources → add a SQL warehouse (Can use), then reload.
                 </div>
               )}
+              {canProfile && profiles.size === 0 && !profiling && (
+                <div className="muted small" style={{ marginTop: 6 }}>Finds categorical fields and personal data (PII).</div>
+              )}
               {canProfile && source === 'uc' && config?.sources.warehouse?.name && (
                 <div className="muted small" style={{ marginTop: 6 }}>Using warehouse {config.sources.warehouse.name}</div>
               )}
               {profiles.size > 0 && !profiling && (
                 <div className="muted small" style={{ marginTop: 6 }}>
-                  {categoricalCount} categorical field{categoricalCount === 1 ? '' : 's'} in {profiles.size} profiled table
-                  {profiles.size === 1 ? '' : 's'} · marked <span className="key cat">CAT</span>
+                  {profiles.size} table{profiles.size === 1 ? '' : 's'} profiled: {categoricalCount} categorical{' '}
+                  <span className="key cat">CAT</span> · {piiCount} personal data <span className="key pii">PII</span>
                 </div>
               )}
             </section>

@@ -60,6 +60,7 @@ test('profileTable combines stats and top values in column order', async () => {
   const run = async (sql) => {
     statements.push(sql);
     if (statements.length === 1) return [{ n: '100', d0: '3', nn0: '100', d1: '100', nn1: '100' }];
+    if (statements.length === 3) return []; // PII value samples
     return [
       { i: '0', v: 'OPEN', n: '60' },
       { i: '0', v: 'CLOSED', n: '30' },
@@ -74,5 +75,6 @@ test('profileTable combines stats and top values in column order', async () => {
   assert.deepEqual(status.topValues.map((v) => v.value), ['OPEN', 'CLOSED', 'HOLD']);
   assert.equal(result.columns[2].categorical, false);
   assert.equal(result.columns[0].reason, 'primary key');
-  assert.equal(statements.length, 2);
+  assert.equal(statements.length, 3, 'stats, top values, PII samples');
+  assert.ok(result.columns.every((c) => c.pii === null));
 });
