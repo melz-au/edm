@@ -54,6 +54,7 @@ export const api = {
 
   ingestTable: (catalog, schema, table) => get('ingest/table', { catalog, schema, table }),
   ingestLoad: (load) => post('ingest/load', load),
+  ingestCreateSchema: (catalog, schema) => post('ingest/schema', { catalog, schema }),
   /** Sends the raw file to the landing volume, reporting progress as 0–1. */
   ingestUpload: (file, { catalog, schema }, onProgress) =>
     new Promise((resolve, reject) => {

@@ -189,6 +189,9 @@ engineers clean up into silver later.
    plain language.
 3. **Choose where to save it:** pick a catalog and schema (`bronze` is
    preselected when it exists) and a table name (suggested from the file name).
+   To put the table in a new schema, choose **+ Create a new schema…** and type
+   its name; it is created when the file is loaded. A catalog with no schemas
+   starts in this mode with `bronze` filled in.
    If the table exists, choose to **add the rows** to it (only offered when its
    columns match) or **replace** it.
 
@@ -255,6 +258,7 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/refdata/publish` · `PUT …/publish/settings` · `POST /api/refdata/publish` | Unity Catalog publish status, settings and run (stewards) |
 | `GET /api/refdata/audit` | Change history |
 | `GET /api/ingest/table?catalog=&schema=&table=` | Whether an upload's target table exists, and its columns |
+| `POST /api/ingest/schema` | Create a schema for uploads (`{catalog, schema}`) |
 | `PUT /api/ingest/upload?catalog=&schema=&fileName=` | Store a raw CSV (request body) in the landing volume |
 | `POST /api/ingest/load` | Write a stored upload to a bronze table (`{catalog, schema, table, path, loadId, columns, delimiter, header, mode}`) |
 
@@ -308,6 +312,10 @@ app.yaml  Databricks Apps entry point (npm run start)
    `READ VOLUME` and `WRITE VOLUME` on it (then `CREATE VOLUME` isn't needed).
    `ERD_BRONZE_CATALOG` and `ERD_BRONZE_SCHEMA` (default `bronze`) preselect
    the target, and `ERD_UPLOAD_MAX_MB` (default 100) caps the file size.
+   To let people create schemas from the upload page, also grant
+   `USE CATALOG, CREATE SCHEMA ON CATALOG main`; set
+   `ERD_UPLOAD_CREATE_SCHEMA=false` to hide the option. A schema the app
+   creates is owned by its service principal, which then has full rights on it.
    Tables are created as the service principal, so anyone who can open the app
    can write to those schemas: grant only the schemas meant for uploads.
 

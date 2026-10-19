@@ -56,6 +56,10 @@ env:
   # first use).
   # - name: ERD_UPLOAD_VOLUME
   #   value: 'main.bronze.landing'
+  # Let people create new schemas from the upload page (needs CREATE SCHEMA on
+  # the catalog). Set to 'false' to allow only existing schemas.
+  # - name: ERD_UPLOAD_CREATE_SCHEMA
+  #   value: 'true'
   # Largest file accepted, in MB.
   # - name: ERD_UPLOAD_MAX_MB
   #   value: '100'

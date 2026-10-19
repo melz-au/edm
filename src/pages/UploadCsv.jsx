@@ -17,6 +17,7 @@ const FULL_PARSE_LIMIT = 25 * 1024 * 1024; // files up to this size are counted 
 const SAMPLE_BYTES = 2 * 1024 * 1024;
 const PREVIEW_ROWS = 10;
 const ACCEPT = '.csv,.tsv,.txt,text/csv';
+const NEW_SCHEMA = '\u0000new'; // schema picker value for "create a new schema"
 
 /** Parses the file text into rows and summary facts for the "Check your data" step. */
 function analyse(sample, { delimiter, hasHeader, complete, fileSize }) {
@@ -45,6 +46,7 @@ function Step({ n, title, done, children }) {
 
 export default function UploadCsv({ config }) {
   const ingest = config?.sources.ingest;
+  const canCreateSchema = ingest?.canCreateSchema !== false;
   const maxMb = ingest?.maxMb ?? 100;
   const inputRef = useRef(null);
 
@@ -58,8 +60,10 @@ export default function UploadCsv({ config }) {
 
   const [catalogs, setCatalogs] = useState([]);
   const [schemas, setSchemas] = useState([]);
+  const [schemasLoading, setSchemasLoading] = useState(false);
   const [catalog, setCatalog] = useState('');
   const [schema, setSchema] = useState('');
+  const [creatingSchema, setCreatingSchema] = useState(false); // typing a new schema name
   const [table, setTable] = useState('');
   const [existing, setExisting] = useState(null); // { exists, columns } for the current name
   const [mode, setMode] = useState(null);
@@ -92,16 +96,35 @@ export default function UploadCsv({ config }) {
   useEffect(() => {
     setSchemas([]);
     setSchema('');
+    setCreatingSchema(false);
     if (!catalog) return;
+    setSchemasLoading(true);
     api
       .ucSchemas(catalog)
       .then((list) => {
         setSchemas(list);
         const preferred = ingest?.defaultSchema;
-        setSchema(list.some((s) => s.name === preferred) ? preferred : list[0]?.name ?? '');
+        if (list.some((s) => s.name === preferred)) setSchema(preferred);
+        else if (!list.length && canCreateSchema) {
+          // An empty catalog: offer to create the usual bronze schema.
+          setCreatingSchema(true);
+          setSchema(preferred || 'bronze');
+        } else setSchema(list[0]?.name ?? '');
       })
-      .catch((err) => setError(`Could not list schemas: ${err.message}`));
-  }, [catalog, ingest?.defaultSchema]);
+      .catch((err) => setError(`Could not list schemas: ${err.message}`))
+      .finally(() => setSchemasLoading(false));
+  }, [catalog, ingest?.defaultSchema, canCreateSchema]);
+
+  const pickSchema = (value) => {
+    if (value === NEW_SCHEMA) {
+      setCreatingSchema(true);
+      const preferred = ingest?.defaultSchema || 'bronze';
+      setSchema(schemas.some((s) => s.name === preferred) ? '' : preferred);
+    } else {
+      setCreatingSchema(false);
+      setSchema(value);
+    }
+  };
 
   const parsed = useMemo(
     () =>
@@ -118,7 +141,9 @@ export default function UploadCsv({ config }) {
   useEffect(() => {
     setExisting(null);
     setMode(null);
-    if (!catalog || !schema || !NAME_RE.test(table)) return;
+    if (!catalog || !NAME_RE.test(schema) || !NAME_RE.test(table)) return;
+    // A schema that doesn't exist yet has no tables.
+    if (!schemas.some((s) => s.name === schema)) return setExisting({ exists: false });
     let current = true;
     const timer = setTimeout(() => {
       api
@@ -130,7 +155,7 @@ export default function UploadCsv({ config }) {
       current = false;
       clearTimeout(timer);
     };
-  }, [catalog, schema, table]);
+  }, [catalog, schema, table, schemas]);
 
   const chooseFile = async (f) => {
     setError(null);
@@ -171,12 +196,17 @@ export default function UploadCsv({ config }) {
   const tableNameError = table && !NAME_RE.test(table)
     ? 'Use lower-case letters, numbers and _ only, not starting with a number.'
     : null;
-  const busy = status.state === 'uploading' || status.state === 'loading';
+  const newSchema = creatingSchema && schema && !schemas.some((s) => s.name === schema);
+  const schemaNameError = creatingSchema && schema && !NAME_RE.test(schema)
+    ? 'Use lower-case letters, numbers and _ only, not starting with a number.'
+    : null;
+  const busy = ['creating-schema', 'uploading', 'loading'].includes(status.state);
   const ready =
     parsed?.data.length > 0 &&
     problems.size === 0 &&
     catalog &&
     schema &&
+    !schemaNameError &&
     table &&
     !tableNameError &&
     existing !== null &&
@@ -186,6 +216,13 @@ export default function UploadCsv({ config }) {
   const load = async () => {
     setError(null);
     try {
+      if (newSchema) {
+        setStatus({ state: 'creating-schema' });
+        await api.ingestCreateSchema(catalog, schema);
+        // From here on it's an existing schema, even if a later step fails.
+        setSchemas((list) => [...list, { name: schema }].sort((a, b) => a.name.localeCompare(b.name)));
+        setCreatingSchema(false);
+      }
       setStatus({ state: 'uploading', progress: 0 });
       const upload = await api.ingestUpload(file, { catalog, schema }, (progress) =>
         setStatus({ state: 'uploading', progress }),
@@ -203,7 +240,7 @@ export default function UploadCsv({ config }) {
         header: hasHeader,
         mode: existing?.exists ? mode : 'create',
       });
-      setStatus({ state: 'done', result });
+      setStatus({ state: 'done', result: { ...result, newSchema: newSchema ? `${catalog}.${schema}` : null } });
     } catch (err) {
       setStatus({ state: 'idle' });
       setError(err.message);
@@ -240,6 +277,11 @@ export default function UploadCsv({ config }) {
                 Your file appeared to have {parsed.rowCount.toLocaleString()} rows, but {result.rows.toLocaleString()} were
                 loaded. Check the file for unusual quoting or line breaks.
               </div>
+            )}
+            {result.newSchema && (
+              <p className="muted">
+                The new schema <code>{result.newSchema}</code> was created for it.
+              </p>
             )}
             <p className="muted small">
               Original file kept at <code>{result.path}</code>
@@ -415,13 +457,39 @@ export default function UploadCsv({ config }) {
                   {catalogs.map((c) => <option key={c.name}>{c.name}</option>)}
                 </select>
               </label>
-              <label className="field">
-                <span>Schema</span>
-                <select value={schema} onChange={(e) => setSchema(e.target.value)} disabled={busy || !schemas.length}>
-                  {!schemas.length && <option value="">{catalog ? 'Loading…' : '—'}</option>}
+              <div className="field">
+                <label htmlFor="upload-schema">Schema</label>
+                <select
+                  id="upload-schema"
+                  value={creatingSchema ? NEW_SCHEMA : schema}
+                  onChange={(e) => pickSchema(e.target.value)}
+                  disabled={busy || schemasLoading || !catalog}
+                >
+                  {schemasLoading && <option value="">Loading…</option>}
+                  {!schemasLoading && !schemas.length && !canCreateSchema && <option value="">No schemas</option>}
                   {schemas.map((s) => <option key={s.name}>{s.name}</option>)}
+                  {canCreateSchema && !schemasLoading && catalog && (
+                    <option value={NEW_SCHEMA}>+ Create a new schema…</option>
+                  )}
                 </select>
-              </label>
+                {creatingSchema && (
+                  <>
+                    <input
+                      className={schemaNameError ? 'invalid' : ''}
+                      value={schema}
+                      placeholder="New schema name, e.g. bronze"
+                      aria-label="New schema name"
+                      disabled={busy}
+                      autoFocus
+                      onChange={(e) => setSchema(e.target.value)}
+                    />
+                    {schemaNameError && <span className="field-error">{schemaNameError}</span>}
+                    {!schemaNameError && schema && !newSchema && (
+                      <span className="muted small">This schema already exists and will be used.</span>
+                    )}
+                  </>
+                )}
+              </div>
               <label className="field">
                 <span>Table name</span>
                 <input
@@ -433,9 +501,10 @@ export default function UploadCsv({ config }) {
                 {tableNameError && <span className="field-error">{tableNameError}</span>}
               </label>
             </div>
-            {catalog && schema && table && !tableNameError && (
+            {catalog && schema && table && !tableNameError && !schemaNameError && (
               <p className="muted">
                 Will be saved as <code>{catalog}.{schema}.{table}</code>
+                {newSchema && <span className="tag ok">new schema</span>}
                 {existing && !existing.exists && <span className="tag ok">new table</span>}
               </p>
             )}
@@ -471,21 +540,23 @@ export default function UploadCsv({ config }) {
         {parsed && (
           <div className="upload-actions">
             <button className="btn primary large" disabled={!ready} onClick={load}>
-              {status.state === 'uploading'
-                ? `Uploading… ${Math.round((status.progress ?? 0) * 100)}%`
-                : status.state === 'loading'
-                  ? 'Creating table…'
-                  : 'Load to bronze table'}
+              {status.state === 'creating-schema'
+                ? 'Creating schema…'
+                : status.state === 'uploading'
+                  ? `Uploading… ${Math.round((status.progress ?? 0) * 100)}%`
+                  : status.state === 'loading'
+                    ? 'Creating table…'
+                    : 'Load to bronze table'}
             </button>
             {busy && (
               <div className="upload-progress">
                 <div
-                  className={status.state === 'loading' ? 'indeterminate' : ''}
+                  className={status.state === 'uploading' ? '' : 'indeterminate'}
                   style={status.state === 'uploading' ? { width: `${(status.progress ?? 0) * 100}%` } : undefined}
                 />
               </div>
             )}
-            {status.state === 'loading' && (
+            {status.state !== 'uploading' && busy && (
               <p className="muted small">This can take a minute if the SQL warehouse is starting up.</p>
             )}
           </div>

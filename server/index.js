@@ -83,6 +83,7 @@ app.get('/api/config', wrap(async (req, res) => {
         defaultSchema: process.env.ERD_BRONZE_SCHEMA || 'bronze',
         volume: process.env.ERD_UPLOAD_VOLUME || null,
         maxMb: ingest.MAX_UPLOAD_MB,
+        canCreateSchema: ingest.canCreateSchema(),
       },
       demo: { available: true },
     },
@@ -289,6 +290,11 @@ app.get('/api/ingest/table', wrap(async (req, res) => {
   required(req, 'catalog', 'schema', 'table');
   const t = await existingTable(req, req.query.catalog, req.query.schema, req.query.table);
   res.json(t ? { exists: true, columns: t.columns.map((c) => c.name) } : { exists: false });
+}));
+
+app.post('/api/ingest/schema', wrap(async (req, res) => {
+  const { catalog, schema } = req.body ?? {};
+  res.status(201).json(await ingest.createSchema({ catalog, schema, user: currentUser(req), runSql: ucSql(req) }));
 }));
 
 app.put(
