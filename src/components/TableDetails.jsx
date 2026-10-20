@@ -1,6 +1,7 @@
 const CARDINALITY_TEXT = { 'N:1': 'many-to-one', '1:1': 'one-to-one', 'M:N': 'many-to-many' };
 
 import { useState } from 'react';
+import DataQuality from './DataQuality.jsx';
 
 function ProfileSection({ table, profile, canProfile, onProfile, linked, mapped, onCreateCodeSet, onMapCodes }) {
   const [busy, setBusy] = useState(false);
@@ -135,6 +136,9 @@ export default function TableDetails({
   onCreateCodeSet,
   onMapCodes,
   onEditData,
+  dqSource,
+  onDqChanged,
+  onChangeSubmitted,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
   const piiNames = new Set(profile?.columns.filter((c) => c.pii).map((c) => c.name));
@@ -213,6 +217,10 @@ export default function TableDetails({
         onCreateCodeSet={onCreateCodeSet}
         onMapCodes={onMapCodes}
       />
+
+      {dqSource && !table.external && (
+        <DataQuality source={dqSource} table={table} onChanged={onDqChanged} onSubmitted={onChangeSubmitted} />
+      )}
 
       {outgoing.length > 0 && (
         <>

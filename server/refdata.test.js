@@ -228,3 +228,111 @@ test('publishing: settings, snapshot, run log, serialised runs and the applied h
   await new Promise((r) => setTimeout(r, 50));
   assert.deepEqual(seen, ['code_set']);
 });
+
+test('data quality rules run against Postgres, including orphaned references', { skip: !enabled }, async () => {
+  const dqstore = await import('./dqstore.js');
+  const dq = await import('./dq.js');
+  await lakebase.query(`CREATE TABLE ${MASTER}.region (id int PRIMARY KEY);
+    INSERT INTO ${MASTER}.region VALUES (1), (2);
+    CREATE TABLE ${MASTER}.cust (id int, email text, region_id int, state text);
+    INSERT INTO ${MASTER}.cust VALUES (1, 'a@x.com', 1, 'SA'), (2, 'bad-email', 2, 'S.A.'), (2, '', 9, 'N/A'), (4, NULL, NULL, 'SA');`);
+  const table = `${MASTER}.cust`;
+  await dqstore.addRules('lakebase', table, [
+    { column: 'id', rule_type: 'unique', params: { columns: ['id'] }, severity: 'error', description: 'id unique' },
+    { column: 'email', rule_type: 'not_null', params: {}, description: 'email filled' },
+    { column: 'email', rule_type: 'format', params: { regex: '^[^@ ]+@[^@ ]+[.][A-Za-z]{2,}$', piiType: 'email' }, description: 'email format' },
+    { column: 'region_id', rule_type: 'references', params: { parentTable: `${MASTER}.region`, parentColumn: 'id' }, description: 'region exists' },
+    { column: 'state', rule_type: 'allowed_values', params: { values: ['SA'] }, description: 'state' },
+    { column: 'nope', rule_type: 'not_null', params: {}, description: 'gone' },
+  ], 'a@x.com');
+  const results = await dqstore.runRules({
+    system: 'lakebase',
+    table,
+    exec: async (sql) => (await lakebase.query(sql)).rows,
+    dialect: 'pg',
+    ref: dq.tableRef('pg', [MASTER, 'cust']),
+    columns: [{ name: 'id' }, { name: 'email' }, { name: 'region_id' }, { name: 'state' }],
+    parentRef: async (name) => dq.tableRef('pg', name.split('.')),
+  });
+  const by = Object.fromEntries(results.map((r) => [`${r.column_name}:${r.rule_type}`, r]));
+  assert.equal(by['id:unique'].last_failed, 2);
+  assert.equal(by['email:not_null'].last_failed, 2, "'' and NULL");
+  assert.equal(by['email:format'].last_failed, 1, 'only present values are judged');
+  assert.equal(by['email:format'].last_samples[0].value, 'b•••l', 'personal data is masked');
+  assert.equal(by['region_id:references'].last_failed, 1, 'region 9 is orphaned');
+  assert.equal(by['state:allowed_values'].last_failed, 1, "S.A. fails; 'N/A' is left to not_null");
+  assert.match(by['nope:not_null'].last_error, /no longer exists/);
+  assert.equal(by['id:unique'].last_total, 4);
+  const [summary] = await dqstore.summary('lakebase', `${MASTER}.`);
+  assert.equal(summary.rules, 6);
+  assert.equal(summary.failing, 5);
+});
+
+test('write-back: propose from rules, approve with stale check, outbox and acknowledgement', { skip: !enabled }, async () => {
+  const writeback = await import('./writeback.js');
+  const dqstore = await import('./dqstore.js');
+  const dq = await import('./dq.js');
+  await lakebase.query(`CREATE TABLE ${MASTER}.billing (cust_no text, state text, bsb text, email text);
+    INSERT INTO ${MASTER}.billing VALUES
+      ('C1', 'S.A.', '545124', 'a@x.com '), ('C2', 'sa', '545-124', 'b@x.com'),
+      ('C3', 'SA', '123456', 'c.x.com'), ('C4', 'NSW', '111-222', 'd@x.com'),
+      ('C5', 'SA', '999-888', 'e@x.com'), ('C5', 'SA', '999-888', 'e@x.com');`);
+  const name = `${MASTER}.billing`;
+  const ctx = {
+    system: 'lakebase',
+    name,
+    dialect: 'pg',
+    ref: dq.tableRef('pg', [MASTER, 'billing']),
+    columns: ['cust_no', 'state', 'bsb', 'email'].map((n) => ({ name: n })),
+    primaryKey: [],
+    exec: async (sql) => (await lakebase.query(sql)).rows,
+  };
+  writeback.configure({ tableContext: async () => ctx });
+  await dqstore.addRules('lakebase', name, [
+    { column: 'state', rule_type: 'allowed_values', params: { values: ['SA'] }, description: 'state' },
+    { column: 'bsb', rule_type: 'format', params: { regex: '^[0-9]{3}[-][0-9]{3}$', pattern: '999-999', piiType: 'financial' }, description: 'bsb' },
+    { column: 'email', rule_type: 'format', params: { regex: '^[^@ ]+@[^@ ]+[.][A-Za-z]{2,}$', piiType: 'email' }, description: 'email' },
+  ], 'a@x.com');
+
+  const p = await writeback.proposals(ctx, { keyColumns: ['cust_no'] });
+  const ids = p.groups.map((g) => g.id).sort();
+  assert.ok(ids.includes('state|standardise_code|safe') && ids.includes('bsb|reformat|safe') && ids.includes('email|trim|safe'), ids.join());
+  assert.ok(p.groups.find((g) => g.id === 'state|unknown_code|manual'), 'NSW is manual');
+  assert.ok(p.groups.find((g) => g.id === 'email|invalid_email|manual'));
+
+  const target = { system: 'lakebase', schema: MASTER, table: 'billing' };
+  await assert.rejects(
+    refdata.proposeChange({ kind: 'writeback', action: 'create', target, payload: { keyColumns: ['cust_no'], groupIds: ['state|unknown_code|manual'], pathTemplate: '/c/{cust_no}' } }, 'a@x.com'),
+    /None of the selected corrections/,
+    'manual groups can never be sent',
+  );
+  const cr = await refdata.proposeChange(
+    { kind: 'writeback', action: 'create', target, payload: { keyColumns: ['cust_no'], groupIds: ['state|standardise_code|safe', 'bsb|reformat|safe', 'email|trim|safe'], method: 'PATCH', pathTemplate: '/customers/{cust_no}' } },
+    'analyst@x.com',
+  );
+  assert.equal(cr.payload.changes.length, 5, 'C1 state+bsb+email, C2 state, C3 bsb');
+  assert.match(cr.summary, /5 corrections to 3 records/);
+
+  // The source changes C2's state before approval: that change is dropped.
+  await lakebase.query(`UPDATE ${MASTER}.billing SET state = 'SA' WHERE cust_no = 'C2'`);
+  const done = await refdata.reviewChange(cr.id, { decision: 'approve' }, 'steward@x.com');
+  assert.equal(done.status, 'applied');
+  const [audit] = (await refdata.auditLog()).filter((a) => a.change_request_id === cr.id);
+  assert.deepEqual(audit.after, { outboxEntries: 2, changes: 4, staleChangesDropped: 1 });
+
+  const outbox = await writeback.listOutbox({ table: name });
+  assert.deepEqual(outbox.map((e) => e.path), ['/customers/C1', '/customers/C3']);
+  assert.deepEqual(outbox[1].body.set, { bsb: '123-456' });
+  assert.deepEqual(outbox[0].body.set, { state: 'SA', bsb: '545-124', email: 'a@x.com' });
+  assert.deepEqual(outbox[0].body.expect, { state: 'S.A.', bsb: '545124', email: 'a@x.com ' });
+
+  const { rows: source } = await lakebase.query(`SELECT state FROM ${MASTER}.billing WHERE cust_no = 'C1'`);
+  assert.equal(source[0].state, 'S.A.', 'the app never edits the source itself');
+
+  await writeback.acknowledge([outbox[0].id], { status: 'failed', response: '409 changed' }, 'integration');
+  await writeback.acknowledge([outbox[0].id], { status: 'sent', response: '200' }, 'integration');
+  const after = (await writeback.listOutbox({ table: name }))[0];
+  assert.equal(after.status, 'sent');
+  assert.equal(after.attempts, 2);
+  assert.deepEqual(await writeback.acknowledge([outbox[0].id], { status: 'cancelled' }, 'x'), [], 'sent entries stay sent');
+});

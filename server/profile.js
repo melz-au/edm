@@ -10,6 +10,7 @@
 //   'spark' Unity Catalog via a Databricks SQL warehouse
 
 import * as pii from './pii.js';
+import { dominantShape } from './dq.js';
 
 export const SAMPLE_ROWS = 10_000;
 export const TOP_VALUES = 15;
@@ -28,6 +29,7 @@ export const quoteIdent = (dialect, name) =>
 export const tableRef = (dialect, parts) => parts.map((p) => quoteIdent(dialect, p)).join('.');
 
 const textType = (dialect) => (dialect === 'spark' ? 'STRING' : 'TEXT');
+const MISSING_TOKENS_SQL = ["''", "'NULL'", "'N/A'", "'NA'", "'-'", "'UNKNOWN'", "'NONE'", "'NIL'"].join(', ');
 
 /** Columns worth profiling: not the table's single-column key, not a FK, not a measure/date/blob. */
 export function candidateColumns(columns, primaryKey = []) {
@@ -41,9 +43,17 @@ export function candidateColumns(columns, primaryKey = []) {
 }
 
 /** One row: n, then d<i> (distinct) and nn<i> (non-null) for each column. */
-export function profileSql(dialect, ref, columns, sample = SAMPLE_ROWS) {
+export function profileSql(dialect, ref, columns, sample = SAMPLE_ROWS, allColumns = []) {
   const q = (n) => quoteIdent(dialect, n);
-  const stats = columns.flatMap((c, i) => [`count(DISTINCT ${q(c.name)}) AS d${i}`, `count(${q(c.name)}) AS nn${i}`]);
+  const stats = [
+    ...columns.flatMap((c, i) => [`count(DISTINCT ${q(c.name)}) AS d${i}`, `count(${q(c.name)}) AS nn${i}`]),
+    // Filled count of every column (f<i> by position in allColumns): not null, not
+    // blank and not a missing-value token, for completeness.
+    ...allColumns.map(
+      (c, i) =>
+        `count(CASE WHEN ${q(c.name)} IS NOT NULL AND upper(trim(CAST(${q(c.name)} AS ${textType(dialect)}))) NOT IN (${MISSING_TOKENS_SQL}) THEN 1 END) AS f${i}`,
+    ),
+  ];
   return `WITH s AS (SELECT * FROM ${ref} LIMIT ${sample})
 SELECT count(*) AS n${stats.length ? `, ${stats.join(', ')}` : ''} FROM s`;
 }
@@ -90,7 +100,7 @@ export function classify({ name, distinct, nonNull }) {
  */
 export async function profileTable({ dialect, ref, columns, primaryKey, run }) {
   const candidates = candidateColumns(columns, primaryKey);
-  const [stats] = await run(profileSql(dialect, ref, candidates));
+  const [stats] = await run(profileSql(dialect, ref, candidates, SAMPLE_ROWS, columns));
   const sampled = Number(stats?.n ?? 0);
 
   const results = candidates.map((c, i) => {
@@ -124,7 +134,12 @@ export async function profileTable({ dialect, ref, columns, primaryKey, run }) {
       samples.get(name).push(row.v);
     }
   }
-  for (const col of all) col.pii = pii.assess(col.name, samples.get(col.name) ?? []);
+  for (const col of all) {
+    col.pii = pii.assess(col.name, samples.get(col.name) ?? []);
+    col.filled = Number(stats?.[`f${order.get(col.name)}`] ?? 0);
+    // Dominant value format (e.g. AA9999999), for data quality rule suggestions.
+    col.shape = samples.has(col.name) ? dominantShape(samples.get(col.name)) : null;
+  }
   // Coordinates and postcodes only identify people when the table is about
   // people (e.g. a customer's address), not assets or sites.
   const aboutPeople = all.some((c) => c.pii && pii.DIRECT_IDENTIFIERS.has(c.pii.type));

@@ -68,6 +68,96 @@ profile, in categorical top values and in the distinct-values endpoint, and
 PII columns aren't offered as code sets. Detection is a heuristic aid, not a
 compliance guarantee: review the results.
 
+**Data quality checks.** In a table's details panel, **Data quality →
+Suggest rules** profiles the table and proposes checks. Each comes with the
+reason it was suggested:
+
+| Rule | Suggested when |
+| --- | --- |
+| Unique | Primary keys, and identifier-like columns (`*_NO`, `*_ID`, email) that are at least 90% distinct, so the repeats get caught |
+| Not null | Primary keys, and columns at least 95% filled. Blanks and tokens like `N/A`, `NULL` and `-` count as missing |
+| Allowed values | Categorical columns. Values come from the linked code set, the approved code mappings, or the dominant values. In a clean list every value stays allowed; in a dirty one, spelling variants fold into the main spelling (`S.A.`, `sa` → `SA`) and the variants fail |
+| Format | The dominant value shape (`AA9999999`, `99/99/9999`, `999-999`) for structured columns, plus email and Australian phone formats for detected PII |
+| Not in the future | Date columns for past events (birth, created, install, connect, …) |
+| References | Declared foreign keys: the value must exist in the parent table. This is useful for Unity Catalog, where keys aren't enforced |
+
+You pick which suggestions to add, then **Run checks**. Each rule shows its pass
+rate, failing row count and most common failing values (masked for PII). Rules
+other than not null judge present values only. The table gets an overall score,
+also shown as a **DQ %** badge on the diagram. Rules and their latest results are
+stored in `refdata.dq_rule` in Lakebase. Checks run directly on Lakebase, or
+through the SQL warehouse for Unity Catalog tables.
+
+On `sample-data/billing` the suggested rules catch the injected issues, for
+example:
+
+- the 10 exact duplicate rows
+- duplicate account numbers and shared meters
+- every non-standard `STATE`, `ACCT_TYPE` and `CONC_FLAG` value
+- the 27 home phones without an area code
+- the 16 bank accounts in scientific notation
+- invalid and badly formatted emails
+- mixed date formats
+
+**Write-back to source systems.** Fixing data in the warehouse alone leaves the
+source system wrong. When a table's checks fail, **Data quality → Propose
+corrections for the source system** turns the failures into corrections that
+can be sent back through the source system's API. The app never calls the
+source system itself; it proposes, a steward approves, and an integration you
+own sends the approved changes from an **outbox**.
+
+Each correction is classed by how safe it is to send without a person looking
+at it:
+
+| Class | Examples | Can be sent |
+| --- | --- | --- |
+| **Safe** | Trimmed spaces, approved code mappings (`Vic.` → `VIC`), spelling variants, `+61 4…` → `04…` laid out like the column's other numbers, `.0` removed from Excel exports, lower-case emails | Preselected |
+| **Review** | Close code guesses (`Resi` → `RES`), likely day/month swaps, email domain typos (`.con` → `.com`), a lost leading zero, a missing area code | Opt in per group |
+| **Manual** | Duplicates, future dates, broken references, invalid dates, scientific notation | Never; listed for follow-up |
+
+Corrections keep the source's own vocabulary: a mapped value is written back as
+the spelling the source uses most for that code, not the standard code.
+
+1. Choose the **record key** (defaults to the primary key, or the unique column
+   with the fewest failures), the HTTP **method** (`PATCH`, `PUT` or `POST`)
+   and the **path template**, e.g. `/customers/{CUST_NO}`. Rows whose key is
+   missing or repeated with different values are left out.
+2. Pick the groups to send and submit. This creates a **change request** like
+   any other, so the same approval rules apply. The server rebuilds the
+   corrections itself; the browser can't add values of its own.
+3. When a steward approves, the source rows are read again. Corrections whose
+   value changed since the proposal are dropped as stale, and the rest become
+   one outbox entry per record:
+
+   ```json
+   {
+     "method": "PATCH",
+     "path": "/customers/C10042",
+     "record_key": { "CUST_NO": "C10042" },
+     "body": {
+       "set":    { "STATE": "VIC", "EMAIL": "jo@example.com" },
+       "expect": { "STATE": "Vic.", "EMAIL": "Jo@Example.com" },
+       "fixes":  { "STATE": "standardise_code", "EMAIL": "email_case" }
+     }
+   }
+   ```
+
+   `expect` holds the old values, so the integration (or the source API) can
+   refuse an update if the record changed in the meantime.
+
+The **Write-back** tab (stewards only) lists the outbox by status (`pending`,
+`sent`, `failed`, `cancelled`), with JSON and CSV exports. Personal data is
+masked on screen but kept in exports. To send the changes, an integration
+either:
+
+- calls `GET /api/writeback/outbox/export?format=json&status=pending`, sends
+  each entry, then reports back with `POST /api/writeback/outbox/ack`
+  (`{ids, status: "sent" | "failed" | "cancelled", response}`); or
+- reads and updates `refdata.writeback_outbox` in Lakebase directly.
+
+Sent entries are never changed again, and each sent or failed report
+increments `attempts`.
+
 **Reference data.** Any categorical field can become a managed **code set**:
 *Create code set* reads all of the column's distinct values. Review the codes,
 add labels and descriptions, and submit. The **Reference data** tab lists code
@@ -166,6 +256,8 @@ which is created on first use:
 | `code_mapping` | Raw source values (system, table, column, value) mapped to a code, or to *missing* |
 | `code_mapping_v` | View joining the mappings to set name, code and label, for pipelines |
 | `setting`, `publish_log` | Unity Catalog publish settings and run history |
+| `dq_rule` | Data quality rules per table, with their latest result |
+| `writeback_outbox` | Approved corrections waiting to be sent to a source system, with their API payload and status |
 | `change_request` | Every proposed change, its status and review |
 | `audit_log` | Every applied change with before/after JSON |
 
@@ -173,7 +265,41 @@ Users are identified by the email Databricks Apps forwards for the signed-in
 user (`X-Forwarded-Email`). Outside Databricks Apps that header is just a
 request header, so don't expose a locally run server to other people.
 
-## Sample data
+## Upload a CSV to a bronze table
+
+The **Upload CSV** tab lets anyone, without writing SQL, turn a spreadsheet
+export into a **bronze** Unity Catalog table: a raw copy of the file that data
+engineers clean up into silver later.
+
+1. **Choose your file:** drag a `.csv`, `.tsv` or `.txt` file onto the page (or
+   browse). It is read in the browser first: the separator (comma, semicolon,
+   tab or pipe) is detected, and rows are counted.
+2. **Check your data:** each column gets a database-safe name (`Customer ID`
+   → `customer_id`, duplicates get `_2`), with a hint of what it holds
+   (number, date, yes/no, text) and example values. Any name can be changed,
+   and problems such as rows with a different number of values are explained in
+   plain language.
+3. **Choose where to save it:** pick a catalog and schema (`bronze` is
+   preselected when it exists) and a table name (suggested from the file name).
+   To put the table in a new schema, choose **+ Create a new schema…** and type
+   its name; it is created when the file is loaded. A catalog with no schemas
+   starts in this mode with `bronze` filled in.
+   If the table exists, choose to **add the rows** to it (only offered when its
+   columns match) or **replace** it.
+
+On **Load to bronze table** the file is uploaded unchanged to a landing volume,
+`/Volumes/<catalog>/<schema>/landing/uploads/<date>/<load id>_<file>`, and a
+SQL warehouse writes the table with `read_files()`:
+
+- Every column is `STRING`, exactly as in the file. Columns are read by
+  position, so the chosen names replace the file's header.
+- Four lineage columns are added: `_source_file`, `_ingested_at`,
+  `_ingested_by` (the signed-in user) and `_load_id`.
+- The table gets the property `quality = bronze` and a comment naming the file
+  and uploader.
+
+The result page shows how many rows were loaded and the query for that load.
+
 
 `sample-data/` has two fictional sources for the same water utility, for trying
 the features end to end:
@@ -198,7 +324,12 @@ server/   Express: serves dist/ and the /api endpoints
   warehouse.js     Statement Execution API client for Unity Catalog profiling
   refdata.js       code sets, mappings, change requests, approvals and audit log (Lakebase)
   mapping.js       suggests standard codes for raw source values
+  ingest.js        CSV upload to a landing volume and bronze table load
   ucpublish.js     publishes reference data to Unity Catalog as Delta tables
+  dq.js            data quality rule suggestions and check SQL (Postgres and Databricks SQL)
+  dqstore.js       stores data quality rules and runs them
+  corrections.js   proposes fixes for failing values, classed safe / review / manual
+  writeback.js     write-back proposals, approval handler and the outbox
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 app.yaml  Databricks Apps entry point (npm run start)
 ```
@@ -221,7 +352,18 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/refdata/code-sets/:id/mappings` · `GET /api/refdata/mappings?system=&table=` | Mappings by code set or by source table |
 | `POST /api/refdata/code-sets/:id/suggest` | Suggested codes for `{values: [...]}` |
 | `GET /api/refdata/publish` · `PUT …/publish/settings` · `POST /api/refdata/publish` | Unity Catalog publish status, settings and run (stewards) |
+| `GET /api/dq/suggest?system=&schema=&table=` | Profile a table and suggest data quality rules |
+| `GET/POST /api/dq/rules` · `DELETE /api/dq/rules/:id` | List, add or remove a table's rules |
+| `POST /api/dq/run` · `GET /api/dq/summary?system=&prefix=` | Run a table's rules; scores per table |
+| `GET /api/writeback/proposals?system=&schema=&table=&key=` | Corrections for a table's failing checks, grouped by fix and safety |
+| `GET /api/writeback/outbox?status=` · `GET …/outbox/counts` | Outbox entries (stewards; PII masked) and counts by status |
+| `GET /api/writeback/outbox/export?format=json\|csv&status=` | Outbox export with real values (stewards) |
+| `POST /api/writeback/outbox/ack` | Mark entries `sent`, `failed` or `cancelled` (`{ids, status, response}`, stewards) |
 | `GET /api/refdata/audit` | Change history |
+| `GET /api/ingest/table?catalog=&schema=&table=` | Whether an upload's target table exists, and its columns |
+| `POST /api/ingest/schema` | Create a schema for uploads (`{catalog, schema}`) |
+| `PUT /api/ingest/upload?catalog=&schema=&fileName=` | Store a raw CSV (request body) in the landing volume |
+| `POST /api/ingest/load` | Write a stored upload to a bronze table (`{catalog, schema, table, path, loadId, columns, delimiter, header, mode}`) |
 
 ## Deploy as a Databricks App
 
@@ -261,6 +403,24 @@ app.yaml  Databricks Apps entry point (npm run start)
    GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA maximo TO "<sp-client-id>";
    ```
    Set `ERD_STEWARDS` to the emails of the people who approve changes.
+7. **CSV upload:** this needs the SQL warehouse from step 5. Grant the service
+   principal, on each schema people upload into:
+   ```sql
+   GRANT USE CATALOG ON CATALOG main TO `<sp-client-id>`;
+   GRANT USE SCHEMA, CREATE TABLE, CREATE VOLUME, SELECT, MODIFY
+     ON SCHEMA main.bronze TO `<sp-client-id>`;
+   ```
+   The app creates the `landing` volume on first use. To use an existing volume
+   instead, set `ERD_UPLOAD_VOLUME=catalog.schema.volume` and grant
+   `READ VOLUME` and `WRITE VOLUME` on it (then `CREATE VOLUME` isn't needed).
+   `ERD_BRONZE_CATALOG` and `ERD_BRONZE_SCHEMA` (default `bronze`) preselect
+   the target, and `ERD_UPLOAD_MAX_MB` (default 100) caps the file size.
+   To let people create schemas from the upload page, also grant
+   `USE CATALOG, CREATE SCHEMA ON CATALOG main`; set
+   `ERD_UPLOAD_CREATE_SCHEMA=false` to hide the option. A schema the app
+   creates is owned by its service principal, which then has full rights on it.
+   Tables are created as the service principal, so anyone who can open the app
+   can write to those schemas: grant only the schemas meant for uploads.
 
 To declare keys in Unity Catalog so they show up as solid relationships:
 

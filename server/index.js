@@ -10,8 +10,12 @@ import * as profile from './profile.js';
 import * as pii from './pii.js';
 import { suggestMappings } from './mapping.js';
 import * as ucpublish from './ucpublish.js';
+import * as dq from './dq.js';
+import * as dqstore from './dqstore.js';
+import * as writeback from './writeback.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
+import * as ingest from './ingest.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, '..', 'dist');
@@ -76,6 +80,14 @@ app.get('/api/config', wrap(async (req, res) => {
       lakebase: { available: lakebase.isConfigured(), ...lakebase.getConnectionInfo() },
       warehouse: { available: Boolean(wh), name: wh?.name ?? null, source: wh?.source ?? null },
       refdata: { available: lakebase.isConfigured(), schema: refdata.SCHEMA },
+      ingest: {
+        available: Boolean(wh) && (databricks.isConfigured() || Boolean(userToken(req) && databricks.getHost())),
+        defaultCatalog: process.env.ERD_BRONZE_CATALOG || process.env.ERD_DEFAULT_CATALOG || null,
+        defaultSchema: process.env.ERD_BRONZE_SCHEMA || 'bronze',
+        volume: process.env.ERD_UPLOAD_VOLUME || null,
+        maxMb: ingest.MAX_UPLOAD_MB,
+        canCreateSchema: ingest.canCreateSchema(),
+      },
       demo: { available: true },
     },
   });
@@ -216,7 +228,8 @@ app.get('/api/refdata/linked', wrap(async (req, res) => {
 }));
 
 app.get('/api/refdata/changes', wrap(async (req, res) => {
-  res.json(await refdata.listChanges({ status: req.query.status, kind: req.query.kind, limit: req.query.limit }));
+  const changes = await refdata.listChanges({ status: req.query.status, kind: req.query.kind, limit: req.query.limit });
+  res.json(changes.map(writeback.forDisplay)); // write-back changes: counts + masked examples only
 }));
 
 app.get('/api/refdata/pending-count', wrap(async (_req, res) => res.json({ pending: await refdata.pendingCount() })));
@@ -231,6 +244,172 @@ app.post('/api/refdata/changes/:id/review', wrap(async (req, res) => {
 
 app.post('/api/refdata/changes/:id/cancel', wrap(async (req, res) => {
   res.json(await refdata.cancelChange(Number(req.params.id), currentUser(req)));
+}));
+
+// Data quality: suggest rules from a profile, store them, run them.
+
+/** Everything needed to profile or check one table, for either source. */
+async function tableContext(req, { system, catalog, schema, table }) {
+  if (system === 'uc') {
+    const token = userToken(req);
+    const meta = await uc.getTable(catalog, schema, table, token);
+    return {
+      system,
+      name: `${catalog}.${schema}.${table}`,
+      dialect: 'spark',
+      ref: dq.tableRef('spark', [catalog, schema, table]),
+      columns: meta.columns,
+      primaryKey: meta.primaryKey,
+      exec: (sql) => warehouse.runSql(sql, { userToken: token }),
+      parentRef: async (name) => {
+        const [c, s2, t] = name.split('.');
+        await uc.getTable(c, s2, t, token);
+        return dq.tableRef('spark', [c, s2, t]);
+      },
+      relationships: async () => (await uc.getErd(catalog, schema, token)).relationships,
+    };
+  }
+  if (system === 'lakebase') {
+    const meta = await lakebase.tableMeta(schema, table);
+    return {
+      system,
+      name: `${schema}.${table}`,
+      dialect: 'pg',
+      ref: dq.tableRef('pg', [schema, table]),
+      columns: meta.columns,
+      primaryKey: meta.primaryKey,
+      exec: pgRun,
+      parentRef: async (name) => {
+        const [s2, t] = name.split('.');
+        await lakebase.tableMeta(s2, t);
+        return dq.tableRef('pg', [s2, t]);
+      },
+      relationships: async () => (await lakebase.getErd(schema)).relationships,
+    };
+  }
+  throw Object.assign(new Error('system must be uc or lakebase'), { status: 400 });
+}
+
+const tableParams = (src) => ({ system: src.system, catalog: src.catalog, schema: src.schema, table: src.table });
+
+app.get('/api/dq/suggest', wrap(async (req, res) => {
+  required(req, 'system', 'schema', 'table');
+  const ctx = await tableContext(req, tableParams(req.query));
+  const prof = await profile.profileTable({
+    dialect: ctx.dialect, ref: ctx.ref, columns: ctx.columns, primaryKey: ctx.primaryKey, run: ctx.exec,
+  });
+  const relationships = (await ctx.relationships()).filter((r) => r.from.table === ctx.name);
+  const [linked, mapped, existing] = await Promise.all([
+    refdata.codeSetsForSource(req.query.system, ctx.name),
+    refdata.mappingsForSource(req.query.system, ctx.name),
+    dqstore.listRules(req.query.system, ctx.name),
+  ]);
+  const codeSets = [
+    ...mapped.map((m) => ({ column: m.source_column, codeSetId: m.code_set_id, name: m.code_set_name, from: 'mapping' })),
+    ...linked.map((l) => ({ column: l.source_column, codeSetId: l.id, name: l.name, from: 'code_set' })),
+  ];
+  const existingKeys = new Set(existing.map((r) => `${r.column_name}|${r.rule_type}`));
+  const suggestions = dq
+    .suggestRules({ table: { id: ctx.name, columns: ctx.columns }, profile: prof, relationships, codeSets })
+    .map((s) => ({ ...s, exists: existingKeys.has(`${s.column}|${s.rule_type}`) }));
+  res.json({ table: ctx.name, sampled: prof.sampled, suggestions });
+}));
+
+app.get('/api/dq/rules', wrap(async (req, res) => {
+  required(req, 'system', 'table');
+  res.json(await dqstore.listRules(req.query.system, req.query.table));
+}));
+
+app.post('/api/dq/rules', wrap(async (req, res) => {
+  const { system, table, rules } = req.body ?? {};
+  if (!system || !table || !Array.isArray(rules)) {
+    throw Object.assign(new Error('system, table and rules are required'), { status: 400 });
+  }
+  res.status(201).json(await dqstore.addRules(system, table, rules, currentUser(req)));
+}));
+
+app.delete('/api/dq/rules/:id', wrap(async (req, res) => {
+  await dqstore.deleteRule(Number(req.params.id));
+  res.json({ ok: true });
+}));
+
+app.post('/api/dq/run', wrap(async (req, res) => {
+  const ctx = await tableContext(req, tableParams(req.body ?? {}));
+  res.json(await dqstore.runRules({ system: req.body.system, table: ctx.name, ...ctx }));
+}));
+
+app.get('/api/dq/summary', wrap(async (req, res) => {
+  required(req, 'system', 'prefix');
+  res.json(await dqstore.summary(req.query.system, req.query.prefix));
+}));
+
+// Write-back of corrections to source systems, via an outbox.
+writeback.configure({ tableContext: (target) => tableContext({ get: () => undefined }, target) });
+
+const requireSteward = (req) => {
+  if (!refdata.isSteward(currentUser(req))) {
+    throw Object.assign(new Error('Only data stewards can read or update the write-back outbox'), { status: 403 });
+  }
+};
+
+app.get('/api/writeback/proposals', wrap(async (req, res) => {
+  required(req, 'system', 'schema', 'table');
+  const ctx = await tableContext(req, tableParams(req.query));
+  const rules = await dqstore.listRules(req.query.system, ctx.name);
+  // Default key: the primary key, else the unique-rule column(s) with the fewest duplicates.
+  const uniqueRules = rules
+    .filter((r) => r.rule_type === 'unique')
+    .sort((a, b) => (a.last_failed ?? Infinity) - (b.last_failed ?? Infinity) || a.column_name.localeCompare(b.column_name));
+  const suggestedKey = ctx.primaryKey.length ? ctx.primaryKey : (uniqueRules[0]?.params?.columns ?? []);
+  const keyColumns = req.query.key ? String(req.query.key).split(',') : suggestedKey;
+  if (!keyColumns.length) {
+    return res.json({ table: ctx.name, keyColumns: [], suggestedKey, columns: ctx.columns.map((c) => c.name), groups: [], needsKey: true });
+  }
+  for (const k of keyColumns) {
+    if (!ctx.columns.some((c) => c.name === k)) throw Object.assign(new Error(`Unknown key column ${k}`), { status: 400 });
+  }
+  const p = await writeback.proposals(ctx, { keyColumns, areaCode: req.query.areaCode });
+  res.json({
+    table: ctx.name,
+    keyColumns,
+    suggestedKey,
+    columns: ctx.columns.map((c) => c.name),
+    rowsRead: p.rowsRead,
+    truncated: p.truncated,
+    ambiguousKeys: p.ambiguousKeys,
+    missingKey: p.missingKey,
+    groups: writeback.maskGroups(p.groups, p.piiTypes),
+  });
+}));
+
+app.get('/api/writeback/outbox/counts', wrap(async (_req, res) => res.json(await writeback.outboxCounts())));
+
+app.get('/api/writeback/outbox', wrap(async (req, res) => {
+  requireSteward(req);
+  const entries = await writeback.listOutbox({ status: req.query.status, table: req.query.table, limit: req.query.limit });
+  // On screen, personal data is masked; exports carry the real values for the source system.
+  res.json(req.query.raw === 'true' ? entries.map(({ pii_types, ...e }) => e) : entries.map(({ pii_types, ...e }) => writeback.maskEntry({ ...e, pii_types })));
+}));
+
+// For integrations: pending API calls as JSON, or one row per field as CSV.
+app.get('/api/writeback/outbox/export', wrap(async (req, res) => {
+  requireSteward(req);
+  const entries = await writeback.listOutbox({ status: req.query.status ?? 'pending', table: req.query.table, limit: 10_000 });
+  const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+  if (req.query.format === 'csv') {
+    res.type('text/csv').attachment(`writeback-${stamp}.csv`).send(writeback.toCsv(entries));
+  } else {
+    res.attachment(`writeback-${stamp}.json`).json(
+      entries.map((e) => ({ id: e.id, source_table: e.source_table, record_key: e.record_key, method: e.method, path: e.path, body: e.body })),
+    );
+  }
+}));
+
+// Integration acknowledgement: { ids: [..], status: 'sent' | 'failed' | 'cancelled' | 'pending', response }.
+app.post('/api/writeback/outbox/ack', wrap(async (req, res) => {
+  requireSteward(req);
+  const { ids = [], status, response } = req.body ?? {};
+  res.json(await writeback.acknowledge(ids, { status, response }, currentUser(req)));
 }));
 
 // Publishing reference data to Unity Catalog
@@ -265,10 +444,64 @@ refdata.onApplied(async (change) => {
 
 app.get('/api/refdata/audit', wrap(async (req, res) => res.json(await refdata.auditLog({ limit: req.query.limit }))));
 
+// CSV upload into bronze Unity Catalog tables
+const ucSql = (req) => (sql) => warehouse.runSql(sql, { userToken: userToken(req) });
+
+const existingTable = async (req, catalog, schema, table) => {
+  try {
+    return await uc.getTable(catalog, schema, table, userToken(req));
+  } catch (err) {
+    if (ingest.isNotFound(err)) return null;
+    throw err;
+  }
+};
+
+app.get('/api/ingest/table', wrap(async (req, res) => {
+  required(req, 'catalog', 'schema', 'table');
+  const t = await existingTable(req, req.query.catalog, req.query.schema, req.query.table);
+  res.json(t ? { exists: true, columns: t.columns.map((c) => c.name) } : { exists: false });
+}));
+
+app.post('/api/ingest/schema', wrap(async (req, res) => {
+  const { catalog, schema } = req.body ?? {};
+  res.status(201).json(await ingest.createSchema({ catalog, schema, user: currentUser(req), runSql: ucSql(req) }));
+}));
+
+app.put(
+  '/api/ingest/upload',
+  express.raw({ type: () => true, limit: `${ingest.MAX_UPLOAD_MB}mb` }),
+  wrap(async (req, res) => {
+    required(req, 'catalog', 'schema', 'fileName');
+    res.status(201).json(await ingest.storeUpload({
+      catalog: req.query.catalog,
+      schema: req.query.schema,
+      fileName: req.query.fileName,
+      body: Buffer.isBuffer(req.body) ? req.body : null,
+      runSql: ucSql(req),
+      userToken: userToken(req),
+    }));
+  }),
+);
+
+app.post('/api/ingest/load', wrap(async (req, res) => {
+  const { catalog, schema, table } = req.body ?? {};
+  ingest.validateLoad(req.body);
+  const existing = await existingTable(req, catalog, schema, table);
+  res.json(await ingest.loadUpload(req.body, { user: currentUser(req), existing, runSql: ucSql(req) }));
+}));
+
 // Demo
 app.get('/api/demo/erd', (req, res) => res.json(withInference(req, demoModel())));
 
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found' }));
+
+// Body parser failures (e.g. an upload over the size limit) as JSON.
+app.use('/api', (err, _req, res, _next) => {
+  const tooLarge = err.type === 'entity.too.large';
+  res.status(err.status || 500).json({
+    error: tooLarge ? `The file is larger than the ${ingest.MAX_UPLOAD_MB} MB upload limit.` : err.message,
+  });
+});
 
 // Frontend
 if (fs.existsSync(distDir)) {

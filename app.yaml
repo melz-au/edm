@@ -45,6 +45,24 @@ env:
   # - name: ERD_ALLOW_SELF_APPROVAL
   #   value: 'false'
 
+
+  # --- CSV upload to bronze tables (needs the SQL warehouse above) ------------
+  # Catalog and schema preselected on the Upload CSV tab.
+  # - name: ERD_BRONZE_CATALOG
+  #   value: 'main'
+  # - name: ERD_BRONZE_SCHEMA
+  #   value: 'bronze'
+  # Volume for the raw files (default: <catalog>.<schema>.landing, created on
+  # first use).
+  # - name: ERD_UPLOAD_VOLUME
+  #   value: 'main.bronze.landing'
+  # Let people create new schemas from the upload page (needs CREATE SCHEMA on
+  # the catalog). Set to 'false' to allow only existing schemas.
+  # - name: ERD_UPLOAD_CREATE_SCHEMA
+  #   value: 'true'
+  # Largest file accepted, in MB.
+  # - name: ERD_UPLOAD_MAX_MB
+  #   value: '100'
   # --- Publish reference data to Unity Catalog --------------------------------
   # Default target (catalog.schema) and auto-publish; stewards can change both
   # in the Reference data page. Requires a SQL warehouse (see above).

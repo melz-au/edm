@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS ${S}.change_request (
 -- Kinds are (re)declared here so stores created by earlier versions accept new ones.
 ALTER TABLE ${S}.change_request DROP CONSTRAINT IF EXISTS change_request_kind_check;
 ALTER TABLE ${S}.change_request ADD CONSTRAINT change_request_kind_check
-  CHECK (kind IN ('code_set', 'code_value', 'master_row', 'code_mapping'));
+  CHECK (kind IN ('code_set', 'code_value', 'master_row', 'code_mapping', 'writeback'));
 CREATE INDEX IF NOT EXISTS change_request_status_idx ON ${S}.change_request (status, requested_at DESC);
 CREATE TABLE IF NOT EXISTS ${S}.code_mapping (
   id            serial PRIMARY KEY,
@@ -417,13 +417,25 @@ const describeKey = (key) => Object.values(key ?? {}).join('/');
  * Validates a proposed change, snapshots what it will overwrite and stores it
  * as a pending change request.
  */
+// Change kinds defined by other modules (e.g. writeback.js):
+//   prepare({ action, target, payload }, user) → { target, payload, previous, summary }
+//   apply(db, changeRequest, user)            → { target, before, after }
+const changeKinds = new Map();
+export function registerChangeKind(kind, handlers) {
+  changeKinds.set(kind, handlers);
+}
+
 export async function proposeChange({ kind, action, target = {}, payload = {}, comment }, user) {
   await ensureSchema();
   let previous = null;
   let summary;
   let cleanPayload;
 
-  if (kind === 'code_set' && action === 'create') {
+  if (changeKinds.has(kind)) {
+    const prepared = await changeKinds.get(kind).prepare({ action, target, payload }, user);
+    ({ target, previous, summary } = prepared);
+    cleanPayload = prepared.payload;
+  } else if (kind === 'code_set' && action === 'create') {
     const name = required(payload.name, 'Code set name');
     const exists = await lakebase.query(`SELECT 1 FROM ${S}.code_set WHERE lower(name) = lower($1)`, [name]);
     if (exists.rows.length) throw new RefdataError(`A code set named "${name}" already exists`, 409);
@@ -574,6 +586,7 @@ function setClause(values, startAt) {
 
 async function apply(db, cr, user) {
   const { kind, action, target, payload, previous } = cr;
+  if (changeKinds.has(kind)) return changeKinds.get(kind).apply(db, cr, user);
 
   if (kind === 'code_set' && action === 'create') {
     const src = payload.source ?? {};

@@ -36,6 +36,23 @@ export const api = {
       : get('lakebase/values', { schema: table.schema, table: table.name, column }),
   rows: (schema, table, params) => get('lakebase/rows', { schema, table, ...params }),
 
+  // Data quality. `system` is 'uc' | 'lakebase'; `tableName` as sourceTableName().
+  dqSuggest: (system, table) =>
+    get('dq/suggest', { system, catalog: table.catalog, schema: table.schema, table: table.name }),
+  dqRules: (system, tableName) => get('dq/rules', { system, table: tableName }),
+  dqAddRules: (system, tableName, rules) => post('dq/rules', { system, table: tableName, rules }),
+  dqDeleteRule: (id) => request('DELETE', `dq/rules/${id}`),
+  dqRun: (system, table) => post('dq/run', { system, catalog: table.catalog, schema: table.schema, table: table.name }),
+  dqSummary: (system, prefix) => get('dq/summary', { system, prefix }),
+
+  // Write-back to source systems.
+  writebackProposals: (system, table, { key, areaCode } = {}) =>
+    get('writeback/proposals', { system, catalog: table.catalog, schema: table.schema, table: table.name, key, areaCode }),
+  outbox: (params) => get('writeback/outbox', params),
+  outboxCounts: () => get('writeback/outbox/counts'),
+  outboxAck: (ids, status, response) => post('writeback/outbox/ack', { ids, status, response }),
+  outboxExportUrl: (format, status = 'pending') => `./api/writeback/outbox/export?format=${format}&status=${status}`,
+
   codeSets: () => get('refdata/code-sets'),
   codeSet: (id) => get(`refdata/code-sets/${id}`),
   linkedCodeSets: (system, table) => get('refdata/linked', { system, table }),
@@ -51,6 +68,31 @@ export const api = {
   proposeChange: (change) => post('refdata/changes', change),
   reviewChange: (id, decision, comment) => post(`refdata/changes/${id}/review`, { decision, comment }),
   cancelChange: (id) => post(`refdata/changes/${id}/cancel`),
+
+  ingestTable: (catalog, schema, table) => get('ingest/table', { catalog, schema, table }),
+  ingestLoad: (load) => post('ingest/load', load),
+  ingestCreateSchema: (catalog, schema) => post('ingest/schema', { catalog, schema }),
+  /** Sends the raw file to the landing volume, reporting progress as 0–1. */
+  ingestUpload: (file, { catalog, schema }, onProgress) =>
+    new Promise((resolve, reject) => {
+      const qs = new URLSearchParams({ catalog, schema, fileName: file.name });
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', `./api/ingest/upload?${qs}`);
+      xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+      xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.(e.loaded / e.total);
+      xhr.onload = () => {
+        let data = {};
+        try {
+          data = JSON.parse(xhr.responseText);
+        } catch {
+          // not JSON
+        }
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new Error(data.error || `Upload failed (${xhr.status})`));
+      };
+      xhr.onerror = () => reject(new Error('Upload failed: the connection was interrupted.'));
+      xhr.send(file);
+    }),
 };
 
 /** Identifies a model table in refdata links: "maximo.asset" or "main.sales.orders". */
