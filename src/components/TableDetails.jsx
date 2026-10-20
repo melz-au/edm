@@ -139,6 +139,8 @@ export default function TableDetails({
   dqSource,
   onDqChanged,
   onChangeSubmitted,
+  onEditEntity,
+  onRemoveEntity,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
   const piiNames = new Set(profile?.columns.filter((c) => c.pii).map((c) => c.name));
@@ -168,6 +170,7 @@ export default function TableDetails({
           </button>
           {describe(r, r[cols].columns)}
           {r.inferred && <span className="tag">inferred</span>}
+          {r.proposed && <span className="tag proposed">proposed</span>}
         </li>
       ))}
     </ul>
@@ -177,12 +180,24 @@ export default function TableDetails({
     <div className="details">
       <div className="details__header">
         <div>
-          <div className="details__title">{table.label ?? table.name}</div>
+          <div className="details__title">
+            {table.label ?? table.name}
+            {table.proposed && <span className="tag proposed">proposed</span>}
+          </div>
           <div className="details__subtitle">{table.id}</div>
         </div>
         <button className="icon-btn" onClick={onClose} aria-label="Close details">×</button>
       </div>
       {table.comment && <p className="details__comment">{table.comment}</p>}
+      {table.proposed && (
+        <>
+          <p className="muted small">Proposed in this data model; it doesn't exist in the source yet.</p>
+          <div className="details__actions">
+            {onEditEntity && <button className="btn small" onClick={onEditEntity}>Edit entity</button>}
+            {onRemoveEntity && <button className="btn small danger" onClick={onRemoveEntity}>Remove from model</button>}
+          </div>
+        </>
+      )}
       {onEditData && (
         <button className="btn small" onClick={onEditData}>
           Edit master data
@@ -218,7 +233,7 @@ export default function TableDetails({
         onMapCodes={onMapCodes}
       />
 
-      {dqSource && !table.external && (
+      {dqSource && !table.external && !table.proposed && (
         <DataQuality source={dqSource} table={table} onChanged={onDqChanged} onSubmitted={onChangeSubmitted} />
       )}
 

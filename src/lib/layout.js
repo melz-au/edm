@@ -257,7 +257,7 @@ export function buildGraph(
       type: 'smoothstep',
       markerStart: `erd-${r.childEnd ?? 'many'}`,
       markerEnd: `erd-${r.parentEnd ?? 'one'}`,
-      className: r.inferred ? 'erd-edge inferred' : 'erd-edge',
+      className: ['erd-edge', r.inferred && 'inferred', r.proposed && 'proposed'].filter(Boolean).join(' '),
       data: { relationship: r },
     };
   });

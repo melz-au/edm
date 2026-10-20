@@ -53,6 +53,15 @@ export const api = {
   outboxAck: (ids, status, response) => post('writeback/outbox/ack', { ids, status, response }),
   outboxExportUrl: (format, status = 'pending') => `./api/writeback/outbox/export?format=${format}&status=${status}`,
 
+  // Saved data models. `scope` as scopeName() in proposals.js.
+  models: (source, scope) => get('models', { source, scope }),
+  model: (id) => get(`models/${id}`),
+  createModel: (model) => post('models', model),
+  saveModel: (id, model) => request('PUT', `models/${id}`, {}, model),
+  deleteModel: (id) => request('DELETE', `models/${id}`),
+  modelVersions: (id) => get(`models/${id}/versions`),
+  modelVersion: (id, version) => get(`models/${id}/versions/${version}`),
+
   codeSets: () => get('refdata/code-sets'),
   codeSet: (id) => get(`refdata/code-sets/${id}`),
   linkedCodeSets: (system, table) => get('refdata/linked', { system, table }),

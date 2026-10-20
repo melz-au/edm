@@ -13,6 +13,7 @@ import * as ucpublish from './ucpublish.js';
 import * as dq from './dq.js';
 import * as dqstore from './dqstore.js';
 import * as writeback from './writeback.js';
+import * as datamodels from './datamodels.js';
 import * as refdata from './refdata.js';
 import * as warehouse from './warehouse.js';
 import * as ingest from './ingest.js';
@@ -410,6 +411,39 @@ app.post('/api/writeback/outbox/ack', wrap(async (req, res) => {
   requireSteward(req);
   const { ids = [], status, response } = req.body ?? {};
   res.json(await writeback.acknowledge(ids, { status, response }, currentUser(req)));
+}));
+
+// Saved data models (proposed entities and diagram positions per schema)
+const modelId = (req) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) throw Object.assign(new Error('Unknown model'), { status: 404 });
+  return id;
+};
+
+app.get('/api/models', wrap(async (req, res) => {
+  required(req, 'source', 'scope');
+  res.json(await datamodels.listModels(req.query.source, req.query.scope));
+}));
+
+app.get('/api/models/:id', wrap(async (req, res) => res.json(await datamodels.getModel(modelId(req)))));
+
+app.post('/api/models', wrap(async (req, res) => {
+  res.status(201).json(await datamodels.createModel(req.body ?? {}, currentUser(req)));
+}));
+
+app.put('/api/models/:id', wrap(async (req, res) => {
+  res.json(await datamodels.saveModel(modelId(req), req.body ?? {}, currentUser(req)));
+}));
+
+app.delete('/api/models/:id', wrap(async (req, res) => {
+  await datamodels.deleteModel(modelId(req), currentUser(req));
+  res.json({ ok: true });
+}));
+
+app.get('/api/models/:id/versions', wrap(async (req, res) => res.json(await datamodels.listVersions(modelId(req)))));
+
+app.get('/api/models/:id/versions/:version', wrap(async (req, res) => {
+  res.json(await datamodels.getVersion(modelId(req), Number(req.params.version)));
 }));
 
 // Publishing reference data to Unity Catalog

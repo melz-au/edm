@@ -24,13 +24,14 @@ function TableNode({ data }) {
   const badge = TYPE_BADGE[table.type];
 
   return (
-    <div className={`table-node level-${level}${table.external ? ' external' : ''}`}>
+    <div className={`table-node level-${level}${table.external ? ' external' : ''}${table.proposed ? ' proposed' : ''}`}>
       <Handle type="target" position={Position.Top} id={TABLE_HANDLE_TOP} className="erd-handle" />
       <Handle type="source" position={Position.Bottom} id={TABLE_HANDLE_BOTTOM} className="erd-handle" />
       <div className="table-node__header" title={[table.comment, table.id].filter(Boolean).join('\n')}>
         <Handle type="target" position={Position.Left} id={TABLE_HANDLE_IN} className="erd-handle" />
         <span className="table-node__name">{table.label ?? table.name}</span>
         {badge && level === 'physical' && <span className="table-node__badge">{badge}</span>}
+        {table.proposed && level !== 'conceptual' && <span className="table-node__badge proposed">proposed</span>}
         {table.external && <span className="table-node__schema">{table.schema}</span>}
         {dq && (
           <span

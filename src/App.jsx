@@ -13,13 +13,25 @@ import ErdMarkers from './components/ErdMarkers.jsx';
 import CodeSetDialog from './components/CodeSetDialog.jsx';
 import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
+import EntityDialog from './components/EntityDialog.jsx';
+import ModelPanel from './components/ModelPanel.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
 import Writeback from './pages/Writeback.jsx';
 import UploadCsv from './pages/UploadCsv.jsx';
 import { api, sourceTableName } from './lib/api.js';
-import { buildGraph } from './lib/layout.js';
+import { NODE_WIDTH, buildGraph, nodeHeight } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
+import {
+  applyProposals,
+  emptyProposal,
+  freeSpot,
+  placeNodes,
+  proposedTableId,
+  removeEntity,
+  scopeName,
+  validateProposal,
+} from './lib/proposals.js';
 
 const nodeTypes = { table: TableNode };
 
@@ -74,6 +86,12 @@ export default function App() {
   const [dqScores, setDqScores] = useState(new Map());
   const [dqVersion, setDqVersion] = useState(0);
   const [notice, setNotice] = useState(null);
+  // The data model: proposed entities for this schema, and the saved model they belong to.
+  const [proposal, setProposal] = useState(emptyProposal);
+  const [savedModel, setSavedModel] = useState(null);
+  const [dirty, setDirty] = useState(false);
+  // Node positions for the next layout: saved ones, or the current ones while editing.
+  const nextPositions = useRef(null);
 
   // Runs an async loader, ignoring results from superseded requests.
   const run = useCallback(async (loader, onResult) => {
@@ -131,6 +149,28 @@ export default function App() {
     refreshPending();
   }, [refdataAvailable, refreshPending]);
 
+  const scope = scopeName(source, catalog, schema);
+  const confirmDiscard = useCallback(
+    () => !dirty || window.confirm('Discard your unsaved changes to the data model?'),
+    [dirty],
+  );
+  const guarded = (fn) => (...args) => confirmDiscard() && fn(...args);
+
+  // A data model belongs to one schema: start afresh when the schema changes.
+  useEffect(() => {
+    setProposal(emptyProposal());
+    setSavedModel(null);
+    setDirty(false);
+    nextPositions.current = null;
+  }, [source, scope]);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e) => e.preventDefault();
+    window.addEventListener('beforeunload', warn);
+    return () => window.removeEventListener('beforeunload', warn);
+  }, [dirty]);
+
   // Source changed: reset and load the first level of choices.
   useEffect(() => {
     if (!source) return;
@@ -182,7 +222,8 @@ export default function App() {
     }
   }, [source, catalog, schema, infer, run]);
 
-  const view = useMemo(() => deriveView(model, level), [model, level]);
+  const merged = useMemo(() => applyProposals(model, { source, scope, proposal }), [model, source, scope, proposal]);
+  const view = useMemo(() => deriveView(merged.model, level), [merged, level]);
 
   const layout = useCallback(() => {
     if (!view) {
@@ -195,10 +236,93 @@ export default function App() {
       columnMode,
       viewport: box && { width: box.width, height: box.height },
     });
-    setNodes(graph.nodes);
+    const known = nextPositions.current;
+    nextPositions.current = null;
+    setNodes(known ? placeNodes(graph.nodes, known.positions) : graph.nodes);
     setEdges(graph.edges);
-    requestAnimationFrame(() => rf.fitView({ padding: 0.15, duration: 300 }));
+    if (!known?.keepViewport) requestAnimationFrame(() => rf.fitView({ padding: 0.15, duration: 300 }));
   }, [view, columnMode, rf, setNodes]);
+
+  const autoLayout = () => {
+    nextPositions.current = null;
+    layout();
+    if (savedModel || proposal.tables.length) setDirty(true);
+  };
+
+  const currentPositions = () => Object.fromEntries(rf.getNodes().map((n) => [n.id, { ...n.position }]));
+  const modelContent = () => ({ tables: proposal.tables, positions: currentPositions() });
+
+  // Changes the proposed entities while keeping the diagram where it is.
+  const editProposal = (next, positions = currentPositions()) => {
+    nextPositions.current = { positions, keepViewport: true };
+    setProposal(next);
+    setDirty(true);
+  };
+
+  const saveEntity = (next, name) => {
+    const previous = dialog.entity?.name;
+    const id = proposedTableId(scope, name);
+    const positions = currentPositions();
+    if (previous && previous !== name) {
+      const oldId = proposedTableId(scope, previous);
+      positions[id] = positions[oldId];
+      delete positions[oldId];
+    } else if (!previous) {
+      // New entities go in the free space nearest the middle of the screen.
+      const box = canvasRef.current.getBoundingClientRect();
+      const centre = rf.screenToFlowPosition({ x: box.left + box.width / 2, y: box.top + box.height / 2 });
+      const entity = next.tables.find((t) => t.name === name);
+      const size = { width: NODE_WIDTH, height: nodeHeight(level === 'conceptual' || columnMode === 'none' ? 0 : entity.columns.length) };
+      const rects = rf.getNodes().map((n) => ({
+        ...n.position,
+        width: n.measured?.width ?? NODE_WIDTH,
+        height: n.measured?.height ?? 200,
+      }));
+      const spot = freeSpot(rects, { x: centre.x - size.width / 2, y: centre.y - size.height / 2 }, size);
+      positions[id] = spot;
+      requestAnimationFrame(() =>
+        rf.setCenter(spot.x + size.width / 2, spot.y + size.height / 2, { zoom: rf.getZoom(), duration: 300 }),
+      );
+    }
+    editProposal(next, positions);
+    setDialog(null);
+    setSelectedId(id);
+  };
+
+  const removeProposed = (table) => {
+    const referencedBy = proposal.tables.filter(
+      (t) => t.name !== table.name && t.columns.some((c) => c.references?.table === table.id),
+    );
+    const also = referencedBy.length
+      ? ` References to it from ${referencedBy.map((t) => t.name).join(', ')} will be removed too.`
+      : '';
+    if (!window.confirm(`Remove the proposed entity ${table.name} from the model?${also}`)) return;
+    setSelectedId(null);
+    editProposal(removeEntity(proposal, scope, table.name));
+  };
+
+  const openModel = (row) => {
+    nextPositions.current = { positions: row.content.positions ?? {} };
+    setProposal(validateProposal(row.content));
+    setSavedModel(row);
+    setDirty(false);
+    setSelectedId(null);
+  };
+
+  const restoreVersion = (v) => {
+    nextPositions.current = { positions: v.content.positions ?? {} };
+    setProposal(validateProposal(v.content));
+    setDirty(true);
+    setNotice(`Restored version ${v.version} of ${v.name}. Save to make it the current version.`);
+  };
+
+  const closeModel = () => {
+    nextPositions.current = null;
+    setProposal(emptyProposal());
+    setSavedModel(null);
+    setDirty(false);
+    setSelectedId(null);
+  };
 
   useEffect(layout, [layout]);
 
@@ -344,7 +468,7 @@ export default function App() {
   useEffect(() => {
     setLinked([]);
     setMapped([]);
-    if (!selectedTable || !refdataAvailable || source === 'demo' || selectedTable.external) return;
+    if (!selectedTable || !refdataAvailable || source === 'demo' || selectedTable.external || selectedTable.proposed) return;
     const name = sourceTableName(source, selectedTable);
     api.linkedCodeSets(source, name).then(setLinked).catch(() => {});
     api.sourceMappings(source, name).then(setMapped).catch(() => {});
@@ -416,7 +540,7 @@ export default function App() {
                     className={source === s.id ? 'active' : ''}
                     disabled={!available}
                     title={available ? undefined : `${s.label} is not configured for this app`}
-                    onClick={() => setSource(s.id)}
+                    onClick={guarded(() => setSource(s.id))}
                   >
                     {s.label}
                   </button>
@@ -431,7 +555,7 @@ export default function App() {
                 <div className="conn muted">Querying as {config.sources.uc.identity}</div>
               )}
               <label className="label" htmlFor="catalog">Catalog</label>
-              <select id="catalog" value={catalog} onChange={(e) => setCatalog(e.target.value)}>
+              <select id="catalog" value={catalog} onChange={guarded((e) => setCatalog(e.target.value))}>
                 <option value="">Select a catalog…</option>
                 {catalogs.map((c) => (
                   <option key={c.name} value={c.name}>{c.name}</option>
@@ -442,7 +566,7 @@ export default function App() {
                 id="schema"
                 value={schema}
                 disabled={!catalog}
-                onChange={(e) => setSchema(e.target.value)}
+                onChange={guarded((e) => setSchema(e.target.value))}
               >
                 <option value="">Select a schema…</option>
                 {schemas.map((s) => (
@@ -461,7 +585,7 @@ export default function App() {
                 </div>
               )}
               <label className="label" htmlFor="pg-schema">Schema</label>
-              <select id="pg-schema" value={schema} onChange={(e) => setSchema(e.target.value)}>
+              <select id="pg-schema" value={schema} onChange={guarded((e) => setSchema(e.target.value))}>
                 <option value="">Select a schema…</option>
                 {schemas.map((s) => (
                   <option key={s.name} value={s.name}>{s.name}</option>
@@ -523,6 +647,45 @@ export default function App() {
             </section>
           )}
 
+          {model && scope && (
+            <ModelPanel
+              source={source}
+              scope={scope}
+              canSave={refdataAvailable}
+              me={me}
+              saved={savedModel}
+              dirty={dirty}
+              entityCount={proposal.tables.length}
+              getContent={modelContent}
+              onOpen={openModel}
+              onSaved={(row) => {
+                setSavedModel(row);
+                setDirty(false);
+                setNotice(`Saved ${row.name} (version ${row.version}).`);
+              }}
+              onRestore={restoreVersion}
+              onClose={closeModel}
+              onAddEntity={() => setDialog({ type: 'entity', entity: null })}
+              confirmDiscard={confirmDiscard}
+            />
+          )}
+          {merged.built.length > 0 && (
+            <div className="notice warn small">
+              Now built in the schema, so the real table is shown instead: {merged.built.join(', ')}.{' '}
+              <button
+                className="link"
+                onClick={() => editProposal(merged.built.reduce((p, name) => removeEntity(p, scope, name, { keepReferences: true }), proposal))}
+              >
+                Remove the proposal{merged.built.length === 1 ? '' : 's'} from the model
+              </button>
+            </div>
+          )}
+          {merged.broken.length > 0 && (
+            <div className="notice warn small">
+              Some references point at tables that are no longer in the schema: {merged.broken.join('; ')}.
+            </div>
+          )}
+
           {error && <div className="error">{error}</div>}
           {notice && (
             <div className="notice" onClick={() => setNotice(null)}>
@@ -547,7 +710,10 @@ export default function App() {
                       onMouseEnter={() => setHoveredId(t.id)}
                       onMouseLeave={() => setHoveredId(null)}
                     >
-                      <span>{t.label}</span>
+                      <span>
+                        {t.label}
+                        {t.proposed && <span className="tag proposed">proposed</span>}
+                      </span>
                       <span className="muted">{t.columns.length}</span>
                     </button>
                   </li>
@@ -563,7 +729,12 @@ export default function App() {
             nodes={displayNodes}
             edges={displayEdges}
             nodeTypes={nodeTypes}
-            onNodesChange={onNodesChange}
+            onNodesChange={(changes) => {
+              onNodesChange(changes);
+              if ((savedModel || proposal.tables.length) && changes.some((c) => c.type === 'position' && c.dragging === false)) {
+                setDirty(true);
+              }
+            }}
             onNodeClick={(_, node) => setSelectedId(node.id)}
             onNodeMouseEnter={(_, node) => setHoveredId(node.id)}
             onNodeMouseLeave={() => setHoveredId(null)}
@@ -581,7 +752,7 @@ export default function App() {
               <button
                 className="react-flow__controls-button"
                 title="Re-run auto layout"
-                onClick={layout}
+                onClick={autoLayout}
               >
                 ⟲
               </button>
@@ -589,7 +760,7 @@ export default function App() {
             <MiniMap
               pannable
               zoomable
-              nodeColor={(n) => (n.id === activeId ? '#ff3621' : n.data.table.external ? '#c9d1d5' : '#1b3139')}
+              nodeColor={(n) => (n.id === activeId ? '#ff3621' : n.data.table.proposed ? '#6941c6' : n.data.table.external ? '#c9d1d5' : '#1b3139')}
               nodeStrokeWidth={0}
             />
           </ReactFlow>
@@ -611,17 +782,23 @@ export default function App() {
               onSelect={focusTable}
               onClose={() => setSelectedId(null)}
               profile={profiles.get(selectedTable.id)}
-              canProfile={canProfile && !selectedTable.external}
+              canProfile={canProfile && !selectedTable.external && !selectedTable.proposed}
               onProfile={() => profileOne(selectedTable)}
               linked={linked}
               mapped={mapped}
+              onEditEntity={
+                selectedTable.proposed
+                  ? () => setDialog({ type: 'entity', entity: proposal.tables.find((t) => t.name === selectedTable.name) })
+                  : null
+              }
+              onRemoveEntity={selectedTable.proposed ? () => removeProposed(selectedTable) : null}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
               onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
               dqSource={refdataAvailable && canProfile ? source : null}
               onDqChanged={() => setDqVersion((v) => v + 1)}
               onChangeSubmitted={submitted}
               onEditData={
-                refdataAvailable && source === 'lakebase' && !selectedTable.external
+                refdataAvailable && source === 'lakebase' && !selectedTable.external && !selectedTable.proposed
                   ? () => setDialog({ type: 'masterData', table: selectedTable })
                   : null
               }
@@ -649,6 +826,17 @@ export default function App() {
             setMappingsVersion((v) => v + 1);
           }}
           onSubmitted={submitted}
+        />
+      )}
+      {dialog?.type === 'entity' && (
+        <EntityDialog
+          source={source}
+          scope={scope}
+          model={merged.model}
+          proposal={proposal}
+          entity={dialog.entity}
+          onSave={saveEntity}
+          onClose={() => setDialog(null)}
         />
       )}
       {dialog?.type === 'masterData' && (
