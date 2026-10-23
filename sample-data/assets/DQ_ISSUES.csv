@@ -1,0 +1,2634 @@
+asset_id,column,issue,detail
+H075019,ASSET_DESC,name_variant,'Dunmore W.W.T.P.' for 'Dunmore Wastewater Treatment Plant'
+H075019,INSTALL_DATE,year_only,1978-10-06
+204118,ASSET_ID,duplicate_record,same asset as H075019 (G0001)
+204118,ASSET_DESC,name_variant,'WWTP - Dunmore' for 'Dunmore Wastewater Treatment Plant'
+204118,CRITICALITY,non_standard_value,'3' for '2'
+SS5746,ASSET_ID,duplicate_record,same asset as H075019 (G0001)
+SS5746,ASSET_DESC,name_variant,'DUNMORE Sewage Treatment Works' for 'Dunmore Wastewater Treatment Plant'
+SS5746,ASSET_TAG,tag_variant,'dun-wwtp' for 'DUN-WWTP'
+SS5746,INSTALL_DATE,year_only,1978-10-06
+SS5746,LATITUDE,missing_value,
+216836,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+216836,INSTALL_DATE,two_digit_year,1980-05-21
+SS6314,STATUS,non_standard_value,'Operating' for 'OPERATING'
+GIS-73949,ASSET_ID,duplicate_record,same asset as SS6314 (G0003)
+GIS-73949,ASSET_DESC,name_variant,'Inlet Screen (Unit 1)' for 'Inlet Screen No. 1'
+GIS-73949,ASSET_CLASS,non_standard_value,'MECH-SCREEN' for 'MECH\\SCREEN'
+GIS-73949,MANUFACTURER,non_standard_value,'Hans Huber' for 'Huber'
+GIS-73949,MODEL,model_variant,'' for 'Ro 2'
+GIS-73949,SERIAL_NO,serial_variant,'9741229' for 'S/N 97412299'
+GIS-73949,INSTALL_DATE,two_digit_year,1986-03-18
+238794,ASSET_CLASS,non_standard_value,'MECH/SCREEN' for 'MECH\\SCREEN'
+238794,REGION,non_standard_value,'MET' for 'METRO'
+238794,MANUFACTURER,non_standard_value,'Hans Huber' for 'Huber'
+238794,INSTALL_DATE,excel_serial_date,1985-04-16
+SS0837,ASSET_ID,duplicate_record,same asset as 238794 (G0004)
+SS0837,ASSET_DESC,name_variant,'INLET SCREEN #2' for 'Inlet Screen No. 2'
+SS0837,ASSET_TAG,tag_variant,'OLD-DUN-INL-SCR-02' for 'DUN-INL-SCR-02'
+SS0837,ASSET_CLASS,non_standard_value,'MECH/SCREEN' for 'MECH\\SCREEN'
+SS0837,MANUFACTURER,non_standard_value,'HUBER' for 'Huber'
+SS0837,INSTALL_DATE,conflicting_value,1985-03-17 vs 1985-04-16
+SS0837,CRITICALITY,non_standard_value,'Med' for '2'
+SS1430,ASSET_ID,duplicate_record,same asset as 251796 (G0005)
+SS1430,ASSET_TAG,tag_variant,'DUN INL GRC 01' for 'DUN-INL-GRC-01'
+SS1430,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+SS1430,ASSET_CLASS,non_standard_value,'GRIT CLASSIFIER' for 'MECH\\GRIT'
+SS1430,INSTALL_DATE,conflicting_value,2019-07-22 vs 2019-06-22
+SS1430,CRITICALITY,non_standard_value,'High' for '2'
+H054050,ASSET_ID,duplicate_record,same asset as 251796 (G0005)
+H054050,SERIAL_NO,serial_variant,'sn64105699' for 'SN64105699'
+H054050,INSTALL_DATE,conflicting_value,2020-06-21 vs 2019-06-22
+H054050,RATING,inconsistent_units,5.5kW written as 5.5kw
+SS1393,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+SS1393,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+215765,ASSET_ID,duplicate_record,same asset as SS1393 (G0006)
+215765,ASSET_DESC,name_variant,'Meter' for 'Inlet Flow Meter'
+215765,ASSET_TAG,tag_variant,'DUN INL FIT 01' for 'DUN-INL-FIT-01'
+215765,MANUFACTURER,non_standard_value,'Endress & Hauser' for 'Endress+Hauser'
+215765,INSTALL_DATE,year_only,1983-07-11
+SS1470,ASSET_TAG,tag_variant,'DUN PST' for 'DUN-PST'
+H090135,ASSET_ID,duplicate_record,same asset as SS1470 (G0007)
+H090135,ASSET_DESC,name_variant,'PST (DUNMORE)' for 'Primary Sedimentation'
+H090135,ASSET_TAG,missing_value,'' for 'DUN-PST'
+H090135,STATUS,status_conflict,'DECOM' while another record of G0007 is operating
+GIS-70067,ASSET_ID,duplicate_record,same asset as SS1470 (G0007)
+GIS-70067,ASSET_DESC,name_variant,'DUN PST' for 'Primary Sedimentation'
+GIS-70067,ASSET_TAG,tag_variant,'dun-pst' for 'DUN-PST'
+GIS-70067,ASSET_CLASS,non_standard_value,'PROCESS' for 'SYSTEM'
+GIS-70067,REGION,non_standard_value,'MET' for 'METRO'
+GIS-70067,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+GIS-70067,CRITICALITY,missing_value,'UNKNOWN'
+GIS-70067,INSTALL_DATE,missing_value,''
+GIS-44315,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-44315,STATUS,non_standard_value,'Op' for 'OPERATING'
+H040317,ASSET_ID,duplicate_record,same asset as GIS-44315 (G0008)
+H040317,ASSET_DESC,name_variant,'SLUDGE SCRAPER DRIVE #1' for 'Sludge Scraper Drive No. 1'
+H040317,ASSET_TAG,tag_variant,'DUNPSTSCD01' for 'DUN-PST-SCD-01'
+H040317,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+H040317,INSTALL_DATE,two_digit_year,2015-06-11
+H040317,CRITICALITY,non_standard_value,'3' for '2'
+H040317,RATING,inconsistent_units,0.55kW written as 0.55 kW
+H095366,ASSET_ID,duplicate_record,same asset as SS8433 (G0009)
+H095366,MANUFACTURER,non_standard_value,'Weg' for 'WEG'
+H095366,SITE_CODE,missing_value,'UNKNOWN'
+GIS-58474,ASSET_DESC,name_variant,'Primary Sludge Pmp 1' for 'Primary Sludge Pump No. 1'
+GIS-58474,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-58474,INSTALL_DATE,two_digit_year,1995-05-19
+H016843,ASSET_ID,duplicate_record,same asset as GIS-58474 (G0010)
+H016843,ASSET_DESC,name_variant,'Pump No.1 - Primary Sludge' for 'Primary Sludge Pump No. 1'
+H016843,REGION,non_standard_value,'Metro' for 'METRO'
+H016843,SERIAL_NO,serial_variant,'UNKNOWN' for '10479306'
+H016843,INSTALL_DATE,excel_serial_date,1995-05-19
+H016843,LATITUDE,lat_long_swapped,
+GIS-71307,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+GIS-71307,LATITUDE,lat_long_swapped,
+H029099,ASSET_ID,duplicate_record,same asset as GIS-96237 (G0012)
+H029099,ASSET_DESC,name_variant,'Aeration' for 'Aeration System'
+H029099,ASSET_TAG,tag_variant,'dun-aer' for 'DUN-AER'
+H029099,ASSET_LEVEL,non_standard_value,'PROC' for '2'
+H029099,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+H029099,STATUS,non_standard_value,'Operating' for 'OPERATING'
+H029099,INSTALL_DATE,month_day_swapped,1991-04-12
+217423,MANUFACTURER,non_standard_value,'Aerzener' for 'Aerzen'
+GIS-11264,ASSET_ID,duplicate_record,same asset as 217423 (G0013)
+GIS-11264,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-11264,ASSET_CLASS,non_standard_value,'Blower' for 'MECH\\BLOWER'
+GIS-11264,MANUFACTURER,non_standard_value,'AERZEN' for 'Aerzen'
+GIS-11264,SERIAL_NO,serial_variant,'29930624' for 'S/N 29930624'
+GIS-11264,CRITICALITY,non_standard_value,'A' for '2'
+268610,STATUS,non_standard_value,'Active' for 'OPERATING'
+268610,CRITICALITY,missing_value,''
+268610,RATING,missing_value,'TBA'
+H021533,ASSET_ID,duplicate_record,same asset as 268610 (G0014)
+H021533,ASSET_DESC,name_variant,'Aeration Blower 2' for 'Aeration Blower No. 2'
+H021533,ASSET_TAG,tag_variant,'DUNAERBLW02' for 'DUN-AER-BLW-02'
+H021533,ASSET_CLASS,non_standard_value,'Aeration Blower' for 'MECH\\BLOWER'
+H021533,REGION,non_standard_value,'Metro' for 'METRO'
+H021533,MODEL,model_variant,'GM35S' for 'GM 35S'
+H021533,INSTALL_DATE,year_only,1981-06-06
+H021533,INSTALL_DATE,conflicting_value,1980-06-06 vs 1981-06-06
+GIS-67564,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-67564,CRITICALITY,missing_value,'-'
+201992,ASSET_DESC,name_variant,'BLOWER VARIABLE SPEED DRIVE #1' for 'Blower Variable Speed Drive No. 1'
+201992,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+201992,MANUFACTURER,non_standard_value,'A.B.B.' for 'ABB'
+201992,INSTALL_DATE,missing_value,'-'
+H081046,ASSET_ID,duplicate_record,same asset as 201992 (G0016)
+H081046,ASSET_TAG,tag_variant,'dun-aer-vsd-01' for 'DUN-AER-VSD-01'
+H081046,ASSET_CLASS,non_standard_value,'ELEC\\VSD' for 'VSD'
+H081046,MANUFACTURER,non_standard_value,'A.B.B.' for 'ABB'
+H081046,MODEL,model_variant,'ACS880' for 'ACS880'
+H081046,SERIAL_NO,serial_variant,'30553321' for 'S/N 30553321'
+H081046,INSTALL_DATE,two_digit_year,2006-04-23
+GIS-89639,ASSET_ID,duplicate_record,same asset as 201992 (G0016)
+GIS-89639,ASSET_DESC,name_variant,'Blower VSD 1' for 'Blower Variable Speed Drive No. 1'
+GIS-89639,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+GIS-89639,INSTALL_DATE,conflicting_value,2006-05-23 vs 2006-04-23
+271250,ASSET_DESC,name_variant,'Drive No.2 - Blower Variable Speed' for 'Blower Variable Speed Drive No. 2'
+271250,ASSET_TAG,tag_variant,'DUN AER VSD 02' for 'DUN-AER-VSD-02'
+271250,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+271250,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-52896,ASSET_ID,duplicate_record,same asset as 271250 (G0017)
+GIS-52896,ASSET_DESC,name_variant,'Drive No.2 - Blower Variable Speed' for 'Blower Variable Speed Drive No. 2'
+GIS-52896,ASSET_TAG,tag_variant,'OLD-DUN-AER-VSD-02' for 'DUN-AER-VSD-02'
+GIS-52896,ASSET_CLASS,non_standard_value,'V.S.D.' for 'VSD'
+GIS-52896,SERIAL_NO,serial_variant,'97133619' for 'SN97133619'
+GIS-52896,INSTALL_DATE,conflicting_value,1991-02-10 vs 1990-02-10
+SS4695,ASSET_DESC,name_variant,'Blower Variable Speed Drive 03' for 'Blower Variable Speed Drive No. 3'
+SS4695,REGION,non_standard_value,'MET' for 'METRO'
+SS4695,MANUFACTURER,non_standard_value,'DANFOSS' for 'Danfoss'
+SS4695,INSTALL_DATE,two_digit_year,2007-11-23
+GIS-97963,ASSET_ID,duplicate_record,same asset as SS4695 (G0018)
+GIS-97963,ASSET_DESC,name_variant,'Drive 3' for 'Blower Variable Speed Drive No. 3'
+GIS-97963,REGION,non_standard_value,'Metro' for 'METRO'
+GIS-97963,SERIAL_NO,serial_variant,'UNKNOWN' for 'S/N 56124295'
+GIS-97963,RATING,inconsistent_units,30kW written as 30KW
+293657,ASSET_ID,duplicate_record,same asset as SS4695 (G0018)
+293657,ASSET_DESC,name_variant,'Blower VSD 3' for 'Blower Variable Speed Drive No. 3'
+293657,ASSET_TAG,tag_variant,'DUNAERVSD03' for 'DUN-AER-VSD-03'
+293657,MANUFACTURER,non_standard_value,'Danfoss VLT' for 'Danfoss'
+H034167,ASSET_ID,duplicate_record,same asset as SS4695 (G0018)
+H034167,ASSET_DESC,name_variant,'BLOWER VARIABLE SPEED DRIVE #3' for 'Blower Variable Speed Drive No. 3'
+H034167,ASSET_TAG,tag_variant,'dun-aer-vsd-03' for 'DUN-AER-VSD-03'
+H034167,STATUS,non_standard_value,'Op' for 'OPERATING'
+H034167,SERIAL_NO,serial_variant,'TBA' for 'S/N 56124295'
+H034167,INSTALL_DATE,two_digit_year,2007-11-23
+H034167,INSTALL_DATE,conflicting_value,2007-12-23 vs 2007-11-23
+H066467,LATITUDE,sign_lost,34.774078 should be negative
+SS9944,ASSET_DESC,name_variant,'Dissolved Oxygen Analyser (Unit 2)' for 'Dissolved Oxygen Analyser No. 2'
+SS9944,INSTALL_DATE,two_digit_year,1981-09-04
+SS9944,LATITUDE,missing_value,
+282726,ASSET_ID,duplicate_record,same asset as SS9944 (G0020)
+282726,ASSET_DESC,name_variant,'Dissolved Oxygen Analyser (Unit 2)' for 'Dissolved Oxygen Analyser No. 2'
+282726,ASSET_TAG,missing_value,'' for 'DUN-AER-DOA-02'
+282726,ASSET_CLASS,non_standard_value,'ANALYZER' for 'INSTR\\ANALYSER'
+282726,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+282726,SERIAL_NO,serial_variant,'TBA' for 'S/N 86906214'
+GIS-44722,ASSET_ID,duplicate_record,same asset as H077512 (G0021)
+GIS-44722,ASSET_DESC,name_variant,'Anoxic Zone Mixer (Unit 1)' for 'Anoxic Zone Mixer No. 1'
+GIS-44722,ASSET_TAG,missing_value,'' for 'DUN-AER-MIX-01'
+GIS-44722,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+GIS-44722,SERIAL_NO,serial_variant,'sn83028578' for '83028578'
+GIS-44722,INSTALL_DATE,two_digit_year,2020-08-17
+GIS-44722,RATING,inconsistent_units,3kW written as 3kw
+GIS-44722,STATUS,status_conflict,'Not in use' while another record of G0021 is operating
+GIS-44722,MODEL,missing_value,'N/A'
+H030961,LATITUDE,lat_long_swapped,
+239480,ASSET_LEVEL,non_standard_value,'2.0' for '2'
+GIS-67314,ASSET_ID,duplicate_record,same asset as 239480 (G0023)
+GIS-67314,ASSET_DESC,name_variant,'SECONDARY CLARIFIER (DUNMORE)' for 'Secondary Clarifiers'
+GIS-67314,ASSET_TAG,tag_variant,'DUN SCL' for 'DUN-SCL'
+GIS-67314,INSTALL_DATE,excel_serial_date,1992-07-01
+GIS-67314,CRITICALITY,missing_value,'TBA'
+SS6017,ASSET_ID,duplicate_record,same asset as 239480 (G0023)
+SS6017,ASSET_DESC,name_variant,'SECONDARY CLARIFIER (DUNMORE)' for 'Secondary Clarifiers'
+SS6017,ASSET_TAG,tag_variant,'OLD-DUN-SCL' for 'DUN-SCL'
+SS6017,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+SS6017,CRITICALITY,non_standard_value,'High' for '2'
+SS2336,ASSET_TAG,tag_variant,'DUN-SCL-CBD-1' for 'DUN-SCL-CBD-01'
+SS2336,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS2336,LATITUDE,missing_value,
+SS9762,ASSET_DESC,name_variant,'Drive No.2 - Clarifier Bridge' for 'Clarifier Bridge Drive No. 2'
+SS9762,REGION,non_standard_value,'Metro' for 'METRO'
+SS9762,MANUFACTURER,non_standard_value,'SIEMENS' for 'Siemens'
+SS9762,LATITUDE,missing_value,
+GIS-20373,ASSET_ID,duplicate_record,same asset as SS9762 (G0025)
+GIS-20373,ASSET_DESC,name_variant,'Clarifier Bridge Drive 2' for 'Clarifier Bridge Drive No. 2'
+GIS-20373,MODEL,model_variant,'SK 9042' for 'SK 9042'
+GIS-20373,SERIAL_NO,serial_variant,'SN-41942589' for '41942589'
+GIS-20373,RATING,inconsistent_units,0.55kW written as 0.55
+GIS-20373,STATUS,status_conflict,'Retired' while another record of G0025 is operating
+GIS-20373,LATITUDE,lat_long_swapped,
+GIS-20373,RATING,missing_value,'-'
+SS6181,STATUS,non_standard_value,'Active' for 'OPERATING'
+SS6181,INSTALL_DATE,two_digit_year,1983-11-07
+SS6181,LATITUDE,sign_lost,34.771908 should be negative
+H080143,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H080143,MANUFACTURER,non_standard_value,'XYLEM' for 'Flygt'
+H080143,INSTALL_DATE,two_digit_year,2016-10-04
+H080143,LATITUDE,zero_coordinates,
+223785,ASSET_TAG,tag_variant,'dun-uvd' for 'DUN-UVD'
+223785,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+223785,STATUS,non_standard_value,'OPR' for 'OPERATING'
+223785,INSTALL_DATE,two_digit_year,1992-06-17
+H090133,ASSET_ID,duplicate_record,same asset as 223785 (G0028)
+H090133,ASSET_DESC,name_variant,'UV Plant' for 'UV Disinfection'
+H090133,ASSET_TAG,tag_variant,'OLD-DUN-UVD' for 'DUN-UVD'
+SS4088,ASSET_ID,duplicate_record,same asset as 223785 (G0028)
+SS4088,ASSET_DESC,name_variant,'Dunmore - Ultraviolet Disinfection' for 'UV Disinfection'
+SS4088,LATITUDE,missing_value,
+SS2331,REGION,non_standard_value,'MET' for 'METRO'
+SS2331,LATITUDE,missing_value,
+SS2331,RATING,missing_value,''
+297442,ASSET_ID,duplicate_record,same asset as SS2331 (G0029)
+297442,MANUFACTURER,non_standard_value,'Trojen' for 'Trojan'
+297442,MODEL,model_variant,'UVSigna' for 'UVSigna'
+297442,INSTALL_DATE,conflicting_value,2019-08-02 vs 2019-09-01
+297442,CRITICALITY,non_standard_value,'Med' for '2'
+GIS-19187,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+GIS-19187,MANUFACTURER,non_standard_value,'Trojen' for 'Trojan'
+226543,ASSET_ID,duplicate_record,same asset as GIS-19187 (G0030)
+226543,ASSET_DESC,name_variant,'UV Reactor Bank (Unit 2)' for 'UV Reactor Bank No. 2'
+226543,MANUFACTURER,non_standard_value,'Trojan UV' for 'Trojan'
+226543,MODEL,model_variant,'' for 'UVSigna'
+226543,RATING,missing_value,''
+SS1677,MANUFACTURER,non_standard_value,'Trojan UV' for 'Trojan'
+SS1677,LATITUDE,missing_value,
+220304,ASSET_ID,duplicate_record,same asset as SS1677 (G0031)
+220304,ASSET_DESC,name_variant,'Analyser' for 'UV Transmittance Analyser'
+220304,ASSET_TAG,tag_variant,'DUNUVDUVT01' for 'DUN-UVD-UVT-01'
+220304,ASSET_CLASS,non_standard_value,'INSTR/ANALYSER' for 'INSTR\\ANALYSER'
+220304,MODEL,model_variant,'UVAS SC' for 'UVAS sc'
+220304,SERIAL_NO,serial_variant,'SN-87415880' for 'S/N 87415880'
+266255,ASSET_CLASS,non_standard_value,'SYS' for 'SYSTEM'
+SS7621,ASSET_DESC,name_variant,'Dewatering Centrifuge 1' for 'Dewatering Centrifuge No. 1'
+SS7621,MANUFACTURER,non_standard_value,'Andriz' for 'Andritz'
+SS7621,INSTALL_DATE,excel_serial_date,2021-08-22
+SS7621,LATITUDE,missing_value,
+SS7621,RATING,missing_value,'UNKNOWN'
+SS2262,ASSET_DESC,name_variant,'Dewatering Centrifuge 02' for 'Dewatering Centrifuge No. 2'
+SS2262,MANUFACTURER,non_standard_value,'ANDRITZ' for 'Andritz'
+SS2262,LATITUDE,missing_value,
+H090004,ASSET_ID,duplicate_record,same asset as SS2262 (G0034)
+H090004,ASSET_DESC,name_variant,'DEWATERING CENTRIFUGE #2' for 'Dewatering Centrifuge No. 2'
+H090004,ASSET_TAG,tag_variant,'dun-sdw-cen-02' for 'DUN-SDW-CEN-02'
+H090004,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+H090004,MANUFACTURER,non_standard_value,'ANDRITZ' for 'Andritz'
+H090004,SERIAL_NO,serial_variant,'' for 'SN77444389'
+H090004,INSTALL_DATE,conflicting_value,1996-09-21 vs 1996-10-21
+267624,ASSET_ID,duplicate_record,same asset as SS2262 (G0034)
+267624,STATUS,non_standard_value,'In Service' for 'OPERATING'
+267624,SERIAL_NO,serial_variant,'sn77444389' for 'SN77444389'
+GIS-75951,ASSET_DESC,name_variant,'Polymer Dosing Pmp 1' for 'Polymer Dosing Pump No. 1'
+GIS-75951,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-75951,INSTALL_DATE,year_only,1990-11-03
+SS3945,MANUFACTURER,non_standard_value,'Grundfoss' for 'Grundfos'
+SS3945,LATITUDE,missing_value,
+GIS-60307,ASSET_ID,duplicate_record,same asset as SS3945 (G0036)
+GIS-60307,ASSET_DESC,name_variant,'Pump 2' for 'Polymer Dosing Pump No. 2'
+GIS-60307,ASSET_TAG,tag_variant,'DUN-SDW-PDP-2' for 'DUN-SDW-PDP-02'
+GIS-60307,ASSET_CLASS,non_standard_value,'PUMP/DOSING' for 'PUMP\\DOSING'
+GIS-60307,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-60307,MANUFACTURER,non_standard_value,'GRUNDFOS' for 'Grundfos'
+GIS-60307,INSTALL_DATE,conflicting_value,1984-10-26 vs 1985-10-26
+GIS-60307,STATUS,status_conflict,'Removed' while another record of G0036 is operating
+H093547,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+H093547,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS0995,ASSET_ID,duplicate_record,same asset as H093547 (G0037)
+SS0995,ASSET_DESC,name_variant,'ELEC & CONTROL' for 'Electrical & Control'
+SS0995,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+SS0995,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+SS0995,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS0995,LATITUDE,missing_value,
+GIS-25159,ASSET_ID,duplicate_record,same asset as H093547 (G0037)
+GIS-25159,ASSET_DESC,name_variant,'Dunmore - Electrical & Control' for 'Electrical & Control'
+GIS-25159,ASSET_LEVEL,non_standard_value,'Level 2' for '2'
+GIS-25159,ASSET_CLASS,non_standard_value,'SYS' for 'SYSTEM'
+GIS-25159,INSTALL_DATE,two_digit_year,1987-07-08
+GIS-25159,CRITICALITY,non_standard_value,'High' for '3'
+H001619,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+H001619,RATING,missing_value,''
+H038842,REGION,non_standard_value,'Metro' for 'METRO'
+H038842,LATITUDE,zero_coordinates,
+236466,INSTALL_DATE,two_digit_year,1986-01-04
+H047826,ASSET_ID,duplicate_record,same asset as 236466 (G0040)
+H047826,ASSET_DESC,name_variant,'Hartley Treatment Plant' for 'Hartley Water Treatment Plant'
+H047826,ASSET_TAG,tag_variant,'HAR WTP' for 'HAR-WTP'
+H047826,ASSET_LEVEL,non_standard_value,'Level 1' for '1'
+H047826,ASSET_CLASS,non_standard_value,'SITE' for 'FACILITY'
+H047826,INSTALL_DATE,conflicting_value,1985-01-04 vs 1986-01-04
+H047826,CRITICALITY,non_standard_value,'Med' for '1'
+H047826,INSTALL_DATE,missing_value,''
+SS2074,ASSET_ID,duplicate_record,same asset as 236466 (G0040)
+SS2074,ASSET_DESC,name_variant,'Hartley Water Filtration Plant' for 'Hartley Water Treatment Plant'
+SS2074,ASSET_TAG,tag_variant,'HARWTP' for 'HAR-WTP'
+SS2074,ASSET_CLASS,non_standard_value,'Facility' for 'FACILITY'
+SS2074,INSTALL_DATE,excel_serial_date,1986-01-04
+SS2074,CRITICALITY,non_standard_value,'2' for '1'
+SS2074,STATUS,status_conflict,'Retired' while another record of G0040 is operating
+GIS-33637,ASSET_ID,duplicate_record,same asset as 236466 (G0040)
+GIS-33637,ASSET_TAG,tag_variant,'HARWTP' for 'HAR-WTP'
+GIS-33637,REGION,non_standard_value,'MET' for 'METRO'
+281243,ASSET_DESC,name_variant,'Raw Water Inlet (HARTLEY)' for 'Raw Water Intake'
+281243,ASSET_TAG,tag_variant,'HARRWI' for 'HAR-RWI'
+H076927,ASSET_ID,duplicate_record,same asset as 281243 (G0041)
+H076927,ASSET_DESC,name_variant,'RW Intake (HARTLEY)' for 'Raw Water Intake'
+H076927,ASSET_TAG,tag_variant,'HAR RWI' for 'HAR-RWI'
+H076927,INSTALL_DATE,excel_serial_date,1992-04-18
+GIS-64120,ASSET_ID,duplicate_record,same asset as 281243 (G0041)
+GIS-64120,ASSET_DESC,name_variant,'RAW WATER INTAKE' for 'Raw Water Intake'
+GIS-64120,ASSET_TAG,tag_variant,'har-rwi' for 'HAR-RWI'
+GIS-64120,ASSET_LEVEL,non_standard_value,'2.0' for '2'
+GIS-64120,ASSET_CLASS,non_standard_value,'SYS' for 'SYSTEM'
+GIS-64120,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-64120,INSTALL_DATE,conflicting_value,1992-03-19 vs 1992-04-18
+SS1639,CRITICALITY,missing_value,'NULL'
+SS1639,RATING,missing_value,'UNKNOWN'
+GIS-89189,REGION,non_standard_value,'Metro' for 'METRO'
+SS6446,ASSET_ID,duplicate_record,same asset as GIS-89189 (G0043)
+SS6446,ASSET_DESC,name_variant,'RAW WATER PUMP #2' for 'Raw Water Pump No. 2'
+SS6446,MODEL,model_variant,'' for 'Omega 300-560'
+SS6446,CRITICALITY,non_standard_value,'Low' for '4'
+SS6446,RATING,inconsistent_units,37kW written as 0.037 MW
+241305,ASSET_DESC,name_variant,'Intake Isolation Valve 1' for 'Intake Isolation Valve No. 1'
+241305,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+241305,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+241305,RATING,missing_value,'TBA'
+SS9389,ASSET_ID,duplicate_record,same asset as 241305 (G0044)
+SS9389,ASSET_DESC,name_variant,'Valve 1' for 'Intake Isolation Valve No. 1'
+SS9389,ASSET_CLASS,non_standard_value,'BUTTERFLY VALVE' for 'VALVE\\BFLY'
+SS9389,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+SS9389,MANUFACTURER,non_standard_value,'AVK Valves' for 'AVK'
+SS9389,MODEL,model_variant,'SERIES 75' for 'Series 75'
+SS9389,INSTALL_DATE,conflicting_value,2003-05-20 vs 1993-05-22
+SS9389,CRITICALITY,non_standard_value,'High' for '3'
+GIS-73053,ASSET_ID,duplicate_record,same asset as 241305 (G0044)
+GIS-73053,ASSET_DESC,name_variant,'Intake Isolation Valve 1' for 'Intake Isolation Valve No. 1'
+GIS-73053,ASSET_CLASS,non_standard_value,'VALVE' for 'VALVE\\BFLY'
+GIS-73053,INSTALL_DATE,excel_serial_date,1993-05-22
+GIS-73053,INSTALL_DATE,conflicting_value,1993-06-21 vs 1993-05-22
+GIS-73053,CRITICALITY,non_standard_value,'A' for '3'
+H004998,ASSET_DESC,name_variant,'Valve 2' for 'Intake Isolation Valve No. 2'
+H004998,ASSET_CLASS,non_standard_value,'BUTTERFLY VALVE' for 'VALVE\\BFLY'
+H004998,REGION,non_standard_value,'Metro' for 'METRO'
+H004998,INSTALL_DATE,two_digit_year,2002-01-31
+SS3943,ASSET_TAG,missing_value,'' for 'HAR-RWI-TUR-01'
+SS3943,LATITUDE,missing_value,
+287042,ASSET_ID,duplicate_record,same asset as SS3943 (G0046)
+287042,ASSET_TAG,tag_variant,'HAR RWI TUR 01' for 'HAR-RWI-TUR-01'
+287042,ASSET_CLASS,non_standard_value,'ANALYZER' for 'INSTR\\ANALYSER'
+287042,STATUS,non_standard_value,'In Service' for 'OPERATING'
+287042,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+287042,MODEL,model_variant,'' for 'TU5300 sc'
+272971,SITE_CODE,missing_value,''
+H071527,ASSET_ID,duplicate_record,same asset as 272971 (G0047)
+H071527,ASSET_DESC,name_variant,'Flocculation Tanks' for 'Coagulation & Flocculation'
+H071527,ASSET_TAG,tag_variant,'har-cfl' for 'HAR-CFL'
+H071527,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+H071527,STATUS,non_standard_value,'Op' for 'OPERATING'
+H071527,CRITICALITY,non_standard_value,'A' for '2'
+SS6738,ASSET_DESC,name_variant,'ALUM DOSING PUMP #1' for 'Alum Dosing Pump No. 1'
+SS6738,ASSET_CLASS,non_standard_value,'Dosing Pump' for 'PUMP\\DOSING'
+SS6738,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS6738,INSTALL_DATE,year_only,2021-10-31
+SS6738,LATITUDE,missing_value,
+SS9444,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS9444,MANUFACTURER,non_standard_value,'Grundfoss' for 'Grundfos'
+GIS-22374,ASSET_ID,duplicate_record,same asset as SS9444 (G0049)
+GIS-22374,ASSET_DESC,name_variant,'Alum Dosing Pump 02' for 'Alum Dosing Pump No. 2'
+GIS-22374,ASSET_TAG,tag_variant,'har-cfl-adp-02' for 'HAR-CFL-ADP-02'
+GIS-22374,ASSET_CLASS,non_standard_value,'PUMP/DOSING' for 'PUMP\\DOSING'
+GIS-22374,MANUFACTURER,non_standard_value,'Grunfos' for 'Grundfos'
+GIS-22374,SERIAL_NO,serial_variant,'3932677' for 'SN39326774'
+GIS-22374,CRITICALITY,non_standard_value,'H' for '3'
+GIS-83153,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+GIS-83153,ASSET_CLASS,non_standard_value,'Mixer' for 'MECH\\MIXER'
+SS1527,ASSET_ID,duplicate_record,same asset as GIS-83153 (G0050)
+SS1527,ASSET_DESC,name_variant,'Flocculator Mixer 01' for 'Flocculator Mixer No. 1'
+SS1527,ASSET_TAG,tag_variant,'OLD-HAR-CFL-MIX-01' for 'HAR-CFL-MIX-01'
+SS1527,MANUFACTURER,non_standard_value,'ITT Flygt' for 'Flygt'
+SS1527,SERIAL_NO,serial_variant,'SN-64407379' for '64407379'
+SS1527,RATING,inconsistent_units,5.5kW written as 0.0055 MW
+SS1527,LATITUDE,lat_long_swapped,
+SS7357,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS7357,MANUFACTURER,non_standard_value,'Xylem Flygt' for 'Flygt'
+SS7357,INSTALL_DATE,year_only,1988-10-15
+291699,ASSET_ID,duplicate_record,same asset as SS7357 (G0052)
+291699,ASSET_DESC,name_variant,'Flocculator Mixer 3' for 'Flocculator Mixer No. 3'
+291699,ASSET_TAG,tag_variant,'HAR-CFL-MIX-3' for 'HAR-CFL-MIX-03'
+291699,ASSET_LEVEL,non_standard_value,'L3' for '3'
+291699,REGION,non_standard_value,'MET' for 'METRO'
+291699,MODEL,model_variant,'' for '4620'
+291699,INSTALL_DATE,two_digit_year,1988-10-15
+291699,INSTALL_DATE,conflicting_value,1988-09-15 vs 1988-10-15
+291699,CRITICALITY,non_standard_value,'Low' for '3'
+SS3665,ASSET_ID,duplicate_record,same asset as GIS-13125 (G0053)
+SS3665,ASSET_DESC,name_variant,'Rapid Gravity Filters' for 'Filtration'
+SS3665,ASSET_TAG,tag_variant,'HARFLT' for 'HAR-FLT'
+SS3665,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+SS3665,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+SS3665,INSTALL_DATE,excel_serial_date,1989-12-09
+SS3665,INSTALL_DATE,conflicting_value,1988-12-09 vs 1989-12-09
+GIS-72751,ASSET_DESC,name_variant,'Filter Inlet Valve 01' for 'Filter Inlet Valve No. 1'
+GIS-72751,REGION,non_standard_value,'MET' for 'METRO'
+GIS-72751,STATUS,non_standard_value,'Active' for 'OPERATING'
+SS1293,ASSET_ID,duplicate_record,same asset as GIS-72751 (G0054)
+SS1293,ASSET_DESC,name_variant,'Filter Inlet Valve 01' for 'Filter Inlet Valve No. 1'
+SS1293,ASSET_TAG,tag_variant,'har-flt-fiv-01' for 'HAR-FLT-FIV-01'
+SS1293,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+SS1293,CRITICALITY,non_standard_value,'High' for '3'
+SS1293,LATITUDE,missing_value,
+277022,ASSET_ID,duplicate_record,same asset as GIS-72751 (G0054)
+277022,ASSET_DESC,name_variant,'FILTER INLET VALVE #1' for 'Filter Inlet Valve No. 1'
+277022,ASSET_TAG,tag_variant,'har-flt-fiv-01' for 'HAR-FLT-FIV-01'
+277022,REGION,non_standard_value,'MET' for 'METRO'
+277022,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+H001373,ASSET_ID,duplicate_record,same asset as GIS-72751 (G0054)
+H001373,ASSET_DESC,name_variant,'Filter Inlet Valve 01' for 'Filter Inlet Valve No. 1'
+H001373,ASSET_TAG,tag_variant,'HAR-FLT-FIV-1' for 'HAR-FLT-FIV-01'
+H001373,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H001373,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+H001373,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+H001373,SERIAL_NO,serial_variant,'sn92869027' for 'S/N 92869027'
+SS0453,MANUFACTURER,missing_value,'UNKNOWN'
+H065733,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H065733,MANUFACTURER,missing_value,' '
+H093494,ASSET_LEVEL,non_standard_value,'L3' for '3'
+H093494,REGION,non_standard_value,'Metro' for 'METRO'
+H093494,CRITICALITY,missing_value,'UNKNOWN'
+263347,ASSET_ID,duplicate_record,same asset as H093494 (G0057)
+263347,ASSET_DESC,name_variant,'Valve No.4 - Filter Inlet' for 'Filter Inlet Valve No. 4'
+263347,REGION,non_standard_value,'MET' for 'METRO'
+263347,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+263347,SERIAL_NO,serial_variant,'SN-63461779' for 'SN63461779'
+263347,INSTALL_DATE,two_digit_year,2002-10-25
+281664,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+281664,INSTALL_DATE,year_only,1993-02-27
+GIS-77559,ASSET_DESC,name_variant,'Backwash Pmp 2' for 'Backwash Pump No. 2'
+GIS-77559,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+GIS-77559,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-77559,INSTALL_DATE,excel_serial_date,2000-07-22
+GIS-77559,CRITICALITY,missing_value,'N/A'
+GIS-77559,SITE_CODE,missing_value,'UNKNOWN'
+276742,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+H070494,ASSET_TAG,tag_variant,'OLD-HAR-FLT-TUR-02' for 'HAR-FLT-TUR-02'
+H070494,ASSET_LEVEL,non_standard_value,'L3' for '3'
+H070494,REGION,non_standard_value,'MET' for 'METRO'
+H070494,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H070494,INSTALL_DATE,year_only,2020-10-01
+H070494,LATITUDE,zero_coordinates,
+257281,ASSET_TAG,tag_variant,'HAR-CLD-1' for 'HAR-CLD'
+257281,STATUS,non_standard_value,'Active' for 'OPERATING'
+H065187,ASSET_ID,duplicate_record,same asset as 257281 (G0062)
+H065187,ASSET_DESC,name_variant,'Disinfection (Cl2)' for 'Chlorine Disinfection'
+H065187,INSTALL_DATE,year_only,1989-03-26
+H067776,ASSET_CLASS,non_standard_value,'Chlorinator' for 'TREAT\\CHLOR'
+H067776,STATUS,non_standard_value,'In Service' for 'OPERATING'
+GIS-75337,ASSET_ID,duplicate_record,same asset as H067776 (G0063)
+GIS-75337,ASSET_DESC,name_variant,'Gas Chlorinator 01' for 'Gas Chlorinator No. 1'
+GIS-75337,ASSET_TAG,missing_value,'' for 'HAR-CLD-CHL-01'
+GIS-75337,SERIAL_NO,serial_variant,'SN-97323374' for '97323374'
+GIS-75337,INSTALL_DATE,excel_serial_date,2000-01-29
+SS9337,ASSET_ID,duplicate_record,same asset as H067776 (G0063)
+SS9337,ASSET_DESC,name_variant,'Gas Chlorinator 1' for 'Gas Chlorinator No. 1'
+SS9337,ASSET_TAG,tag_variant,'OLD-HAR-CLD-CHL-01' for 'HAR-CLD-CHL-01'
+SS9337,REGION,non_standard_value,'Metro' for 'METRO'
+SS9337,SERIAL_NO,serial_variant,'9732337' for '97323374'
+SS9337,CRITICALITY,non_standard_value,'C' for '3'
+SS9337,STATUS,status_conflict,'Decommissioned' while another record of G0063 is operating
+216408,ASSET_ID,duplicate_record,same asset as H067776 (G0063)
+216408,ASSET_DESC,name_variant,'Gas Chlorinator 1' for 'Gas Chlorinator No. 1'
+216408,ASSET_TAG,tag_variant,'HAR-CLD-CHL-1' for 'HAR-CLD-CHL-01'
+216408,MANUFACTURER,non_standard_value,'Wallace and Tiernan' for 'Evoqua'
+216408,SERIAL_NO,serial_variant,'TBA' for '97323374'
+216408,INSTALL_DATE,conflicting_value,2000-02-28 vs 2000-01-29
+216408,STATUS,status_conflict,'Retired' while another record of G0063 is operating
+SS0675,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-79155,ASSET_ID,duplicate_record,same asset as SS0675 (G0064)
+GIS-79155,ASSET_DESC,name_variant,'Chlorinator No.2 - Gas' for 'Gas Chlorinator No. 2'
+GIS-79155,ASSET_TAG,tag_variant,'HAR CLD CHL 02' for 'HAR-CLD-CHL-02'
+GIS-79155,MANUFACTURER,non_standard_value,'Wallace & Tiernan' for 'Evoqua'
+GIS-79155,SERIAL_NO,serial_variant,'21656356' for '21656356'
+H029396,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+H029396,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+H048170,ASSET_ID,duplicate_record,same asset as GIS-12373 (G0066)
+H048170,ASSET_DESC,name_variant,'Chlorine Residual Analyser 02' for 'Chlorine Residual Analyser No. 2'
+H048170,ASSET_TAG,tag_variant,'OLD-HAR-CLD-CLA-02' for 'HAR-CLD-CLA-02'
+H048170,SERIAL_NO,serial_variant,'sn42527186' for '42527186'
+H048170,INSTALL_DATE,conflicting_value,1991-01-04 vs 1990-01-04
+SS5308,ASSET_ID,duplicate_record,same asset as GIS-12373 (G0066)
+SS5308,ASSET_DESC,name_variant,'Chlorine Residual Analyser 02' for 'Chlorine Residual Analyser No. 2'
+SS5308,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS5308,SERIAL_NO,serial_variant,'42527186' for '42527186'
+SS5308,CRITICALITY,non_standard_value,'A' for '1'
+SS1984,REGION,non_standard_value,'Metro' for 'METRO'
+SS1984,CRITICALITY,missing_value,'N/A'
+GIS-81906,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+GIS-81906,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+GIS-81906,INSTALL_DATE,two_digit_year,2007-05-01
+GIS-81906,INSTALL_DATE,missing_value,''
+SS8426,ASSET_ID,duplicate_record,same asset as GIS-81906 (G0068)
+SS8426,ASSET_DESC,name_variant,'Pump No.1 - Duty' for 'Duty Pump No. 1'
+SS8426,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+SS8426,MODEL,model_variant,'Omega 200-520 ' for 'Omega 200-520'
+SS8426,SERIAL_NO,serial_variant,'SN-44983990' for 'S/N 44983990'
+SS8426,INSTALL_DATE,conflicting_value,2017-04-28 vs 2007-05-01
+245355,ASSET_DESC,name_variant,'Duty Pump (Unit 2)' for 'Duty Pump No. 2'
+245355,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+GIS-78811,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+GIS-78811,STATUS,non_standard_value,'OPR' for 'OPERATING'
+222378,INSTALL_DATE,two_digit_year,2011-02-09
+GIS-88445,ASSET_ID,duplicate_record,same asset as 222378 (G0071)
+GIS-88445,ASSET_DESC,name_variant,'Pump Motor 01' for 'Pump Motor No. 1'
+GIS-88445,ASSET_TAG,tag_variant,'OLD-HAR-TWP-MTR-01' for 'HAR-TWP-MTR-01'
+GIS-88445,MODEL,model_variant,'W22 315 ' for 'W22 315'
+GIS-88445,SERIAL_NO,serial_variant,'TBA' for 'SN66004332'
+GIS-88445,INSTALL_DATE,year_only,2011-02-09
+GIS-88445,RATING,inconsistent_units,110kW written as 110
+GIS-88445,RATING,missing_value,''
+SS2394,ASSET_ID,duplicate_record,same asset as 222378 (G0071)
+SS2394,ASSET_DESC,name_variant,'Pmp Motor 1' for 'Pump Motor No. 1'
+SS2394,ASSET_TAG,tag_variant,'HAR TWP MTR 01' for 'HAR-TWP-MTR-01'
+SS2394,MANUFACTURER,non_standard_value,'Asea Brown Boveri' for 'ABB'
+SS2394,MODEL,model_variant,'W22315' for 'W22 315'
+SS2394,INSTALL_DATE,two_digit_year,2011-02-09
+H026633,ASSET_DESC,name_variant,'Pump Motor 02' for 'Pump Motor No. 2'
+H026633,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H026633,MODEL,missing_value,'N/A'
+207461,ASSET_DESC,name_variant,'Motor No.3 - Pump' for 'Pump Motor No. 3'
+207461,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+207461,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+GIS-94407,ASSET_DESC,name_variant,'Drive No.1 - Pump Variable Speed' for 'Pump Variable Speed Drive No. 1'
+GIS-94407,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+GIS-94407,STATUS,non_standard_value,'Op' for 'OPERATING'
+H079579,ASSET_ID,duplicate_record,same asset as GIS-94407 (G0074)
+H079579,ASSET_DESC,name_variant,'Pump Variable Speed Drive (Unit 1)' for 'Pump Variable Speed Drive No. 1'
+H079579,ASSET_TAG,tag_variant,'HARTWPVSD01' for 'HAR-TWP-VSD-01'
+H079579,REGION,non_standard_value,'Metro' for 'METRO'
+H079579,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+H079579,SERIAL_NO,serial_variant,'SN-69310463' for 'SN69310463'
+H079579,INSTALL_DATE,two_digit_year,2016-08-27
+H021951,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+H021951,MANUFACTURER,non_standard_value,'Danfos' for 'Danfoss'
+H021951,INSTALL_DATE,year_only,1997-06-14
+247031,ASSET_ID,duplicate_record,same asset as H021951 (G0075)
+247031,ASSET_DESC,name_variant,'Pmp VSD 2' for 'Pump Variable Speed Drive No. 2'
+247031,ASSET_TAG,missing_value,'' for 'HAR-TWP-VSD-02'
+247031,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+247031,STATUS,non_standard_value,'OPR' for 'OPERATING'
+247031,SERIAL_NO,serial_variant,'sn86956986' for '86956986'
+247031,INSTALL_DATE,two_digit_year,1997-06-14
+247031,CRITICALITY,non_standard_value,'A' for '2'
+278960,ASSET_TAG,tag_variant,'OLD-HAR-TWP-VSD-03' for 'HAR-TWP-VSD-03'
+278960,LATITUDE,zero_coordinates,
+H046714,ASSET_ID,duplicate_record,same asset as 278960 (G0076)
+H046714,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+H046714,MANUFACTURER,non_standard_value,'Danfoss VLT' for 'Danfoss'
+H046714,MODEL,model_variant,'VLT AQUA FC202 ' for 'VLT AQUA FC202'
+H046714,SERIAL_NO,serial_variant,'36569198' for 'S/N 36569198'
+H046714,INSTALL_DATE,two_digit_year,1996-01-27
+H046714,INSTALL_DATE,conflicting_value,1997-01-26 vs 1996-01-27
+SS6047,MANUFACTURER,non_standard_value,'KROHNE' for 'Krohne'
+282663,ASSET_ID,duplicate_record,same asset as SS6047 (G0077)
+282663,ASSET_DESC,name_variant,'DELIVERY FLOW METER' for 'Delivery Flow Meter'
+282663,ASSET_TAG,tag_variant,'HAR TWP FIT 01' for 'HAR-TWP-FIT-01'
+282663,ASSET_CLASS,non_standard_value,'METER/FLOW' for 'METER\\FLOW'
+282663,MANUFACTURER,non_standard_value,'Krone' for 'Krohne'
+282663,CRITICALITY,non_standard_value,'High' for '3'
+248795,ASSET_DESC,name_variant,'Hartley - Electrical & Control' for 'Electrical & Control'
+248795,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+248795,STATUS,non_standard_value,'Op' for 'OPERATING'
+248795,INSTALL_DATE,two_digit_year,1989-08-02
+GIS-92602,ASSET_ID,duplicate_record,same asset as 248795 (G0078)
+GIS-92602,ASSET_DESC,name_variant,'Electrical and Controls (HARTLEY)' for 'Electrical & Control'
+GIS-92602,ASSET_TAG,tag_variant,'OLD-HAR-ELC' for 'HAR-ELC'
+GIS-92602,REGION,non_standard_value,'MET' for 'METRO'
+GIS-92602,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-92602,INSTALL_DATE,year_only,1989-08-02
+SS7815,ASSET_ID,duplicate_record,same asset as 248795 (G0078)
+SS7815,ASSET_DESC,name_variant,'HAR ELEC & CONTROL' for 'Electrical & Control'
+SS7815,ASSET_TAG,tag_variant,'HAR ELC' for 'HAR-ELC'
+SS7815,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+SS7815,INSTALL_DATE,month_day_swapped,1989-08-02
+SS7815,CRITICALITY,non_standard_value,'C' for '3'
+SS7815,LATITUDE,missing_value,
+GIS-79825,ASSET_ID,duplicate_record,same asset as SS9349 (G0079)
+GIS-79825,ASSET_DESC,name_variant,'Main Switchboard - main' for 'Main Switchboard'
+GIS-79825,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-79825,ASSET_CLASS,non_standard_value,'ELEC/SWBD' for 'ELEC\\SWBD'
+GIS-83995,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-83995,ASSET_CLASS,non_standard_value,'SCADA/RTU' for 'SCADA\\RTU'
+GIS-83995,MANUFACTURER,non_standard_value,'Schneider Kingfisher' for 'Kingfisher'
+GIS-83995,INSTALL_DATE,year_only,2017-05-16
+GIS-83995,LATITUDE,sign_lost,34.883002 should be negative
+SS8396,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+231100,ASSET_ID,duplicate_record,same asset as SS8396 (G0081)
+231100,ASSET_DESC,name_variant,'STIRLING Treatment Plant' for 'Stirling Water Treatment Plant'
+231100,ASSET_LEVEL,non_standard_value,'L1' for '1'
+GIS-50540,ASSET_ID,duplicate_record,same asset as SS8396 (G0081)
+GIS-50540,ASSET_DESC,name_variant,'Stirling WTP' for 'Stirling Water Treatment Plant'
+GIS-50540,ASSET_TAG,tag_variant,'OLD-STI-WTP' for 'STI-WTP'
+GIS-50540,INSTALL_DATE,two_digit_year,1992-05-20
+GIS-50540,CRITICALITY,non_standard_value,'A' for '2'
+H066848,ASSET_ID,duplicate_record,same asset as SS8396 (G0081)
+H066848,ASSET_DESC,name_variant,'Stirling WTP' for 'Stirling Water Treatment Plant'
+H066848,ASSET_LEVEL,non_standard_value,'Level 1' for '1'
+H066848,LATITUDE,zero_coordinates,
+H076036,ASSET_ID,duplicate_record,same asset as GIS-18242 (G0082)
+H076036,ASSET_DESC,name_variant,'Raw Water Inlet' for 'Raw Water Intake'
+H076036,CRITICALITY,non_standard_value,'High' for '1'
+SS9329,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS9329,INSTALL_DATE,two_digit_year,1996-09-08
+H014357,ASSET_ID,duplicate_record,same asset as SS9329 (G0083)
+H014357,ASSET_DESC,name_variant,'RAW WATER PUMP #1' for 'Raw Water Pump No. 1'
+H014357,ASSET_TAG,tag_variant,'STI-RWI-PMP-1' for 'STI-RWI-PMP-01'
+H014357,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+H014357,ASSET_CLASS,non_standard_value,'PUMP/CENT' for 'PUMP\\CENT'
+H014357,REGION,non_standard_value,'Southern' for 'SOUTH'
+H014357,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-73069,ASSET_ID,duplicate_record,same asset as H075362 (G0084)
+GIS-73069,ASSET_DESC,name_variant,'Raw Water Pmp 2' for 'Raw Water Pump No. 2'
+GIS-73069,ASSET_TAG,missing_value,'' for 'STI-RWI-PMP-02'
+GIS-73069,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+GIS-73069,ASSET_CLASS,non_standard_value,'PUMP/CENT' for 'PUMP\\CENT'
+GIS-73069,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-73069,MANUFACTURER,non_standard_value,'Grundfos Pumps Pty Ltd' for 'Grundfos'
+GIS-73069,MODEL,model_variant,'HS 250-500 ' for 'HS 250-500'
+GIS-73069,SERIAL_NO,serial_variant,'30183388' for 'S/N 30183388'
+GIS-73069,INSTALL_DATE,two_digit_year,2013-08-06
+GIS-73069,RATING,inconsistent_units,22kW written as 22
+GIS-73069,LATITUDE,zero_coordinates,
+217751,ASSET_ID,duplicate_record,same asset as H075362 (G0084)
+217751,ASSET_DESC,name_variant,'Raw Water Pump (Unit 2)' for 'Raw Water Pump No. 2'
+217751,ASSET_CLASS,non_standard_value,'PUMP-CENT' for 'PUMP\\CENT'
+217751,MANUFACTURER,non_standard_value,'Grundfoss' for 'Grundfos'
+217751,MODEL,model_variant,'HS 250-500 ' for 'HS 250-500'
+217751,RATING,inconsistent_units,22kW written as 22kw
+217751,STATUS,status_conflict,'Decommissioned' while another record of G0084 is operating
+GIS-22039,ASSET_DESC,name_variant,'Valve 1' for 'Intake Isolation Valve No. 1'
+GIS-22039,MANUFACTURER,non_standard_value,'AVK Valves' for 'AVK'
+208374,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+208374,LATITUDE,zero_coordinates,
+SS4004,ASSET_ID,duplicate_record,same asset as 208374 (G0086)
+SS4004,ASSET_DESC,name_variant,'INTAKE ISOLATION VALVE #2' for 'Intake Isolation Valve No. 2'
+SS4004,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS4004,REGION,non_standard_value,'STH' for 'SOUTH'
+SS4004,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS4004,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+SS4004,SERIAL_NO,serial_variant,'TBA' for 'SN22918277'
+SS4004,INSTALL_DATE,conflicting_value,1996-01-08 vs 1996-02-07
+SS4004,LATITUDE,missing_value,
+SS4004,INSTALL_DATE,missing_value,''
+H005562,ASSET_ID,duplicate_record,same asset as 208374 (G0086)
+H005562,ASSET_DESC,name_variant,'Intake Isolation Valve 2' for 'Intake Isolation Valve No. 2'
+H005562,ASSET_TAG,tag_variant,'STI-RWI-VLV-2' for 'STI-RWI-VLV-02'
+H005562,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H005562,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+H005562,SERIAL_NO,serial_variant,'' for 'SN22918277'
+H005562,INSTALL_DATE,conflicting_value,2006-02-04 vs 1996-02-07
+H005562,CRITICALITY,non_standard_value,'H' for '3'
+GIS-29807,ASSET_ID,duplicate_record,same asset as 208374 (G0086)
+GIS-29807,ASSET_DESC,name_variant,'INTAKE ISOLATION VALVE #2' for 'Intake Isolation Valve No. 2'
+GIS-29807,ASSET_TAG,tag_variant,'STIRWIVLV02' for 'STI-RWI-VLV-02'
+GIS-29807,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+GIS-29807,ASSET_CLASS,non_standard_value,'VALVE\\BF' for 'VALVE\\BFLY'
+GIS-29807,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+GIS-29807,MODEL,model_variant,'Fig990' for 'Fig 990'
+GIS-29807,INSTALL_DATE,conflicting_value,1996-03-08 vs 1996-02-07
+257941,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+257941,STATUS,non_standard_value,'Active' for 'OPERATING'
+SS2356,ASSET_ID,duplicate_record,same asset as 257941 (G0087)
+SS2356,ASSET_DESC,name_variant,'Raw Water Turbidity Analyzer' for 'Raw Water Turbidity Analyser'
+SS2356,ASSET_TAG,tag_variant,'STI RWI TUR 01' for 'STI-RWI-TUR-01'
+SS2356,ASSET_CLASS,non_standard_value,'INSTR/ANALYSER' for 'INSTR\\ANALYSER'
+SS2356,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+SS2356,MODEL,model_variant,'TU5300sc' for 'TU5300 sc'
+SS2356,INSTALL_DATE,conflicting_value,2008-10-02 vs 2008-09-02
+SS2356,CRITICALITY,non_standard_value,'4' for '3'
+GIS-52303,ASSET_DESC,name_variant,'Chemical Dosing & Floc' for 'Coagulation & Flocculation'
+204661,ASSET_ID,duplicate_record,same asset as GIS-52303 (G0088)
+204661,ASSET_DESC,name_variant,'Chemical Dosing & Floc (STIRLING)' for 'Coagulation & Flocculation'
+204661,REGION,non_standard_value,'Southern' for 'SOUTH'
+204661,SITE_CODE,missing_value,'NULL'
+247606,ASSET_DESC,name_variant,'Alum Dosing Pmp 1' for 'Alum Dosing Pump No. 1'
+SS4120,ASSET_ID,duplicate_record,same asset as 247606 (G0089)
+SS4120,ASSET_DESC,name_variant,'ALUM DOSING PUMP #1' for 'Alum Dosing Pump No. 1'
+SS4120,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS4120,MANUFACTURER,non_standard_value,'Grundfos Pumps Pty Ltd' for 'Grundfos'
+SS4120,INSTALL_DATE,two_digit_year,1993-11-25
+SS4120,INSTALL_DATE,conflicting_value,1992-11-25 vs 1993-11-25
+SS4120,RATING,inconsistent_units,2.2kW written as 2.2KW
+H080858,ASSET_ID,duplicate_record,same asset as 247606 (G0089)
+H080858,ASSET_DESC,name_variant,'Pump 1' for 'Alum Dosing Pump No. 1'
+H080858,ASSET_TAG,tag_variant,'STI CFL ADP 01' for 'STI-CFL-ADP-01'
+H080858,REGION,non_standard_value,'South' for 'SOUTH'
+H080858,MODEL,model_variant,'' for 'DDA 120-7'
+H080858,SERIAL_NO,serial_variant,'7819077' for 'SN78190773'
+GIS-83380,ASSET_ID,duplicate_record,same asset as 247606 (G0089)
+GIS-83380,ASSET_DESC,name_variant,'Pump 1' for 'Alum Dosing Pump No. 1'
+GIS-83380,ASSET_CLASS,non_standard_value,'Dosing Pump' for 'PUMP\\DOSING'
+GIS-83380,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-83380,MANUFACTURER,non_standard_value,'GRUNDFOS' for 'Grundfos'
+GIS-83380,MODEL,model_variant,'DDA120-7' for 'DDA 120-7'
+GIS-83380,RATING,inconsistent_units,2.2kW written as 2.2 kW
+GIS-93582,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+GIS-93582,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-93582,INSTALL_DATE,two_digit_year,2004-12-03
+SS5341,ASSET_ID,duplicate_record,same asset as GIS-93582 (G0090)
+SS5341,ASSET_DESC,name_variant,'Alum Dosing Pump (Unit 2)' for 'Alum Dosing Pump No. 2'
+SS5341,ASSET_TAG,tag_variant,'OLD-STI-CFL-ADP-02' for 'STI-CFL-ADP-02'
+SS5341,RATING,inconsistent_units,0.37kW written as 0.37
+SS5341,LATITUDE,missing_value,
+H049045,ASSET_ID,duplicate_record,same asset as GIS-93582 (G0090)
+H049045,ASSET_DESC,name_variant,'Pump No.2 - Alum Dosing' for 'Alum Dosing Pump No. 2'
+H049045,ASSET_TAG,tag_variant,'OLD-STI-CFL-ADP-02' for 'STI-CFL-ADP-02'
+H049045,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H049045,SITE_CODE,missing_value,'UNKNOWN'
+211851,ASSET_TAG,tag_variant,'STI CFL MIX 01' for 'STI-CFL-MIX-01'
+211851,ASSET_CLASS,non_standard_value,'MIXER' for 'MECH\\MIXER'
+H018282,ASSET_ID,duplicate_record,same asset as 211851 (G0091)
+H018282,ASSET_TAG,tag_variant,'STI-CFL-MIX-1' for 'STI-CFL-MIX-01'
+H018282,MANUFACTURER,non_standard_value,'WILO' for 'Wilo'
+H018282,MODEL,model_variant,'4620' for '4620'
+H018282,SERIAL_NO,serial_variant,'8368045' for '83680452'
+H018282,CRITICALITY,non_standard_value,'H' for '3'
+H018282,RATING,inconsistent_units,4kW written as 4
+294428,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+294428,MANUFACTURER,non_standard_value,'XYLEM' for 'Flygt'
+H090927,ASSET_ID,duplicate_record,same asset as 294428 (G0092)
+H090927,ASSET_DESC,name_variant,'Mixer No.2 - Flocculator' for 'Flocculator Mixer No. 2'
+H090927,ASSET_TAG,tag_variant,'STICFLMIX02' for 'STI-CFL-MIX-02'
+H090927,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H090927,MANUFACTURER,non_standard_value,'Fligt' for 'Flygt'
+H090927,MODEL,model_variant,'TR 326 ' for 'TR 326'
+H090927,SERIAL_NO,serial_variant,'TBA' for 'S/N 39667851'
+H090927,RATING,inconsistent_units,2.2kW written as 2.2
+H090927,STATUS,status_conflict,'Removed' while another record of G0092 is operating
+223045,REGION,non_standard_value,'STH' for 'SOUTH'
+223045,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+223045,INSTALL_DATE,excel_serial_date,2022-07-14
+223045,LATITUDE,sign_lost,35.011689 should be negative
+SS1734,ASSET_ID,duplicate_record,same asset as 223045 (G0093)
+SS1734,ASSET_DESC,name_variant,'FLOCCULATOR MIXER #3' for 'Flocculator Mixer No. 3'
+SS1734,ASSET_TAG,tag_variant,'STI CFL MIX 03' for 'STI-CFL-MIX-03'
+SS1734,ASSET_CLASS,non_standard_value,'Mixer' for 'MECH\\MIXER'
+SS1734,REGION,non_standard_value,'South' for 'SOUTH'
+SS1734,MODEL,model_variant,'4620 ' for '4620'
+SS1734,SERIAL_NO,serial_variant,'SN-76908505' for 'SN76908505'
+SS1734,INSTALL_DATE,year_only,2022-07-14
+H083636,ASSET_ID,duplicate_record,same asset as 223045 (G0093)
+H083636,ASSET_DESC,name_variant,'Flocculator Mixer 03' for 'Flocculator Mixer No. 3'
+H083636,ASSET_TAG,tag_variant,'STI-CFL-MIX-3' for 'STI-CFL-MIX-03'
+H083636,ASSET_CLASS,non_standard_value,'MIXER' for 'MECH\\MIXER'
+H083636,MANUFACTURER,non_standard_value,'FLYGT' for 'Flygt'
+H083636,SERIAL_NO,serial_variant,'7690850' for 'SN76908505'
+H083636,RATING,inconsistent_units,3kW written as 3KW
+H037631,ASSET_TAG,tag_variant,'STIFLT' for 'STI-FLT'
+288153,ASSET_TAG,tag_variant,'sti-flt-fiv-01' for 'STI-FLT-FIV-01'
+GIS-13953,ASSET_ID,duplicate_record,same asset as 288153 (G0095)
+GIS-13953,ASSET_DESC,name_variant,'Filter Inlet Valve (Unit 1)' for 'Filter Inlet Valve No. 1'
+GIS-13953,ASSET_TAG,tag_variant,'STI-FLT-FIV-1' for 'STI-FLT-FIV-01'
+GIS-13953,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+SS4890,LATITUDE,missing_value,
+SS2723,ASSET_CLASS,non_standard_value,'VALVE\\BF' for 'VALVE\\BFLY'
+SS2723,INSTALL_DATE,two_digit_year,1998-01-30
+SS2723,LATITUDE,missing_value,
+GIS-80552,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+215767,ASSET_ID,duplicate_record,same asset as GIS-80552 (G0098)
+215767,ASSET_DESC,name_variant,'Filter Inlet Valve 4' for 'Filter Inlet Valve No. 4'
+215767,ASSET_TAG,tag_variant,'STI FLT FIV 04' for 'STI-FLT-FIV-04'
+215767,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+215767,INSTALL_DATE,two_digit_year,1997-08-02
+215767,CRITICALITY,non_standard_value,'5' for '4'
+SS9718,ASSET_ID,duplicate_record,same asset as GIS-80552 (G0098)
+SS9718,ASSET_DESC,name_variant,'Filter Inlet Valve 04' for 'Filter Inlet Valve No. 4'
+SS9718,ASSET_TAG,tag_variant,'STIFLTFIV04' for 'STI-FLT-FIV-04'
+SS9718,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS9718,MODEL,model_variant,'Fig990' for 'Fig 990'
+SS9718,LATITUDE,missing_value,
+SS9718,MODEL,missing_value,''
+H023964,ASSET_ID,duplicate_record,same asset as GIS-80552 (G0098)
+H023964,ASSET_TAG,tag_variant,'sti-flt-fiv-04' for 'STI-FLT-FIV-04'
+H023964,ASSET_CLASS,non_standard_value,'VALVE\\BF' for 'VALVE\\BFLY'
+H023964,REGION,non_standard_value,'Southern' for 'SOUTH'
+H023964,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+H023964,INSTALL_DATE,month_day_swapped,1997-08-02
+205619,ASSET_CLASS,non_standard_value,'PUMP-CENT' for 'PUMP\\CENT'
+205619,STATUS,non_standard_value,'Operating' for 'OPERATING'
+263058,STATUS,non_standard_value,'Decommissioned' for 'DECOMMISSIONED'
+263058,LATITUDE,zero_coordinates,
+221624,ASSET_DESC,name_variant,'Filtered Water Turbidity Analyser (Unit 1)' for 'Filtered Water Turbidity Analyser No. 1'
+221624,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS9171,ASSET_ID,duplicate_record,same asset as 221624 (G0101)
+SS9171,ASSET_DESC,name_variant,'Analyser 1' for 'Filtered Water Turbidity Analyser No. 1'
+SS9171,ASSET_TAG,tag_variant,'STI FLT TUR 01' for 'STI-FLT-TUR-01'
+SS9171,ASSET_CLASS,non_standard_value,'INSTR/ANALYSER' for 'INSTR\\ANALYSER'
+SS9171,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+SS9171,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+SS9171,INSTALL_DATE,year_only,1993-02-27
+SS2065,INSTALL_DATE,year_only,2013-04-27
+SS2065,LATITUDE,missing_value,
+GIS-39723,LATITUDE,lat_long_swapped,
+SS3571,ASSET_ID,duplicate_record,same asset as GIS-39723 (G0103)
+SS3571,ASSET_DESC,name_variant,'Stirling - Chlorine Disinfection' for 'Chlorine Disinfection'
+SS3571,ASSET_TAG,tag_variant,'STI CLD' for 'STI-CLD'
+SS3571,REGION,non_standard_value,'South' for 'SOUTH'
+SS3571,CRITICALITY,non_standard_value,'Low' for '2'
+SS3571,LATITUDE,missing_value,
+H057988,ASSET_ID,duplicate_record,same asset as GIS-39723 (G0103)
+H057988,ASSET_DESC,name_variant,'Chlorine Dosing' for 'Chlorine Disinfection'
+H057988,CRITICALITY,non_standard_value,'Med' for '2'
+203939,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+203939,MANUFACTURER,non_standard_value,'Wallace and Tiernan' for 'Evoqua'
+203939,LATITUDE,zero_coordinates,
+H056536,ASSET_ID,duplicate_record,same asset as 203939 (G0104)
+H056536,ASSET_DESC,name_variant,'Chlorinator No.1 - Gas' for 'Gas Chlorinator No. 1'
+H056536,REGION,non_standard_value,'STH' for 'SOUTH'
+H056536,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H056536,MANUFACTURER,non_standard_value,'Evoqua W&T' for 'Evoqua'
+H056536,MODEL,model_variant,'V10K' for 'V10K'
+H056536,SERIAL_NO,serial_variant,'69575269' for '69575269'
+H056536,INSTALL_DATE,conflicting_value,2006-04-12 vs 2005-04-12
+H056536,LATITUDE,sign_lost,35.012041 should be negative
+GIS-13515,ASSET_ID,duplicate_record,same asset as 203939 (G0104)
+GIS-13515,ASSET_DESC,name_variant,'Gas Chlorinator 1' for 'Gas Chlorinator No. 1'
+GIS-13515,ASSET_TAG,tag_variant,'OLD-STI-CLD-CHL-01' for 'STI-CLD-CHL-01'
+GIS-13515,ASSET_CLASS,non_standard_value,'Chlorinator' for 'TREAT\\CHLOR'
+GIS-13515,MANUFACTURER,non_standard_value,'Wallace and Tiernan' for 'Evoqua'
+SS4847,ASSET_ID,duplicate_record,same asset as 203939 (G0104)
+SS4847,ASSET_DESC,name_variant,'Gas Chlorinator 01' for 'Gas Chlorinator No. 1'
+SS4847,ASSET_TAG,tag_variant,'STI CLD CHL 01' for 'STI-CLD-CHL-01'
+SS4847,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS4847,MODEL,model_variant,'V10K ' for 'V10K'
+SS4847,SERIAL_NO,serial_variant,'UNKNOWN' for '69575269'
+SS4847,INSTALL_DATE,conflicting_value,2004-04-12 vs 2005-04-12
+H014772,ASSET_DESC,name_variant,'Chlorinator No.2 - Gas' for 'Gas Chlorinator No. 2'
+H014772,ASSET_LEVEL,non_standard_value,'L3' for '3'
+H014772,REGION,non_standard_value,'STH' for 'SOUTH'
+H014772,MANUFACTURER,non_standard_value,'Evoqua W&T' for 'Evoqua'
+SS1340,ASSET_ID,duplicate_record,same asset as H014772 (G0105)
+SS1340,ASSET_DESC,name_variant,'GAS CHLORINATOR #2' for 'Gas Chlorinator No. 2'
+SS1340,ASSET_TAG,tag_variant,'OLD-STI-CLD-CHL-02' for 'STI-CLD-CHL-02'
+SS1340,ASSET_CLASS,non_standard_value,'Chlorinator' for 'TREAT\\CHLOR'
+SS1340,STATUS,non_standard_value,'Decommissioned' for 'DECOMMISSIONED'
+SS1340,MANUFACTURER,non_standard_value,'Wallace & Tiernan' for 'Evoqua'
+SS1340,MODEL,model_variant,'' for 'V10K'
+264475,ASSET_ID,duplicate_record,same asset as H014772 (G0105)
+264475,ASSET_DESC,name_variant,'Gas Chlorinator (Unit 2)' for 'Gas Chlorinator No. 2'
+264475,ASSET_CLASS,non_standard_value,'CHLORINATOR' for 'TREAT\\CHLOR'
+264475,MANUFACTURER,non_standard_value,'Wallace & Tiernan' for 'Evoqua'
+264475,MODEL,model_variant,'V10K ' for 'V10K'
+264475,SERIAL_NO,serial_variant,'SN-10794538' for 'S/N 10794538'
+264475,INSTALL_DATE,conflicting_value,2014-11-18 vs 2014-10-19
+SS6337,ASSET_DESC,name_variant,'Chlorine Residual Analyser (Unit 1)' for 'Chlorine Residual Analyser No. 1'
+SS6337,ASSET_TAG,tag_variant,'STI CLD CLA 01' for 'STI-CLD-CLA-01'
+SS6337,ASSET_CLASS,non_standard_value,'ANALYZER' for 'INSTR\\ANALYSER'
+SS6337,LATITUDE,lat_long_swapped,
+GIS-25021,ASSET_ID,duplicate_record,same asset as SS6337 (G0106)
+GIS-25021,ASSET_DESC,name_variant,'Chlorine Residual Analyzer 1' for 'Chlorine Residual Analyser No. 1'
+GIS-25021,ASSET_TAG,missing_value,'' for 'STI-CLD-CLA-01'
+GIS-25021,ASSET_CLASS,non_standard_value,'INSTR/ANALYSER' for 'INSTR\\ANALYSER'
+GIS-25021,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-25021,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+GIS-25021,MODEL,model_variant,'CL17sc ' for 'CL17sc'
+GIS-25021,INSTALL_DATE,year_only,2005-07-31
+GIS-25021,CRITICALITY,non_standard_value,'3' for '2'
+GIS-13004,ASSET_DESC,name_variant,'Analyser 2' for 'Chlorine Residual Analyser No. 2'
+GIS-13004,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-13004,REGION,non_standard_value,'Southern' for 'SOUTH'
+H068820,ASSET_DESC,name_variant,'STI Clear Water Pumps' for 'Treated Water Pumping'
+GIS-78684,ASSET_ID,duplicate_record,same asset as H068820 (G0108)
+GIS-78684,ASSET_DESC,name_variant,'STI Treated Water Pumping' for 'Treated Water Pumping'
+GIS-78684,ASSET_CLASS,non_standard_value,'SYS' for 'SYSTEM'
+GIS-78684,CRITICALITY,missing_value,''
+GIS-78684,INSTALL_DATE,missing_value,'UNKNOWN'
+GIS-78684,SITE_CODE,missing_value,'N/A'
+H080990,ASSET_TAG,tag_variant,'OLD-STI-TWP-PMP-01' for 'STI-TWP-PMP-01'
+H080990,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H080990,STATUS,non_standard_value,'OPR' for 'OPERATING'
+250802,ASSET_ID,duplicate_record,same asset as H080990 (G0109)
+250802,ASSET_DESC,name_variant,'Duty Pump 01' for 'Duty Pump No. 1'
+250802,ASSET_TAG,tag_variant,'STI-TWP-PMP-1' for 'STI-TWP-PMP-01'
+250802,ASSET_CLASS,non_standard_value,'PUMP-CENT' for 'PUMP\\CENT'
+250802,MANUFACTURER,non_standard_value,'K.S.B.' for 'KSB'
+250802,SERIAL_NO,serial_variant,'' for '41825219'
+250802,INSTALL_DATE,two_digit_year,2017-08-13
+250802,CRITICALITY,non_standard_value,'2' for '1'
+250802,RATING,inconsistent_units,110kW written as 110KW
+H060701,ASSET_CLASS,non_standard_value,'Centrifugal Pump' for 'PUMP\\CENT'
+255729,ASSET_ID,duplicate_record,same asset as H060701 (G0110)
+255729,ASSET_DESC,name_variant,'Pump 2' for 'Duty Pump No. 2'
+255729,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\CENT'
+255729,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+255729,CRITICALITY,non_standard_value,'C' for '4'
+255729,STATUS,status_conflict,'Decommissioned' while another record of G0110 is operating
+255729,LATITUDE,zero_coordinates,
+240065,ASSET_DESC,name_variant,'DUTY PUMP #3' for 'Duty Pump No. 3'
+240065,REGION,non_standard_value,'Southern' for 'SOUTH'
+240065,STATUS,non_standard_value,'Op' for 'OPERATING'
+240065,MANUFACTURER,non_standard_value,'GRUNDFOS' for 'Grundfos'
+SS2639,ASSET_ID,duplicate_record,same asset as GIS-56899 (G0112)
+SS2639,ASSET_DESC,name_variant,'Pmp Motor 1' for 'Pump Motor No. 1'
+SS2639,ASSET_TAG,tag_variant,'STI-TWP-MTR-1' for 'STI-TWP-MTR-01'
+SS2639,ASSET_CLASS,non_standard_value,'MOTOR' for 'MOTOR\\LV'
+SS2639,MANUFACTURER,non_standard_value,'Weg' for 'WEG'
+SS2639,RATING,inconsistent_units,75kW written as 75KW
+SS2639,LATITUDE,missing_value,
+GIS-63490,ASSET_CLASS,non_standard_value,'MOTOR' for 'MOTOR\\LV'
+GIS-52342,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-52342,MANUFACTURER,non_standard_value,'W.E.G.' for 'WEG'
+SS0741,ASSET_ID,duplicate_record,same asset as GIS-52342 (G0114)
+SS0741,ASSET_DESC,name_variant,'Pump Motor (Unit 3)' for 'Pump Motor No. 3'
+SS0741,ASSET_TAG,tag_variant,'STI-TWP-MTR-3' for 'STI-TWP-MTR-03'
+SS0741,STATUS,non_standard_value,'Operating' for 'OPERATING'
+SS0741,MANUFACTURER,non_standard_value,'WEG Australia' for 'WEG'
+SS0741,MODEL,model_variant,'' for 'W22 315'
+SS0741,SERIAL_NO,serial_variant,'4734846' for 'S/N 47348461'
+SS0741,RATING,inconsistent_units,30kW written as 30
+SS0741,MANUFACTURER,missing_value,'NULL'
+SS0741,RATING,missing_value,' '
+SS9162,REGION,non_standard_value,'Southern' for 'SOUTH'
+227918,ASSET_ID,duplicate_record,same asset as SS9162 (G0115)
+227918,ASSET_DESC,name_variant,'Pmp VSD 1' for 'Pump Variable Speed Drive No. 1'
+227918,ASSET_TAG,tag_variant,'sti-twp-vsd-01' for 'STI-TWP-VSD-01'
+227918,MANUFACTURER,non_standard_value,'Asea Brown Boveri' for 'ABB'
+227918,CRITICALITY,non_standard_value,'H' for '4'
+H088752,ASSET_ID,duplicate_record,same asset as SS9162 (G0115)
+H088752,ASSET_DESC,name_variant,'PUMP VARIABLE SPEED DRIVE #1' for 'Pump Variable Speed Drive No. 1'
+H088752,ASSET_TAG,tag_variant,'sti-twp-vsd-01' for 'STI-TWP-VSD-01'
+H088752,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+H088752,SERIAL_NO,serial_variant,'' for '75007917'
+H088752,INSTALL_DATE,conflicting_value,2021-03-26 vs 2011-03-29
+H088752,CRITICALITY,non_standard_value,'5' for '4'
+H088752,RATING,missing_value,'-'
+GIS-87668,ASSET_ID,duplicate_record,same asset as SS9162 (G0115)
+GIS-87668,ASSET_DESC,name_variant,'Pump Variable Speed Drive 01' for 'Pump Variable Speed Drive No. 1'
+GIS-87668,ASSET_TAG,tag_variant,'STI TWP VSD 01' for 'STI-TWP-VSD-01'
+GIS-87668,ASSET_CLASS,non_standard_value,'DRIVE\\VSD' for 'VSD'
+GIS-87668,REGION,non_standard_value,'South' for 'SOUTH'
+GIS-87668,STATUS,non_standard_value,'In Service' for 'OPERATING'
+GIS-87668,MANUFACTURER,non_standard_value,'Asea Brown Boveri' for 'ABB'
+GIS-87668,SERIAL_NO,serial_variant,'sn75007917' for '75007917'
+GIS-87668,CRITICALITY,non_standard_value,'A' for '4'
+GIS-87668,RATING,missing_value,'N/A'
+SS0407,ASSET_DESC,name_variant,'Pmp VSD 2' for 'Pump Variable Speed Drive No. 2'
+SS0407,ASSET_CLASS,non_standard_value,'Variable Speed Drive' for 'VSD'
+SS0407,REGION,non_standard_value,'Southern' for 'SOUTH'
+SS0407,LATITUDE,missing_value,
+264082,MODEL,missing_value,'UNKNOWN'
+SS5026,ASSET_ID,duplicate_record,same asset as 264082 (G0117)
+SS5026,ASSET_CLASS,non_standard_value,'V.S.D.' for 'VSD'
+SS5026,SERIAL_NO,serial_variant,'sn84678349' for 'S/N 84678349'
+SS5026,INSTALL_DATE,two_digit_year,1994-08-08
+SS5026,RATING,inconsistent_units,22kW written as 22KW
+SS5026,LATITUDE,missing_value,
+SS8068,MANUFACTURER,non_standard_value,'KROHNE' for 'Krohne'
+GIS-86995,ASSET_LEVEL,non_standard_value,'2.0' for '2'
+GIS-86995,INSTALL_DATE,two_digit_year,2004-07-21
+219453,ASSET_CLASS,non_standard_value,'ELEC\\MCC' for 'ELEC\\SWBD'
+SS1902,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+282280,ASSET_ID,duplicate_record,same asset as SS1902 (G0121)
+282280,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+282280,ASSET_CLASS,non_standard_value,'RTU' for 'SCADA\\RTU'
+282280,MANUFACTURER,non_standard_value,'Schneider Kingfisher' for 'Kingfisher'
+282280,MODEL,model_variant,'PC-1 ' for 'PC-1'
+282280,SERIAL_NO,serial_variant,'SN-79449417' for '79449417'
+282280,INSTALL_DATE,conflicting_value,2000-12-26 vs 2000-11-26
+282280,CRITICALITY,non_standard_value,'High' for '5'
+GIS-68635,ASSET_ID,duplicate_record,same asset as SS1902 (G0121)
+GIS-68635,ASSET_DESC,name_variant,'RTU' for 'SCADA RTU'
+GIS-68635,INSTALL_DATE,two_digit_year,2000-11-26
+GIS-71618,ASSET_TAG,tag_variant,'IRB-WWTP-1' for 'IRB-WWTP'
+SS5293,ASSET_ID,duplicate_record,same asset as GIS-71618 (G0122)
+SS5293,ASSET_DESC,name_variant,'IRONBARK Sewage Treatment Works' for 'Ironbark Wastewater Treatment Plant'
+SS5293,ASSET_TAG,missing_value,'' for 'IRB-WWTP'
+SS5293,CRITICALITY,non_standard_value,'Low' for '2'
+299388,ASSET_DESC,name_variant,'IRB Inlet Works & Screening' for 'Inlet Works'
+H092388,ASSET_DESC,name_variant,'INLET SCREEN #1' for 'Inlet Screen No. 1'
+H092388,ASSET_CLASS,non_standard_value,'MECH/SCREEN' for 'MECH\\SCREEN'
+SS1811,ASSET_DESC,name_variant,'INLET SCREEN #2' for 'Inlet Screen No. 2'
+SS1811,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS1811,MANUFACTURER,missing_value,'UNKNOWN'
+GIS-95422,ASSET_ID,duplicate_record,same asset as SS1811 (G0125)
+GIS-95422,ASSET_DESC,name_variant,'Inlet Screen 2' for 'Inlet Screen No. 2'
+GIS-95422,ASSET_TAG,missing_value,'' for 'IRB-INL-SCR-02'
+GIS-95422,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+GIS-95422,REGION,non_standard_value,'Regional' for 'REGNL'
+GIS-95422,INSTALL_DATE,excel_serial_date,2018-06-25
+GIS-95422,INSTALL_DATE,conflicting_value,2018-05-26 vs 2018-06-25
+GIS-95422,CRITICALITY,non_standard_value,'H' for '3'
+277419,ASSET_ID,duplicate_record,same asset as SS1811 (G0125)
+277419,ASSET_DESC,name_variant,'INLET SCREEN #2' for 'Inlet Screen No. 2'
+277419,ASSET_TAG,tag_variant,'IRB INL SCR 02' for 'IRB-INL-SCR-02'
+277419,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+277419,STATUS,status_conflict,'Removed' while another record of G0125 is operating
+H001445,ASSET_ID,duplicate_record,same asset as SS1811 (G0125)
+H001445,ASSET_DESC,name_variant,'Screen No.2 - Inlet' for 'Inlet Screen No. 2'
+H001445,ASSET_TAG,tag_variant,'IRB-INL-SCR-2' for 'IRB-INL-SCR-02'
+H001445,MANUFACTURER,non_standard_value,'Hans Huber' for 'Huber'
+H001445,SERIAL_NO,serial_variant,'sn25278268' for 'SN25278268'
+GIS-40775,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-40775,ASSET_CLASS,non_standard_value,'MECH/GRIT' for 'MECH\\GRIT'
+GIS-40775,STATUS,non_standard_value,'Decommissioned' for 'DECOMMISSIONED'
+GIS-40775,MANUFACTURER,non_standard_value,'Hans Huber' for 'Huber'
+SS5334,ASSET_ID,duplicate_record,same asset as GIS-40775 (G0126)
+SS5334,ASSET_DESC,name_variant,'Classifier' for 'Grit Classifier'
+SS5334,ASSET_TAG,tag_variant,'IRB INL GRC 01' for 'IRB-INL-GRC-01'
+SS5334,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS5334,MODEL,model_variant,'' for 'RoSF 4'
+SS5334,RATING,inconsistent_units,5.5kW written as 5.5 kW
+SS5334,LATITUDE,lat_long_swapped,
+285866,ASSET_ID,duplicate_record,same asset as GIS-40775 (G0126)
+285866,ASSET_DESC,name_variant,'Grit Classifier - main' for 'Grit Classifier'
+285866,ASSET_TAG,tag_variant,'IRB INL GRC 01' for 'IRB-INL-GRC-01'
+285866,RATING,inconsistent_units,5.5kW written as 0.0055 MW
+285866,LATITUDE,zero_coordinates,
+206401,ASSET_DESC,name_variant,'Inlet Flow Meter - main' for 'Inlet Flow Meter'
+206401,REGION,non_standard_value,'REG' for 'REGNL'
+206401,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+206401,MANUFACTURER,non_standard_value,'KROHNE' for 'Krohne'
+SS0102,ASSET_ID,duplicate_record,same asset as 206401 (G0127)
+SS0102,ASSET_DESC,name_variant,'Inlet Flow Meter - main' for 'Inlet Flow Meter'
+SS0102,ASSET_TAG,tag_variant,'OLD-IRB-INL-FIT-01' for 'IRB-INL-FIT-01'
+SS0102,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+SS0102,MODEL,model_variant,'' for 'Promag W 400'
+SS0102,SERIAL_NO,serial_variant,'UNKNOWN' for 'SN20502484'
+SS0102,INSTALL_DATE,excel_serial_date,2006-02-22
+SS0102,INSTALL_DATE,conflicting_value,2006-01-23 vs 2006-02-22
+SS0102,CRITICALITY,non_standard_value,'Med' for '2'
+H064877,ASSET_ID,duplicate_record,same asset as 206401 (G0127)
+H064877,ASSET_LEVEL,non_standard_value,'L3' for '3'
+H064877,ASSET_CLASS,non_standard_value,'FLOWMETER' for 'METER\\FLOW'
+H064877,MANUFACTURER,non_standard_value,'Krone' for 'Krohne'
+H064877,MODEL,model_variant,'PromagW400' for 'Promag W 400'
+H064877,SERIAL_NO,serial_variant,'TBA' for 'SN20502484'
+SS0120,ASSET_DESC,name_variant,'IRB Primary Sed Tanks' for 'Primary Sedimentation'
+SS0120,INSTALL_DATE,two_digit_year,2008-01-10
+H038895,ASSET_ID,duplicate_record,same asset as SS0120 (G0128)
+H038895,ASSET_DESC,name_variant,'Ironbark - Primary Sed Tanks' for 'Primary Sedimentation'
+H038895,ASSET_TAG,missing_value,'' for 'IRB-PST'
+H038895,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+H038895,STATUS,non_standard_value,'Active' for 'OPERATING'
+H038895,INSTALL_DATE,month_day_swapped,2008-01-10
+H038895,INSTALL_DATE,conflicting_value,2018-01-07 vs 2008-01-10
+GIS-56554,ASSET_ID,duplicate_record,same asset as SS0120 (G0128)
+GIS-56554,ASSET_DESC,name_variant,'Ironbark - PRIMARY SEDIMENTATION TANKS' for 'Primary Sedimentation'
+GIS-56554,ASSET_TAG,tag_variant,'IRB-PST-1' for 'IRB-PST'
+GIS-56554,INSTALL_DATE,conflicting_value,2007-12-11 vs 2008-01-10
+265371,STATUS,non_standard_value,'Op' for 'OPERATING'
+290711,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H069258,ASSET_ID,duplicate_record,same asset as 290711 (G0130)
+H069258,ASSET_DESC,name_variant,'Sludge Scraper Drive (Unit 2)' for 'Sludge Scraper Drive No. 2'
+H069258,ASSET_TAG,tag_variant,'OLD-IRB-PST-SCD-02' for 'IRB-PST-SCD-02'
+H069258,REGION,non_standard_value,'Regional' for 'REGNL'
+H069258,STATUS,non_standard_value,'Operating' for 'OPERATING'
+H069258,MANUFACTURER,non_standard_value,'Siemens Ltd' for 'Siemens'
+H069258,INSTALL_DATE,conflicting_value,2009-08-16 vs 2010-08-16
+H069258,RATING,inconsistent_units,0.55kW written as 0.55 kW
+GIS-72610,ASSET_ID,duplicate_record,same asset as 290711 (G0130)
+GIS-72610,ASSET_DESC,name_variant,'Sludge Scraper Drive 02' for 'Sludge Scraper Drive No. 2'
+GIS-72610,ASSET_TAG,tag_variant,'IRB PST SCD 02' for 'IRB-PST-SCD-02'
+GIS-72610,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+GIS-72610,ASSET_CLASS,non_standard_value,'MECH/SCRAPER' for 'MECH\\SCRAPER'
+GIS-72610,MANUFACTURER,non_standard_value,'Siemens Ltd' for 'Siemens'
+GIS-72610,CRITICALITY,non_standard_value,'Low' for '3'
+GIS-72610,SITE_CODE,missing_value,''
+GIS-88158,ASSET_DESC,name_variant,'PRIMARY SLUDGE PUMP #1' for 'Primary Sludge Pump No. 1'
+GIS-88158,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\CENT'
+GIS-88158,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+251662,ASSET_DESC,name_variant,'PRIMARY SLUDGE PUMP #2' for 'Primary Sludge Pump No. 2'
+251662,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\CENT'
+251662,STATUS,non_standard_value,'OPR' for 'OPERATING'
+251662,INSTALL_DATE,year_only,2007-03-26
+251662,INSTALL_DATE,missing_value,''
+GIS-50091,ASSET_ID,duplicate_record,same asset as 251662 (G0132)
+GIS-50091,ASSET_DESC,name_variant,'Primary Sludge Pump (Unit 2)' for 'Primary Sludge Pump No. 2'
+GIS-50091,ASSET_TAG,tag_variant,'IRB-PST-PMP-2' for 'IRB-PST-PMP-02'
+GIS-50091,MANUFACTURER,non_standard_value,'K.S.B.' for 'KSB'
+GIS-50091,INSTALL_DATE,conflicting_value,2007-02-24 vs 2007-03-26
+GIS-50091,RATING,inconsistent_units,90kW written as 90KW
+GIS-50091,LATITUDE,lat_long_swapped,
+GIS-77950,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+GIS-77950,INSTALL_DATE,month_day_swapped,2010-09-07
+238208,ASSET_DESC,name_variant,'Aeration Blower 01' for 'Aeration Blower No. 1'
+207791,MANUFACTURER,non_standard_value,'Aerzener' for 'Aerzen'
+207791,INSTALL_DATE,year_only,2005-03-18
+GIS-12963,ASSET_ID,duplicate_record,same asset as 207791 (G0135)
+GIS-12963,ASSET_CLASS,non_standard_value,'Aeration Blower' for 'MECH\\BLOWER'
+GIS-12963,REGION,non_standard_value,'Regional' for 'REGNL'
+GIS-12963,STATUS,non_standard_value,'OPR' for 'OPERATING'
+GIS-12963,SERIAL_NO,serial_variant,'sn18914176' for 'S/N 18914176'
+GIS-12963,RATING,inconsistent_units,11kW written as 11KW
+H098472,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+H098472,MODEL,missing_value,'TBA'
+209757,ASSET_ID,duplicate_record,same asset as H098472 (G0136)
+209757,ASSET_DESC,name_variant,'Blower 3' for 'Aeration Blower No. 3'
+209757,ASSET_TAG,tag_variant,'OLD-IRB-AER-BLW-03' for 'IRB-AER-BLW-03'
+209757,MANUFACTURER,non_standard_value,'Aerzener' for 'Aerzen'
+209757,SERIAL_NO,serial_variant,'26183684' for 'SN26183684'
+209757,INSTALL_DATE,conflicting_value,2004-04-30 vs 2005-04-30
+GIS-97818,ASSET_ID,duplicate_record,same asset as H098472 (G0136)
+GIS-97818,ASSET_DESC,name_variant,'Blower No.3 - Aeration' for 'Aeration Blower No. 3'
+GIS-97818,ASSET_TAG,tag_variant,'IRBAERBLW03' for 'IRB-AER-BLW-03'
+GIS-97818,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-97818,ASSET_CLASS,non_standard_value,'Blower' for 'MECH\\BLOWER'
+GIS-97818,REGION,non_standard_value,'Regional' for 'REGNL'
+GIS-97818,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-97818,MANUFACTURER,non_standard_value,'AERZEN' for 'Aerzen'
+GIS-97818,SERIAL_NO,serial_variant,'TBA' for 'SN26183684'
+GIS-97818,RATING,inconsistent_units,132kW written as 132 kW
+GIS-97818,CRITICALITY,missing_value,''
+230459,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+230459,SITE_CODE,missing_value,''
+SS5831,ASSET_ID,duplicate_record,same asset as 230459 (G0137)
+SS5831,ASSET_TAG,tag_variant,'irb-aer-vsd-01' for 'IRB-AER-VSD-01'
+SS5831,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+SS5831,INSTALL_DATE,year_only,2006-05-03
+SS5831,CRITICALITY,non_standard_value,'C' for '3'
+SS5831,MODEL,missing_value,''
+GIS-97839,REGION,non_standard_value,'Regional' for 'REGNL'
+GIS-97839,LATITUDE,sign_lost,34.556396 should be negative
+SS0328,ASSET_DESC,name_variant,'Blower Variable Speed Drive 03' for 'Blower Variable Speed Drive No. 3'
+SS0328,INSTALL_DATE,two_digit_year,2020-03-12
+SS0328,LATITUDE,missing_value,
+SS0328,MODEL,missing_value,'UNKNOWN'
+SS4544,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+SS4544,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+SS4544,LATITUDE,missing_value,
+SS4544,MANUFACTURER,missing_value,'-'
+H001925,ASSET_ID,duplicate_record,same asset as SS4544 (G0140)
+H001925,ASSET_DESC,name_variant,'DISSOLVED OXYGEN ANALYSER #1' for 'Dissolved Oxygen Analyser No. 1'
+H001925,ASSET_TAG,tag_variant,'OLD-IRB-AER-DOA-01' for 'IRB-AER-DOA-01'
+H001925,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+H001925,SERIAL_NO,serial_variant,'sn31609696' for 'S/N 31609696'
+H001925,INSTALL_DATE,conflicting_value,2031-12-22 vs 2021-12-24
+H001925,SITE_CODE,missing_value,'NULL'
+278725,ASSET_DESC,name_variant,'Dissolved Oxygen Analyser 02' for 'Dissolved Oxygen Analyser No. 2'
+278725,STATUS,non_standard_value,'OPR' for 'OPERATING'
+278725,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+278725,INSTALL_DATE,excel_serial_date,2007-09-12
+SS8080,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+SS8080,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS8080,INSTALL_DATE,two_digit_year,2021-02-09
+SS8080,LATITUDE,missing_value,
+SS8080,MANUFACTURER,missing_value,'TBA'
+SS8080,MODEL,missing_value,''
+H077442,ASSET_DESC,name_variant,'Anoxic Zone Mixer (Unit 2)' for 'Anoxic Zone Mixer No. 2'
+H077442,ASSET_CLASS,non_standard_value,'Mixer' for 'MECH\\MIXER'
+H077442,MANUFACTURER,non_standard_value,'FLYGT' for 'Flygt'
+GIS-16412,ASSET_ID,duplicate_record,same asset as H077442 (G0143)
+GIS-16412,ASSET_DESC,name_variant,'Anoxic Zone Mixer (Unit 2)' for 'Anoxic Zone Mixer No. 2'
+GIS-16412,ASSET_TAG,tag_variant,'OLD-IRB-AER-MIX-02' for 'IRB-AER-MIX-02'
+GIS-16412,MANUFACTURER,non_standard_value,'Fligt' for 'Flygt'
+GIS-16412,MODEL,model_variant,'4650' for '4650'
+GIS-16412,INSTALL_DATE,two_digit_year,2018-05-21
+GIS-16412,CRITICALITY,non_standard_value,'Med' for '1'
+GIS-16412,RATING,inconsistent_units,2.2kW written as 2.2KW
+H050422,ASSET_DESC,name_variant,'Clarifiers (Secondary)' for 'Secondary Clarifiers'
+H050422,INSTALL_DATE,year_only,2018-11-12
+214797,ASSET_ID,duplicate_record,same asset as H050422 (G0144)
+214797,ASSET_DESC,name_variant,'Ironbark - Clarifiers (Secondary)' for 'Secondary Clarifiers'
+214797,ASSET_TAG,tag_variant,'IRB-SCL-1' for 'IRB-SCL'
+214797,STATUS,non_standard_value,'Operating' for 'OPERATING'
+214797,CRITICALITY,non_standard_value,'C' for '3'
+214797,LATITUDE,lat_long_swapped,
+H096048,ASSET_TAG,tag_variant,'irb-scl-cbd-01' for 'IRB-SCL-CBD-01'
+H096048,MANUFACTURER,non_standard_value,'Siemens Ltd' for 'Siemens'
+H096048,INSTALL_DATE,two_digit_year,2018-05-26
+GIS-81884,ASSET_ID,duplicate_record,same asset as H096048 (G0145)
+GIS-81884,ASSET_DESC,name_variant,'Drive 1' for 'Clarifier Bridge Drive No. 1'
+GIS-81884,ASSET_TAG,tag_variant,'irb-scl-cbd-01' for 'IRB-SCL-CBD-01'
+GIS-81884,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-81884,STATUS,non_standard_value,'Operating' for 'OPERATING'
+GIS-81884,MANUFACTURER,non_standard_value,'Siemans' for 'Siemens'
+GIS-81884,RATING,inconsistent_units,0.55kW written as 0.55KW
+GIS-81884,MANUFACTURER,missing_value,'N/A'
+215002,ASSET_TAG,tag_variant,'IRB-SCL-CBD-2' for 'IRB-SCL-CBD-02'
+215002,STATUS,non_standard_value,'Operating' for 'OPERATING'
+215002,INSTALL_DATE,two_digit_year,2015-07-19
+SS5537,ASSET_ID,duplicate_record,same asset as 215002 (G0146)
+SS5537,ASSET_DESC,name_variant,'CLARIFIER BRIDGE DRIVE #2' for 'Clarifier Bridge Drive No. 2'
+SS5537,ASSET_TAG,tag_variant,'OLD-IRB-SCL-CBD-02' for 'IRB-SCL-CBD-02'
+SS5537,MANUFACTURER,non_standard_value,'Siemens Ltd' for 'Siemens'
+SS5537,MODEL,model_variant,'SK 9042' for 'SK 9042'
+SS5537,RATING,inconsistent_units,1.5kW written as 1.5
+SS5537,LATITUDE,lat_long_swapped,
+221206,REGION,non_standard_value,'REG' for 'REGNL'
+221206,MANUFACTURER,non_standard_value,'ITT Flygt' for 'Flygt'
+GIS-32338,ASSET_TAG,tag_variant,'IRB SCL RAS 02' for 'IRB-SCL-RAS-02'
+GIS-32338,REGION,non_standard_value,'Regional' for 'REGNL'
+SS4485,ASSET_ID,duplicate_record,same asset as GIS-32338 (G0148)
+SS4485,ASSET_DESC,name_variant,'Pump No.2 - Return Activated Sludge' for 'Return Activated Sludge Pump No. 2'
+SS4485,ASSET_TAG,tag_variant,'IRBSCLRAS02' for 'IRB-SCL-RAS-02'
+SS4485,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS4485,MODEL,model_variant,'NP3153' for 'NP 3153'
+SS4485,CRITICALITY,non_standard_value,'H' for '3'
+SS4485,RATING,inconsistent_units,45kW written as 45kw
+SS6231,ASSET_DESC,name_variant,'IRB UV Disinfection System' for 'UV Disinfection'
+SS6231,LATITUDE,missing_value,
+264389,ASSET_ID,duplicate_record,same asset as SS6231 (G0149)
+264389,ASSET_DESC,name_variant,'Ironbark - U.V. DISINFECTION' for 'UV Disinfection'
+264389,ASSET_TAG,tag_variant,'IRB-UVD-1' for 'IRB-UVD'
+264389,INSTALL_DATE,two_digit_year,2006-10-26
+264389,INSTALL_DATE,conflicting_value,2006-09-26 vs 2006-10-26
+264389,LATITUDE,sign_lost,34.555729 should be negative
+276362,ASSET_TAG,tag_variant,'irb-uvd-uvr-01' for 'IRB-UVD-UVR-01'
+276362,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+SS3880,ASSET_ID,duplicate_record,same asset as 276362 (G0150)
+SS3880,ASSET_TAG,tag_variant,'IRB UVD UVR 01' for 'IRB-UVD-UVR-01'
+SS3880,ASSET_CLASS,non_standard_value,'UV' for 'TREAT\\UV'
+SS3880,REGION,non_standard_value,'REG' for 'REGNL'
+SS3880,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS3880,MANUFACTURER,non_standard_value,'Trojan UV' for 'Trojan'
+SS3880,SERIAL_NO,serial_variant,'76326392' for 'S/N 76326392'
+SS3880,LATITUDE,missing_value,
+H084846,ASSET_ID,duplicate_record,same asset as 276362 (G0150)
+H084846,ASSET_DESC,name_variant,'UV REACTOR BANK #1' for 'UV Reactor Bank No. 1'
+H084846,ASSET_TAG,tag_variant,'IRB-UVD-UVR-1' for 'IRB-UVD-UVR-01'
+H084846,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H084846,MANUFACTURER,non_standard_value,'TROJAN TECHNOLOGIES' for 'Trojan'
+H084846,RATING,missing_value,''
+277447,INSTALL_DATE,year_only,2012-01-27
+273558,ASSET_ID,duplicate_record,same asset as SS1353 (G0152)
+273558,ASSET_DESC,name_variant,'UV Transmittance Analyzer' for 'UV Transmittance Analyser'
+273558,ASSET_TAG,tag_variant,'irb-uvd-uvt-01' for 'IRB-UVD-UVT-01'
+273558,REGION,non_standard_value,'REG' for 'REGNL'
+273558,MODEL,model_variant,'OptiView' for 'OptiView'
+273558,CRITICALITY,non_standard_value,'C' for '3'
+H032265,ASSET_DESC,name_variant,'Ironbark - Sludge Dewatering' for 'Sludge Dewatering'
+H027031,ASSET_DESC,name_variant,'Dewatering Centrifuge (Unit 1)' for 'Dewatering Centrifuge No. 1'
+H027031,INSTALL_DATE,year_only,2011-05-30
+SS8323,ASSET_TAG,tag_variant,'IRBSDWCEN02' for 'IRB-SDW-CEN-02'
+SS8323,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+SS8323,MANUFACTURER,non_standard_value,'ANDRITZ' for 'Andritz'
+GIS-65580,ASSET_ID,duplicate_record,same asset as SS8323 (G0155)
+GIS-65580,ASSET_DESC,name_variant,'Centrifuge No.2 - Dewatering' for 'Dewatering Centrifuge No. 2'
+GIS-65580,ASSET_TAG,tag_variant,'IRB-SDW-CEN-2' for 'IRB-SDW-CEN-02'
+GIS-65580,ASSET_CLASS,non_standard_value,'Decanter Centrifuge' for 'MECH\\CENTRIFUGE'
+GIS-65580,MANUFACTURER,non_standard_value,'ANDRITZ' for 'Andritz'
+GIS-65580,MODEL,model_variant,'D5LL ' for 'D5LL'
+GIS-65580,SERIAL_NO,serial_variant,'93205283' for '93205283'
+H005692,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H005692,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\DOSING'
+257728,ASSET_ID,duplicate_record,same asset as H005692 (G0156)
+257728,ASSET_DESC,name_variant,'Polymer Dosing Pump 01' for 'Polymer Dosing Pump No. 1'
+257728,ASSET_TAG,tag_variant,'IRB-SDW-PDP-1' for 'IRB-SDW-PDP-01'
+257728,MANUFACTURER,non_standard_value,'Grundfos Pumps Pty Ltd' for 'Grundfos'
+257728,CRITICALITY,non_standard_value,'High' for '5'
+257728,LATITUDE,lat_long_swapped,
+GIS-51253,ASSET_TAG,tag_variant,'irb-sdw-pdp-02' for 'IRB-SDW-PDP-02'
+GIS-51253,REGION,non_standard_value,'Regional' for 'REGNL'
+GIS-51253,INSTALL_DATE,two_digit_year,2006-01-07
+283767,STATUS,non_standard_value,'Operating' for 'OPERATING'
+283767,LATITUDE,zero_coordinates,
+H015274,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H015274,REGION,non_standard_value,'REG' for 'REGNL'
+H015274,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H015274,SITE_CODE,missing_value,'UNKNOWN'
+GIS-88666,ASSET_ID,duplicate_record,same asset as H015274 (G0160)
+GIS-88666,ASSET_TAG,tag_variant,'irb-elc-rtu-01' for 'IRB-ELC-RTU-01'
+GIS-88666,MANUFACTURER,non_standard_value,'Square D' for 'Schneider Electric'
+GIS-88666,SERIAL_NO,serial_variant,'sn67737862' for '67737862'
+GIS-88666,INSTALL_DATE,conflicting_value,2008-08-12 vs 2007-08-13
+GIS-88666,CRITICALITY,non_standard_value,'Med' for '1'
+GIS-88666,LATITUDE,zero_coordinates,
+213410,ASSET_DESC,name_variant,'Lyndale Water Filtration Plant' for 'Lyndale Water Treatment Plant'
+213410,INSTALL_DATE,year_only,1999-12-23
+H038493,ASSET_ID,duplicate_record,same asset as 213410 (G0161)
+H038493,ASSET_DESC,name_variant,'WTP LYNDALE' for 'Lyndale Water Treatment Plant'
+H038493,ASSET_TAG,tag_variant,'LYN-WTP-1' for 'LYN-WTP'
+H038493,ASSET_LEVEL,non_standard_value,'1.0' for '1'
+H038493,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+H038493,LATITUDE,zero_coordinates,
+H068547,ASSET_DESC,name_variant,'LYN RAW WATER INTAKE' for 'Raw Water Intake'
+H068547,ASSET_LEVEL,non_standard_value,'Level 2' for '2'
+296034,ASSET_ID,duplicate_record,same asset as H068547 (G0162)
+296034,ASSET_DESC,name_variant,'RW Intake' for 'Raw Water Intake'
+296034,ASSET_TAG,tag_variant,'lyn-rwi' for 'LYN-RWI'
+296034,CRITICALITY,non_standard_value,'Med' for '1'
+GIS-10908,ASSET_ID,duplicate_record,same asset as H068547 (G0162)
+GIS-10908,ASSET_DESC,name_variant,'Raw Water Inlet' for 'Raw Water Intake'
+GIS-10908,ASSET_TAG,tag_variant,'LYN RWI' for 'LYN-RWI'
+GIS-10908,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+GIS-10908,REGION,non_standard_value,'Regional' for 'REGNL'
+H081611,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+SS6281,ASSET_ID,duplicate_record,same asset as H081611 (G0163)
+SS6281,ASSET_TAG,missing_value,'' for 'LYN-RWI-PMP-01'
+SS6281,ASSET_CLASS,non_standard_value,'CENT PUMP' for 'PUMP\\CENT'
+SS6281,INSTALL_DATE,conflicting_value,2001-07-19 vs 2001-08-18
+SS6281,CRITICALITY,non_standard_value,'C' for '4'
+SS6281,RATING,inconsistent_units,37kW written as 37 kW
+SS6281,LATITUDE,lat_long_swapped,
+H088156,ASSET_ID,duplicate_record,same asset as 245503 (G0164)
+H088156,ASSET_DESC,name_variant,'Pump No.2 - Raw Water' for 'Raw Water Pump No. 2'
+H088156,ASSET_TAG,tag_variant,'LYN-RWI-PMP-2' for 'LYN-RWI-PMP-02'
+H088156,ASSET_CLASS,non_standard_value,'Centrifugal Pump' for 'PUMP\\CENT'
+H088156,REGION,non_standard_value,'REG' for 'REGNL'
+H088156,MANUFACTURER,non_standard_value,'KSB Australia' for 'KSB'
+H088156,MODEL,model_variant,'Omega 300-560 ' for 'Omega 300-560'
+H088156,CRITICALITY,non_standard_value,'2' for '1'
+SS9998,ASSET_ID,duplicate_record,same asset as 245503 (G0164)
+SS9998,ASSET_TAG,tag_variant,'OLD-LYN-RWI-PMP-02' for 'LYN-RWI-PMP-02'
+SS9998,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+SS9998,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS9998,MODEL,model_variant,'Omega300-560' for 'Omega 300-560'
+SS9998,INSTALL_DATE,conflicting_value,2001-06-23 vs 2000-06-23
+SS9998,RATING,inconsistent_units,55kW written as 55kw
+SS9998,LATITUDE,missing_value,
+GIS-37681,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+GIS-37681,INSTALL_DATE,excel_serial_date,2000-10-26
+GIS-37681,MANUFACTURER,missing_value,'-'
+SS1564,ASSET_ID,duplicate_record,same asset as GIS-37681 (G0165)
+SS1564,ASSET_TAG,tag_variant,'LYN-RWI-VLV-1' for 'LYN-RWI-VLV-01'
+SS1564,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+SS1564,MODEL,model_variant,'Fig 990 ' for 'Fig 990'
+SS1564,LATITUDE,missing_value,
+SS1564,MODEL,missing_value,' '
+SS4737,MODEL,missing_value,''
+H048252,ASSET_ID,duplicate_record,same asset as SS4737 (G0166)
+H048252,ASSET_DESC,name_variant,'Intake Isolation Valve 02' for 'Intake Isolation Valve No. 2'
+H048252,ASSET_TAG,missing_value,'' for 'LYN-RWI-VLV-02'
+H048252,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H048252,REGION,non_standard_value,'Regional' for 'REGNL'
+H048252,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+H048252,MODEL,model_variant,'SERIES 75' for 'Series 75'
+H048252,SERIAL_NO,serial_variant,'' for 'SN26588950'
+H048252,SITE_CODE,missing_value,'-'
+H019221,REGION,non_standard_value,'Regional' for 'REGNL'
+H019221,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+H019221,INSTALL_DATE,missing_value,'-'
+GIS-11784,ASSET_ID,duplicate_record,same asset as H019221 (G0167)
+GIS-11784,ASSET_TAG,missing_value,'' for 'LYN-RWI-TUR-01'
+GIS-11784,ASSET_CLASS,non_standard_value,'WQ ANALYSER' for 'INSTR\\ANALYSER'
+GIS-11784,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+SS5990,ASSET_ID,duplicate_record,same asset as H019221 (G0167)
+SS5990,ASSET_DESC,name_variant,'RAW WATER TURBIDITY ANALYSER' for 'Raw Water Turbidity Analyser'
+SS5990,ASSET_TAG,tag_variant,'LYN-RWI-TUR-1' for 'LYN-RWI-TUR-01'
+SS5990,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS5990,REGION,non_standard_value,'Regional' for 'REGNL'
+SS5990,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+SS5990,LATITUDE,lat_long_swapped,
+249937,ASSET_ID,duplicate_record,same asset as H019221 (G0167)
+249937,ASSET_DESC,name_variant,'Raw Water Turbidity Analyzer' for 'Raw Water Turbidity Analyser'
+249937,ASSET_TAG,tag_variant,'LYN RWI TUR 01' for 'LYN-RWI-TUR-01'
+249937,CRITICALITY,non_standard_value,'A' for '1'
+SS1574,ASSET_TAG,missing_value,'' for 'LYN-CFL'
+SS1574,LATITUDE,missing_value,
+SS1574,INSTALL_DATE,missing_value,'N/A'
+SS9732,ASSET_ID,duplicate_record,same asset as 268121 (G0169)
+SS9732,ASSET_DESC,name_variant,'Alum Dosing Pump 01' for 'Alum Dosing Pump No. 1'
+SS9732,ASSET_TAG,tag_variant,'LYN CFL ADP 01' for 'LYN-CFL-ADP-01'
+SS9732,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS9732,REGION,non_standard_value,'REG' for 'REGNL'
+SS9732,MANUFACTURER,non_standard_value,'Grundfoss' for 'Grundfos'
+SS9732,MODEL,model_variant,'DDA120-7' for 'DDA 120-7'
+SS9732,SERIAL_NO,serial_variant,'TBA' for 'S/N 16725404'
+SS9732,INSTALL_DATE,two_digit_year,2002-07-30
+H087790,ASSET_ID,duplicate_record,same asset as 268121 (G0169)
+H087790,ASSET_DESC,name_variant,'Pump No.1 - Alum Dosing' for 'Alum Dosing Pump No. 1'
+H087790,ASSET_TAG,tag_variant,'LYN CFL ADP 01' for 'LYN-CFL-ADP-01'
+H087790,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+H087790,STATUS,non_standard_value,'OPR' for 'OPERATING'
+H087790,SERIAL_NO,serial_variant,'' for 'S/N 16725404'
+H087790,INSTALL_DATE,excel_serial_date,2002-07-30
+H087790,INSTALL_DATE,conflicting_value,2012-07-27 vs 2002-07-30
+H087790,RATING,inconsistent_units,1.1kW written as 0.0011 MW
+SS2271,MANUFACTURER,non_standard_value,'Grunfos' for 'Grundfos'
+SS2271,LATITUDE,missing_value,
+GIS-47593,ASSET_ID,duplicate_record,same asset as SS2271 (G0170)
+GIS-47593,ASSET_DESC,name_variant,'Alum Dosing Pmp 2' for 'Alum Dosing Pump No. 2'
+GIS-47593,ASSET_TAG,tag_variant,'LYNCFLADP02' for 'LYN-CFL-ADP-02'
+GIS-47593,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+GIS-47593,MANUFACTURER,non_standard_value,'Grunfos' for 'Grundfos'
+GIS-47593,INSTALL_DATE,conflicting_value,2013-06-04 vs 2013-05-05
+204549,ASSET_ID,duplicate_record,same asset as SS2271 (G0170)
+204549,ASSET_DESC,name_variant,'Pump No.2 - Alum Dosing' for 'Alum Dosing Pump No. 2'
+204549,MANUFACTURER,non_standard_value,'Grunfos' for 'Grundfos'
+204549,STATUS,status_conflict,'DECOM' while another record of G0170 is operating
+H048770,ASSET_ID,duplicate_record,same asset as SS2271 (G0170)
+H048770,ASSET_DESC,name_variant,'ALUM DOSING PUMP #2' for 'Alum Dosing Pump No. 2'
+H048770,ASSET_TAG,tag_variant,'lyn-cfl-adp-02' for 'LYN-CFL-ADP-02'
+H048770,STATUS,non_standard_value,'Op' for 'OPERATING'
+H048770,MODEL,model_variant,'' for 'DDA 120-7'
+H048770,SERIAL_NO,serial_variant,'6524845' for 'SN65248459'
+H048770,INSTALL_DATE,conflicting_value,2013-06-04 vs 2013-05-05
+H048770,LATITUDE,lat_long_swapped,
+SS4869,REGION,non_standard_value,'Regional' for 'REGNL'
+SS4869,LATITUDE,missing_value,
+262949,ASSET_ID,duplicate_record,same asset as SS4869 (G0171)
+262949,ASSET_DESC,name_variant,'Flocculator Mixer 01' for 'Flocculator Mixer No. 1'
+262949,ASSET_TAG,tag_variant,'LYN-CFL-MIX-1' for 'LYN-CFL-MIX-01'
+262949,MANUFACTURER,non_standard_value,'Fligt' for 'Flygt'
+262949,MODEL,model_variant,'TR 326' for 'TR 326'
+262949,CRITICALITY,non_standard_value,'Low' for '1'
+262949,RATING,inconsistent_units,2.2kW written as 2.2KW
+H015092,ASSET_ID,duplicate_record,same asset as SS4869 (G0171)
+H015092,ASSET_DESC,name_variant,'Flocculator Mixer (Unit 1)' for 'Flocculator Mixer No. 1'
+H015092,ASSET_TAG,tag_variant,'LYN-CFL-MIX-1' for 'LYN-CFL-MIX-01'
+H015092,CRITICALITY,non_standard_value,'C' for '1'
+H015092,RATING,inconsistent_units,2.2kW written as 2.2KW
+H015092,STATUS,status_conflict,'Retired' while another record of G0171 is operating
+H024495,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+GIS-54146,ASSET_ID,duplicate_record,same asset as H024495 (G0172)
+GIS-54146,MANUFACTURER,non_standard_value,'WILO' for 'Wilo'
+GIS-54146,SERIAL_NO,serial_variant,'SN-92015541' for 'SN92015541'
+GIS-54146,RATING,inconsistent_units,11kW written as 11KW
+GIS-54146,STATUS,status_conflict,'Not in use' while another record of G0172 is operating
+SS4859,ASSET_DESC,name_variant,'Mixer 3' for 'Flocculator Mixer No. 3'
+SS4859,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+SS4859,LATITUDE,missing_value,
+263685,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+H087185,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+SS8936,INSTALL_DATE,excel_serial_date,2014-05-13
+SS8936,RATING,missing_value,'UNKNOWN'
+GIS-70823,ASSET_ID,duplicate_record,same asset as SS8936 (G0176)
+GIS-70823,ASSET_DESC,name_variant,'Filter Inlet Valve (Unit 2)' for 'Filter Inlet Valve No. 2'
+GIS-70823,REGION,non_standard_value,'REG' for 'REGNL'
+GIS-70823,SERIAL_NO,serial_variant,'58601055' for 'S/N 58601055'
+SS9792,LATITUDE,missing_value,
+H002528,INSTALL_DATE,two_digit_year,2007-01-18
+288242,ASSET_ID,duplicate_record,same asset as H002528 (G0178)
+288242,ASSET_DESC,name_variant,'Filter Inlet Valve (Unit 4)' for 'Filter Inlet Valve No. 4'
+288242,ASSET_TAG,tag_variant,'LYN FLT FIV 04' for 'LYN-FLT-FIV-04'
+288242,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+288242,ASSET_CLASS,non_standard_value,'VALVE\\BF' for 'VALVE\\BFLY'
+288242,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+288242,INSTALL_DATE,conflicting_value,2006-12-19 vs 2007-01-18
+288242,STATUS,status_conflict,'DECOM' while another record of G0178 is operating
+288242,SITE_CODE,missing_value,''
+SS0136,ASSET_ID,duplicate_record,same asset as H002528 (G0178)
+SS0136,ASSET_DESC,name_variant,'Filter Inlet Valve 04' for 'Filter Inlet Valve No. 4'
+SS0136,ASSET_TAG,tag_variant,'LYNFLTFIV04' for 'LYN-FLT-FIV-04'
+SS0136,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+SS0136,MODEL,model_variant,'FIG 990' for 'Fig 990'
+SS0136,SERIAL_NO,serial_variant,'81787535' for '81787535'
+SS0136,INSTALL_DATE,conflicting_value,2017-01-15 vs 2007-01-18
+SS0136,CRITICALITY,non_standard_value,'Low' for '4'
+GIS-71401,ASSET_ID,duplicate_record,same asset as H002528 (G0178)
+GIS-71401,ASSET_DESC,name_variant,'Valve 4' for 'Filter Inlet Valve No. 4'
+GIS-71401,ASSET_TAG,tag_variant,'LYN FLT FIV 04' for 'LYN-FLT-FIV-04'
+GIS-71401,ASSET_CLASS,non_standard_value,'Butterfly Valve' for 'VALVE\\BFLY'
+GIS-71401,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+GIS-71401,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-71401,CRITICALITY,non_standard_value,'Low' for '4'
+GIS-71401,MANUFACTURER,missing_value,'N/A'
+272176,ASSET_DESC,name_variant,'Backwash Pmp 1' for 'Backwash Pump No. 1'
+272176,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H041871,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS9100,ASSET_ID,duplicate_record,same asset as H041871 (G0180)
+SS9100,MANUFACTURER,non_standard_value,'K.S.B.' for 'KSB'
+SS9100,INSTALL_DATE,two_digit_year,2018-06-12
+SS9100,INSTALL_DATE,conflicting_value,2018-05-13 vs 2018-06-12
+SS7048,ASSET_DESC,name_variant,'Filtered Water Turbidity Analyzer 1' for 'Filtered Water Turbidity Analyser No. 1'
+SS7048,ASSET_CLASS,non_standard_value,'Analyser' for 'INSTR\\ANALYSER'
+SS7048,INSTALL_DATE,two_digit_year,2022-05-24
+SS7048,LATITUDE,missing_value,
+H054435,ASSET_ID,duplicate_record,same asset as SS7048 (G0181)
+H054435,ASSET_DESC,name_variant,'Filtered Water Turbidity Analyser 01' for 'Filtered Water Turbidity Analyser No. 1'
+H054435,ASSET_TAG,tag_variant,'LYNFLTTUR01' for 'LYN-FLT-TUR-01'
+H054435,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+H054435,INSTALL_DATE,excel_serial_date,2022-05-24
+253005,ASSET_ID,duplicate_record,same asset as SS7048 (G0181)
+253005,ASSET_DESC,name_variant,'Analyser 1' for 'Filtered Water Turbidity Analyser No. 1'
+253005,ASSET_TAG,missing_value,'' for 'LYN-FLT-TUR-01'
+253005,STATUS,non_standard_value,'Active' for 'OPERATING'
+253005,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+253005,SERIAL_NO,serial_variant,'' for 'SN32602148'
+253005,CRITICALITY,non_standard_value,'Med' for '4'
+253005,LATITUDE,sign_lost,34.465927 should be negative
+SS2417,ASSET_ID,duplicate_record,same asset as H037153 (G0182)
+SS2417,ASSET_DESC,name_variant,'Filtered Water Turbidity Analyser 02' for 'Filtered Water Turbidity Analyser No. 2'
+SS2417,ASSET_TAG,tag_variant,'LYN-FLT-TUR-2' for 'LYN-FLT-TUR-02'
+SS2417,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+SS2417,REGION,non_standard_value,'REG' for 'REGNL'
+SS2417,STATUS,non_standard_value,'Decommissioned' for 'DECOMMISSIONED'
+SS2417,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+SS2417,MODEL,model_variant,'TU5400 SC' for 'TU5400 sc'
+SS2417,SERIAL_NO,serial_variant,'TBA' for 'S/N 29078261'
+SS2417,CRITICALITY,non_standard_value,'A' for '4'
+SS2417,LATITUDE,missing_value,
+SS3338,MANUFACTURER,non_standard_value,'Wallace & Tiernan' for 'Evoqua'
+SS6532,ASSET_TAG,tag_variant,'lyn-cld-chl-02' for 'LYN-CLD-CHL-02'
+SS6532,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS6532,ASSET_CLASS,non_standard_value,'Chlorinator' for 'TREAT\\CHLOR'
+SS6532,STATUS,non_standard_value,'Operating' for 'OPERATING'
+GIS-97553,ASSET_ID,duplicate_record,same asset as SS6532 (G0185)
+GIS-97553,ASSET_DESC,name_variant,'Gas Chlorinator (Unit 2)' for 'Gas Chlorinator No. 2'
+GIS-97553,ASSET_CLASS,non_standard_value,'CHLORINATOR' for 'TREAT\\CHLOR'
+GIS-97553,MANUFACTURER,non_standard_value,'W&T' for 'Evoqua'
+GIS-97553,MODEL,model_variant,'S10K' for 'S10K'
+GIS-97553,INSTALL_DATE,conflicting_value,2014-04-06 vs 2014-05-06
+H032423,ASSET_DESC,name_variant,'Analyser No.1 - Chlorine Residual' for 'Chlorine Residual Analyser No. 1'
+H032423,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+SS8730,ASSET_ID,duplicate_record,same asset as H032423 (G0186)
+SS8730,ASSET_DESC,name_variant,'Chlorine Residual Analyser 01' for 'Chlorine Residual Analyser No. 1'
+SS8730,ASSET_TAG,tag_variant,'LYNCLDCLA01' for 'LYN-CLD-CLA-01'
+SS8730,MANUFACTURER,non_standard_value,'Hach Lange' for 'Hach'
+SS8730,MODEL,model_variant,'CCS51D' for 'CCS51D'
+SS8730,INSTALL_DATE,excel_serial_date,2000-12-02
+SS5396,ASSET_ID,duplicate_record,same asset as GIS-67850 (G0187)
+SS5396,ASSET_TAG,tag_variant,'lyn-cld-cla-02' for 'LYN-CLD-CLA-02'
+SS5396,REGION,non_standard_value,'Regional' for 'REGNL'
+SS5396,MANUFACTURER,non_standard_value,'HACH' for 'Hach'
+SS5396,MANUFACTURER,missing_value,''
+SS4021,ASSET_CLASS,non_standard_value,'SYS' for 'SYSTEM'
+GIS-82570,ASSET_ID,duplicate_record,same asset as SS4021 (G0188)
+SS8351,LATITUDE,missing_value,
+GIS-28220,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\CENT'
+219791,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+219791,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+H016736,ASSET_ID,duplicate_record,same asset as 219791 (G0191)
+H016736,ASSET_TAG,tag_variant,'lyn-twp-pmp-03' for 'LYN-TWP-PMP-03'
+H016736,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H016736,MANUFACTURER,non_standard_value,'Ksb' for 'KSB'
+H016736,MODEL,model_variant,'NKG 200-150-400 ' for 'NKG 200-150-400'
+H016736,INSTALL_DATE,year_only,2020-01-05
+SS8862,INSTALL_DATE,two_digit_year,2019-09-13
+SS8862,LATITUDE,lat_long_swapped,
+H054000,ASSET_ID,duplicate_record,same asset as SS8862 (G0192)
+H054000,ASSET_TAG,tag_variant,'LYN-TWP-MTR-1' for 'LYN-TWP-MTR-01'
+H054000,REGION,non_standard_value,'REG' for 'REGNL'
+H054000,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+H054000,MODEL,model_variant,'M3BP 315 ' for 'M3BP 315'
+H054000,CRITICALITY,non_standard_value,'5' for '5'
+H017256,ASSET_DESC,name_variant,'Pump Motor (Unit 2)' for 'Pump Motor No. 2'
+H017256,REGION,non_standard_value,'REG' for 'REGNL'
+H017256,LATITUDE,lat_long_swapped,
+SS7349,ASSET_ID,duplicate_record,same asset as H017256 (G0193)
+SS7349,ASSET_DESC,name_variant,'PUMP MOTOR #2' for 'Pump Motor No. 2'
+SS7349,ASSET_TAG,missing_value,'' for 'LYN-TWP-MTR-02'
+SS7349,ASSET_CLASS,non_standard_value,'MOTOR' for 'MOTOR\\LV'
+SS7349,MODEL,model_variant,'M3BP315' for 'M3BP 315'
+SS7349,SERIAL_NO,serial_variant,'2073939' for 'SN20739393'
+SS7349,INSTALL_DATE,conflicting_value,2004-07-14 vs 2004-06-14
+239128,MANUFACTURER,non_standard_value,'Weg' for 'WEG'
+239128,SITE_CODE,missing_value,'-'
+GIS-16772,ASSET_ID,duplicate_record,same asset as 239128 (G0194)
+GIS-16772,ASSET_DESC,name_variant,'Motor 3' for 'Pump Motor No. 3'
+GIS-16772,REGION,non_standard_value,'REG' for 'REGNL'
+GIS-16772,LATITUDE,lat_long_swapped,
+H056428,ASSET_ID,duplicate_record,same asset as 239128 (G0194)
+H056428,ASSET_DESC,name_variant,'Pump Motor 03' for 'Pump Motor No. 3'
+H056428,MANUFACTURER,non_standard_value,'WEG Australia' for 'WEG'
+H056428,MODEL,model_variant,'M3BP 315 ' for 'M3BP 315'
+H056428,SERIAL_NO,serial_variant,'23746228' for '23746228'
+H056428,INSTALL_DATE,year_only,2002-07-29
+H056428,INSTALL_DATE,conflicting_value,2001-07-29 vs 2002-07-29
+H056428,STATUS,status_conflict,'INACTIVE' while another record of G0194 is operating
+SS7367,STATUS,non_standard_value,'Active' for 'OPERATING'
+SS7367,MANUFACTURER,non_standard_value,'A.B.B.' for 'ABB'
+SS7367,INSTALL_DATE,year_only,2016-10-21
+H066486,ASSET_CLASS,non_standard_value,'VFD' for 'VSD'
+H066486,LATITUDE,sign_lost,34.466813 should be negative
+GIS-32163,ASSET_ID,duplicate_record,same asset as H066486 (G0196)
+GIS-32163,ASSET_DESC,name_variant,'Drive 2' for 'Pump Variable Speed Drive No. 2'
+GIS-32163,ASSET_CLASS,non_standard_value,'DRIVE\\VSD' for 'VSD'
+GIS-32163,MANUFACTURER,non_standard_value,'DANFOSS' for 'Danfoss'
+GIS-32163,INSTALL_DATE,two_digit_year,2015-07-22
+GIS-32163,RATING,inconsistent_units,75kW written as 0.075 MW
+GIS-32163,STATUS,status_conflict,'DECOM' while another record of G0196 is operating
+290527,ASSET_ID,duplicate_record,same asset as H066486 (G0196)
+290527,ASSET_DESC,name_variant,'Pmp VSD 2' for 'Pump Variable Speed Drive No. 2'
+290527,ASSET_TAG,tag_variant,'lyn-twp-vsd-02' for 'LYN-TWP-VSD-02'
+290527,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+290527,MANUFACTURER,non_standard_value,'DANFOSS' for 'Danfoss'
+290527,CRITICALITY,non_standard_value,'High' for '2'
+H071732,ASSET_DESC,name_variant,'Drive 3' for 'Pump Variable Speed Drive No. 3'
+H071732,STATUS,non_standard_value,'Active' for 'OPERATING'
+H071732,LATITUDE,lat_long_swapped,
+293848,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+293848,REGION,non_standard_value,'Regional' for 'REGNL'
+293848,INSTALL_DATE,two_digit_year,2021-12-26
+293848,LATITUDE,lat_long_swapped,
+GIS-64800,REGION,non_standard_value,'Regional' for 'REGNL'
+225074,ASSET_ID,duplicate_record,same asset as GIS-64800 (G0199)
+225074,ASSET_TAG,tag_variant,'LYNELC' for 'LYN-ELC'
+225074,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+225074,STATUS,non_standard_value,'In Service' for 'OPERATING'
+225074,INSTALL_DATE,excel_serial_date,2009-12-27
+GIS-43415,ASSET_DESC,name_variant,'MAIN SWITCHBOARD' for 'Main Switchboard'
+GIS-43415,STATUS,non_standard_value,'Retired' for 'DECOMMISSIONED'
+H009279,ASSET_ID,duplicate_record,same asset as GIS-43415 (G0200)
+H009279,ASSET_TAG,tag_variant,'lyn-elc-msb-01' for 'LYN-ELC-MSB-01'
+H009279,ASSET_CLASS,non_standard_value,'ELEC/SWBD' for 'ELEC\\SWBD'
+H009279,MODEL,model_variant,'Prisma P ' for 'Prisma P'
+237901,REGION,non_standard_value,'REGIONAL' for 'REGNL'
+237901,INSTALL_DATE,two_digit_year,2020-02-04
+SS4474,ASSET_ID,duplicate_record,same asset as 237901 (G0201)
+SS4474,ASSET_TAG,tag_variant,'LYNELCRTU01' for 'LYN-ELC-RTU-01'
+SS4474,MODEL,model_variant,'SCADAPack 470 ' for 'SCADAPack 470'
+H057089,ASSET_DESC,name_variant,'Ashford S.P.S.' for 'Ashford Sewage Pump Station'
+H057089,ASSET_LEVEL,non_standard_value,'1.0' for '1'
+H057089,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+H057089,INSTALL_DATE,missing_value,''
+GIS-32825,ASSET_ID,duplicate_record,same asset as H057089 (G0202)
+GIS-32825,ASSET_DESC,name_variant,'ASHFORD Sewage Pump Station' for 'Ashford Sewage Pump Station'
+GIS-32825,ASSET_TAG,missing_value,'' for 'ASH-SPS'
+GIS-32825,ASSET_LEVEL,non_standard_value,'Level 1' for '1'
+GIS-32825,ASSET_CLASS,non_standard_value,'PLANT' for 'FACILITY'
+GIS-32825,INSTALL_DATE,conflicting_value,1971-10-06 vs 1971-09-06
+GIS-32825,SITE_CODE,missing_value,'UNKNOWN'
+SS4863,ASSET_ID,duplicate_record,same asset as H057089 (G0202)
+SS4863,ASSET_DESC,name_variant,'Ashford Sewer Pump Stn' for 'Ashford Sewage Pump Station'
+SS4863,ASSET_LEVEL,non_standard_value,'Level 1' for '1'
+SS4863,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+217200,STATUS,non_standard_value,'Active' for 'OPERATING'
+217200,INSTALL_DATE,two_digit_year,1977-11-01
+SS5810,ASSET_ID,duplicate_record,same asset as 217200 (G0203)
+SS5810,ASSET_DESC,name_variant,'ASH WET WELL' for 'Wet Well'
+SS5810,INSTALL_DATE,excel_serial_date,1977-11-01
+H022760,ASSET_TAG,tag_variant,'OLD-ASH-WWL-LIT-01' for 'ASH-WWL-LIT-01'
+H022760,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+H022760,STATUS,non_standard_value,'Operating' for 'OPERATING'
+H022760,MANUFACTURER,non_standard_value,'Endress & Hauser' for 'Endress+Hauser'
+H026908,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H026908,SITE_CODE,missing_value,'NULL'
+H066461,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H066461,REGION,non_standard_value,'MET' for 'METRO'
+GIS-98703,ASSET_ID,duplicate_record,same asset as H066461 (G0206)
+GIS-98703,ASSET_DESC,name_variant,'Fan' for 'Odour Control Fan'
+GIS-98703,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+GIS-98703,INSTALL_DATE,conflicting_value,2018-12-25 vs 2019-12-25
+GIS-98703,CRITICALITY,non_standard_value,'A' for '3'
+SS3494,ASSET_ID,duplicate_record,same asset as H066461 (G0206)
+SS3494,ASSET_DESC,name_variant,'odour control fan' for 'Odour Control Fan'
+SS3494,ASSET_TAG,missing_value,'' for 'ASH-WWL-FAN-01'
+SS3494,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+SS3494,MODEL,model_variant,'2CC2 512 ' for '2CC2 512'
+SS3494,STATUS,status_conflict,'Not in use' while another record of G0206 is operating
+SS3494,LATITUDE,sign_lost,34.947518 should be negative
+262763,ASSET_ID,duplicate_record,same asset as H066461 (G0206)
+262763,SERIAL_NO,serial_variant,'9132895' for '91328951'
+262763,CRITICALITY,non_standard_value,'C' for '3'
+262763,RATING,inconsistent_units,11kW written as 11kw
+SS5949,ASSET_DESC,name_variant,'PUMP SET' for 'Pump Set'
+SS5949,LATITUDE,sign_lost,34.947413 should be negative
+SS5949,CRITICALITY,missing_value,''
+237164,ASSET_ID,duplicate_record,same asset as SS5949 (G0207)
+237164,ASSET_DESC,name_variant,'Ashford - PUMP SET' for 'Pump Set'
+237164,ASSET_TAG,tag_variant,'ASHPMP' for 'ASH-PMP'
+237164,STATUS,status_conflict,'Retired' while another record of G0207 is operating
+GIS-97288,ASSET_ID,duplicate_record,same asset as SS5949 (G0207)
+GIS-97288,ASSET_TAG,missing_value,'' for 'ASH-PMP'
+GIS-97288,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+GIS-97288,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+SS0781,ASSET_ID,duplicate_record,same asset as GIS-96584 (G0208)
+SS0781,ASSET_DESC,name_variant,'Submersible Pmp 1' for 'Submersible Pump No. 1'
+SS0781,ASSET_TAG,tag_variant,'ASHPMPPMP01' for 'ASH-PMP-PMP-01'
+SS0781,CRITICALITY,non_standard_value,'C' for '3'
+SS0781,RATING,inconsistent_units,132kW written as 132KW
+211029,ASSET_ID,duplicate_record,same asset as GIS-96584 (G0208)
+211029,ASSET_DESC,name_variant,'Pump No.1 - Submersible' for 'Submersible Pump No. 1'
+211029,ASSET_TAG,tag_variant,'OLD-ASH-PMP-PMP-01' for 'ASH-PMP-PMP-01'
+211029,ASSET_LEVEL,non_standard_value,'L3' for '3'
+211029,SERIAL_NO,serial_variant,'SN-48043170' for 'SN48043170'
+211029,CRITICALITY,non_standard_value,'H' for '3'
+211029,RATING,inconsistent_units,132kW written as 132
+H065450,ASSET_ID,duplicate_record,same asset as GIS-96584 (G0208)
+H065450,ASSET_DESC,name_variant,'Submersible Pump (Unit 1)' for 'Submersible Pump No. 1'
+H065450,MANUFACTURER,non_standard_value,'Xylem Flygt' for 'Flygt'
+H065450,SERIAL_NO,serial_variant,'sn48043170' for 'SN48043170'
+H065450,MODEL,missing_value,'UNKNOWN'
+GIS-21341,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-21341,REGION,non_standard_value,'Metro' for 'METRO'
+GIS-21341,MANUFACTURER,non_standard_value,'Xylem Flygt' for 'Flygt'
+GIS-21341,INSTALL_DATE,two_digit_year,2007-06-08
+GIS-21341,INSTALL_DATE,missing_value,' '
+235277,ASSET_ID,duplicate_record,same asset as GIS-21341 (G0209)
+235277,ASSET_DESC,name_variant,'Submersible Pump (Unit 2)' for 'Submersible Pump No. 2'
+235277,ASSET_TAG,missing_value,'' for 'ASH-PMP-PMP-02'
+235277,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+235277,MANUFACTURER,non_standard_value,'Fligt' for 'Flygt'
+235277,RATING,inconsistent_units,160kW written as 160kw
+GIS-48584,ASSET_DESC,name_variant,'PUMP VARIABLE SPEED DRIVE #1' for 'Pump Variable Speed Drive No. 1'
+GIS-48584,STATUS,non_standard_value,'OPR' for 'OPERATING'
+GIS-48584,INSTALL_DATE,excel_serial_date,1973-09-26
+292801,ASSET_ID,duplicate_record,same asset as GIS-48584 (G0210)
+292801,ASSET_DESC,name_variant,'PUMP VARIABLE SPEED DRIVE #1' for 'Pump Variable Speed Drive No. 1'
+292801,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+292801,SERIAL_NO,serial_variant,'' for 'SN62549570'
+SS8877,INSTALL_DATE,year_only,2009-07-01
+GIS-99484,ASSET_ID,duplicate_record,same asset as SS8877 (G0211)
+GIS-99484,ASSET_DESC,name_variant,'Pump Variable Speed Drive (Unit 2)' for 'Pump Variable Speed Drive No. 2'
+GIS-99484,ASSET_TAG,tag_variant,'ASH PMP VSD 02' for 'ASH-PMP-VSD-02'
+GIS-99484,INSTALL_DATE,two_digit_year,2009-07-01
+GIS-99484,RATING,inconsistent_units,22kW written as 22KW
+SS7644,ASSET_LEVEL,non_standard_value,'2.0' for '2'
+SS7644,REGION,non_standard_value,'Metro' for 'METRO'
+SS7644,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+SS7644,SITE_CODE,missing_value,''
+H027947,REGION,non_standard_value,'Metro' for 'METRO'
+H027947,CRITICALITY,missing_value,''
+GIS-74082,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-74082,ASSET_CLASS,non_standard_value,'Non Return Valve' for 'VALVE\\CHECK'
+GIS-74082,REGION,non_standard_value,'MET' for 'METRO'
+GIS-74082,RATING,missing_value,''
+SS7080,ASSET_ID,duplicate_record,same asset as GIS-74082 (G0214)
+SS7080,ASSET_DESC,name_variant,'Valve 2' for 'Non-Return Valve No. 2'
+SS7080,ASSET_CLASS,non_standard_value,'NRV' for 'VALVE\\CHECK'
+SS7080,MODEL,model_variant,'Series 41 ' for 'Series 41'
+SS7080,INSTALL_DATE,year_only,1996-08-19
+SS7080,CRITICALITY,non_standard_value,'Low' for '1'
+H014682,ASSET_ID,duplicate_record,same asset as GIS-74082 (G0214)
+H014682,ASSET_DESC,name_variant,'Non-Return Valve 02' for 'Non-Return Valve No. 2'
+H014682,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+H014682,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+H014682,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+H014682,SERIAL_NO,serial_variant,'UNKNOWN' for 'S/N 61381368'
+H013678,ASSET_DESC,name_variant,'Valve No.1 - Isolation Gate' for 'Isolation Gate Valve No. 1'
+H013678,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+H013678,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+H013678,MODEL,missing_value,'UNKNOWN'
+SS2470,MANUFACTURER,non_standard_value,'KROHNE' for 'Krohne'
+SS2470,MANUFACTURER,missing_value,'NULL'
+SS2470,RATING,missing_value,'NULL'
+SS9425,LATITUDE,missing_value,
+GIS-75846,ASSET_ID,duplicate_record,same asset as SS9425 (G0218)
+GIS-75846,ASSET_DESC,name_variant,'Switchroom' for 'Electrical & Control'
+GIS-75846,ASSET_TAG,missing_value,'' for 'ASH-ELC'
+GIS-75846,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-75846,INSTALL_DATE,conflicting_value,1980-10-21 vs 1979-10-22
+GIS-95383,ASSET_CLASS,non_standard_value,'ELEC/SWBD' for 'ELEC\\SWBD'
+GIS-95383,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+GIS-95383,MANUFACTURER,non_standard_value,'SCHNEIDER' for 'Schneider Electric'
+233896,ASSET_ID,duplicate_record,same asset as GIS-95383 (G0219)
+233896,ASSET_TAG,tag_variant,'ash-elc-pcc-01' for 'ASH-ELC-PCC-01'
+233896,MODEL,model_variant,'ARTU' for 'ArTu'
+233896,SITE_CODE,missing_value,''
+275126,ASSET_DESC,name_variant,'scada rtu' for 'SCADA RTU'
+275126,ASSET_TAG,tag_variant,'OLD-ASH-ELC-RTU-01' for 'ASH-ELC-RTU-01'
+275126,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+GIS-34986,ASSET_DESC,name_variant,'Morphett S.P.S.' for 'Morphett Sewage Pump Station'
+GIS-34986,ASSET_LEVEL,non_standard_value,'L1' for '1'
+GIS-34986,INSTALL_DATE,two_digit_year,1983-05-28
+GIS-34986,SITE_CODE,missing_value,''
+SS8009,ASSET_ID,duplicate_record,same asset as GIS-34986 (G0221)
+SS8009,ASSET_DESC,name_variant,'MORPHETT SPS' for 'Morphett Sewage Pump Station'
+SS8009,ASSET_TAG,tag_variant,'mor-sps' for 'MOR-SPS'
+SS8009,INSTALL_DATE,conflicting_value,1983-06-27 vs 1983-05-28
+SS8009,CRITICALITY,non_standard_value,'H' for '1'
+277127,ASSET_ID,duplicate_record,same asset as GIS-34986 (G0221)
+277127,ASSET_DESC,name_variant,'SPS - MORPHETT' for 'Morphett Sewage Pump Station'
+277127,CRITICALITY,non_standard_value,'High' for '1'
+229805,INSTALL_DATE,excel_serial_date,1985-09-07
+SS2324,ASSET_ID,duplicate_record,same asset as 229805 (G0222)
+SS2324,ASSET_DESC,name_variant,'Wet Well & Inlet' for 'Wet Well'
+SS2324,INSTALL_DATE,conflicting_value,1986-09-07 vs 1985-09-07
+H039665,ASSET_ID,duplicate_record,same asset as 229805 (G0222)
+H039665,ASSET_DESC,name_variant,'Morphett - Wet Well' for 'Wet Well'
+H039665,ASSET_TAG,tag_variant,'mor-wwl' for 'MOR-WWL'
+H039665,REGION,non_standard_value,'NTH' for 'NORTH'
+H039665,INSTALL_DATE,month_day_swapped,1985-09-07
+H039665,STATUS,status_conflict,'Retired' while another record of G0222 is operating
+H058264,ASSET_TAG,tag_variant,'MOR-WWL-LIT-1' for 'MOR-WWL-LIT-01'
+H058264,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+H058264,LATITUDE,lat_long_swapped,
+207875,ASSET_ID,duplicate_record,same asset as H058264 (G0223)
+207875,ASSET_DESC,name_variant,'Sensor No.1 - Wet Well Level' for 'Wet Well Level Sensor No. 1'
+207875,ASSET_TAG,tag_variant,'mor-wwl-lit-01' for 'MOR-WWL-LIT-01'
+207875,ASSET_LEVEL,non_standard_value,'L3' for '3'
+207875,ASSET_CLASS,non_standard_value,'LIT' for 'INSTR\\LEVEL'
+207875,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+207875,MANUFACTURER,non_standard_value,'Endress & Hauser' for 'Endress+Hauser'
+207875,MODEL,model_variant,'VEGAPULS C 21 ' for 'VEGAPULS C 21'
+207875,INSTALL_DATE,year_only,2003-04-23
+207875,LATITUDE,sign_lost,34.722382 should be negative
+SS1452,ASSET_ID,duplicate_record,same asset as H058264 (G0223)
+SS1452,ASSET_DESC,name_variant,'Wet Well Level Sensor 1' for 'Wet Well Level Sensor No. 1'
+SS1452,ASSET_TAG,tag_variant,'MOR WWL LIT 01' for 'MOR-WWL-LIT-01'
+SS1452,MANUFACTURER,non_standard_value,'E+H' for 'Endress+Hauser'
+SS1452,SERIAL_NO,serial_variant,'UNKNOWN' for 'SN65459613'
+SS1452,STATUS,status_conflict,'Decommissioned' while another record of G0223 is operating
+SS1452,MANUFACTURER,missing_value,'N/A'
+SS1436,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+SS1436,LATITUDE,zero_coordinates,
+202654,ASSET_ID,duplicate_record,same asset as SS1436 (G0225)
+202654,ASSET_CLASS,non_standard_value,'FAN' for 'MECH\\FAN'
+202654,STATUS,non_standard_value,'Op' for 'OPERATING'
+202654,MANUFACTURER,non_standard_value,'Siemens Ltd' for 'Siemens'
+202654,MODEL,model_variant,'' for '2CC2 512'
+202654,RATING,inconsistent_units,7.5kW written as 7.5kw
+216941,ASSET_TAG,tag_variant,'mor-pmp' for 'MOR-PMP'
+216941,INSTALL_DATE,year_only,1993-08-12
+297271,ASSET_ID,duplicate_record,same asset as GIS-44828 (G0227)
+297271,ASSET_DESC,name_variant,'Pump No.1 - Submersible' for 'Submersible Pump No. 1'
+297271,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\SUB'
+297271,REGION,non_standard_value,'Northern' for 'NORTH'
+297271,SERIAL_NO,serial_variant,'UNKNOWN' for '43336936'
+297271,INSTALL_DATE,conflicting_value,1993-09-09 vs 1992-09-09
+297271,RATING,inconsistent_units,75kW written as 75KW
+SS1903,ASSET_DESC,name_variant,'Submersible Pump (Unit 2)' for 'Submersible Pump No. 2'
+SS1903,ASSET_TAG,missing_value,'' for 'MOR-PMP-PMP-02'
+SS1903,ASSET_CLASS,non_standard_value,'PUMP' for 'PUMP\\SUB'
+SS1903,STATUS,non_standard_value,'OPR' for 'OPERATING'
+H069604,ASSET_ID,duplicate_record,same asset as SS1903 (G0228)
+H069604,ASSET_DESC,name_variant,'Pump No.2 - Submersible' for 'Submersible Pump No. 2'
+H069604,ASSET_TAG,missing_value,'' for 'MOR-PMP-PMP-02'
+H069604,REGION,non_standard_value,'NTH' for 'NORTH'
+H069604,MANUFACTURER,non_standard_value,'Xylem Flygt' for 'Flygt'
+H069604,SERIAL_NO,serial_variant,'SN-79826789' for '79826789'
+H069604,RATING,inconsistent_units,75kW written as 75
+H069604,INSTALL_DATE,missing_value,'N/A'
+SS7948,ASSET_TAG,tag_variant,'OLD-MOR-PMP-VSD-01' for 'MOR-PMP-VSD-01'
+SS7948,INSTALL_DATE,missing_value,'N/A'
+284290,ASSET_ID,duplicate_record,same asset as SS7948 (G0229)
+284290,ASSET_DESC,name_variant,'Pump Variable Speed Drive 01' for 'Pump Variable Speed Drive No. 1'
+284290,ASSET_TAG,tag_variant,'MORPMPVSD01' for 'MOR-PMP-VSD-01'
+284290,MODEL,model_variant,'ACQ580' for 'ACQ580'
+284290,INSTALL_DATE,year_only,2003-09-11
+284290,INSTALL_DATE,conflicting_value,2013-09-08 vs 2003-09-11
+284290,LATITUDE,zero_coordinates,
+H011904,ASSET_DESC,name_variant,'Drive No.2 - Pump Variable Speed' for 'Pump Variable Speed Drive No. 2'
+H011904,REGION,non_standard_value,'Northern' for 'NORTH'
+SS1802,ASSET_ID,duplicate_record,same asset as H011904 (G0230)
+SS1802,ASSET_DESC,name_variant,'Drive No.2 - Pump Variable Speed' for 'Pump Variable Speed Drive No. 2'
+SS1802,ASSET_TAG,tag_variant,'OLD-MOR-PMP-VSD-02' for 'MOR-PMP-VSD-02'
+SS1802,ASSET_CLASS,non_standard_value,'Variable Speed Drive' for 'VSD'
+SS1802,REGION,non_standard_value,'NTH' for 'NORTH'
+SS1802,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+282688,ASSET_TAG,tag_variant,'MOR VLV' for 'MOR-VLV'
+282688,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+282688,LATITUDE,sign_lost,34.722533 should be negative
+GIS-38420,ASSET_ID,duplicate_record,same asset as 282688 (G0231)
+GIS-38420,ASSET_TAG,tag_variant,'mor-vlv' for 'MOR-VLV'
+GIS-38420,INSTALL_DATE,year_only,1997-07-13
+SS6422,ASSET_ID,duplicate_record,same asset as H026423 (G0232)
+SS6422,ASSET_DESC,name_variant,'Valve No.1 - Non-Return' for 'Non-Return Valve No. 1'
+SS6422,ASSET_TAG,tag_variant,'MORVLVNRV01' for 'MOR-VLV-NRV-01'
+SS6422,STATUS,non_standard_value,'OPR' for 'OPERATING'
+SS6422,INSTALL_DATE,two_digit_year,2002-12-25
+SS6422,INSTALL_DATE,conflicting_value,2003-01-24 vs 2002-12-25
+SS6422,CRITICALITY,non_standard_value,'5' for '5'
+SS6422,MANUFACTURER,missing_value,''
+GIS-86133,ASSET_ID,duplicate_record,same asset as H026423 (G0232)
+GIS-86133,ASSET_DESC,name_variant,'Non-Return Valve 01' for 'Non-Return Valve No. 1'
+GIS-86133,ASSET_TAG,tag_variant,'MORVLVNRV01' for 'MOR-VLV-NRV-01'
+GIS-86133,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+GIS-86133,SERIAL_NO,serial_variant,'6131744' for '61317440'
+GIS-86133,INSTALL_DATE,conflicting_value,2003-01-24 vs 2002-12-25
+297508,ASSET_ID,duplicate_record,same asset as H026423 (G0232)
+297508,ASSET_DESC,name_variant,'Valve 1' for 'Non-Return Valve No. 1'
+297508,ASSET_TAG,tag_variant,'OLD-MOR-VLV-NRV-01' for 'MOR-VLV-NRV-01'
+297508,STATUS,non_standard_value,'In Service' for 'OPERATING'
+297508,SERIAL_NO,serial_variant,'' for '61317440'
+297508,INSTALL_DATE,two_digit_year,2002-12-25
+297508,CRITICALITY,non_standard_value,'H' for '5'
+SS7144,LATITUDE,missing_value,
+SS7144,RATING,missing_value,'UNKNOWN'
+H086988,ASSET_ID,duplicate_record,same asset as SS7144 (G0233)
+H086988,ASSET_DESC,name_variant,'Non-Return Valve 02' for 'Non-Return Valve No. 2'
+H086988,ASSET_TAG,tag_variant,'MORVLVNRV02' for 'MOR-VLV-NRV-02'
+H086988,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+H086988,MANUFACTURER,non_standard_value,'AVK Valves' for 'AVK'
+H086988,SERIAL_NO,serial_variant,'UNKNOWN' for 'SN68400278'
+H086988,CRITICALITY,non_standard_value,'A' for '1'
+H086988,INSTALL_DATE,missing_value,'UNKNOWN'
+SS3699,ASSET_ID,duplicate_record,same asset as GIS-12844 (G0234)
+SS3699,ASSET_DESC,name_variant,'Valve 1' for 'Isolation Gate Valve No. 1'
+SS3699,ASSET_TAG,tag_variant,'MOR-VLV-GV-1' for 'MOR-VLV-GV-01'
+SS3699,ASSET_CLASS,non_standard_value,'VALVE/GATE' for 'VALVE\\GATE'
+SS3699,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS3699,SERIAL_NO,serial_variant,'SN-44422722' for '44422722'
+SS3699,INSTALL_DATE,excel_serial_date,1991-03-10
+SS3699,CRITICALITY,non_standard_value,'3' for '2'
+SS3699,LATITUDE,missing_value,
+SS3699,INSTALL_DATE,missing_value,'N/A'
+SS0465,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS0465,LATITUDE,missing_value,
+GIS-23775,ASSET_ID,duplicate_record,same asset as SS0465 (G0235)
+GIS-23775,ASSET_DESC,name_variant,'Valve No.2 - Isolation Gate' for 'Isolation Gate Valve No. 2'
+GIS-23775,REGION,non_standard_value,'North' for 'NORTH'
+GIS-23775,MANUFACTURER,non_standard_value,'AVK Valves' for 'AVK'
+GIS-23775,CRITICALITY,non_standard_value,'Low' for '4'
+211157,ASSET_ID,duplicate_record,same asset as SS0465 (G0235)
+211157,ASSET_DESC,name_variant,'Valve No.2 - Isolation Gate' for 'Isolation Gate Valve No. 2'
+211157,ASSET_TAG,tag_variant,'MOR VLV GV 02' for 'MOR-VLV-GV-02'
+211157,ASSET_CLASS,non_standard_value,'Gate Valve' for 'VALVE\\GATE'
+211157,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+211157,SERIAL_NO,serial_variant,'SN-70734203' for 'S/N 70734203'
+211157,MODEL,missing_value,''
+288234,ASSET_CLASS,non_standard_value,'METER/FLOW' for 'METER\\FLOW'
+288234,INSTALL_DATE,year_only,1988-07-12
+GIS-10529,ASSET_ID,duplicate_record,same asset as 288234 (G0236)
+GIS-10529,ASSET_DESC,name_variant,'Rising Main Flow Meter - main' for 'Rising Main Flow Meter'
+GIS-10529,ASSET_TAG,tag_variant,'MORVLVFIT01' for 'MOR-VLV-FIT-01'
+GIS-10529,MANUFACTURER,non_standard_value,'Krone' for 'Krohne'
+GIS-10529,INSTALL_DATE,conflicting_value,1988-06-12 vs 1988-07-12
+SS0622,ASSET_ID,duplicate_record,same asset as 288234 (G0236)
+SS0622,ASSET_TAG,tag_variant,'MOR VLV FIT 01' for 'MOR-VLV-FIT-01'
+SS0622,MANUFACTURER,non_standard_value,'KROHNE' for 'Krohne'
+SS0622,MODEL,model_variant,'' for 'Optiflux 2000'
+SS0622,SERIAL_NO,serial_variant,'4102473' for '41024734'
+SS0622,CRITICALITY,non_standard_value,'High' for '1'
+SS0622,MANUFACTURER,missing_value,'UNKNOWN'
+H066444,ASSET_ID,duplicate_record,same asset as 288234 (G0236)
+H066444,MANUFACTURER,non_standard_value,'Krone' for 'Krohne'
+H066444,MODEL,model_variant,'OPTIFLUX 2000' for 'Optiflux 2000'
+H066444,INSTALL_DATE,conflicting_value,1989-07-12 vs 1988-07-12
+H066444,RATING,missing_value,'NULL'
+GIS-56176,ASSET_CLASS,non_standard_value,'PROCESS' for 'SYSTEM'
+289235,ASSET_ID,duplicate_record,same asset as GIS-56176 (G0237)
+289235,ASSET_TAG,tag_variant,'MORELC' for 'MOR-ELC'
+289235,INSTALL_DATE,missing_value,''
+H018066,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+SS4076,MANUFACTURER,missing_value,'N/A'
+H055452,ASSET_ID,duplicate_record,same asset as SS4076 (G0239)
+H055452,ASSET_TAG,tag_variant,'OLD-MOR-ELC-RTU-01' for 'MOR-ELC-RTU-01'
+H055452,REGION,non_standard_value,'Northern' for 'NORTH'
+H055452,CRITICALITY,non_standard_value,'High' for '5'
+GIS-77885,ASSET_TAG,tag_variant,'TOR WPS' for 'TOR-WPS'
+GIS-77885,ASSET_CLASS,non_standard_value,'SITE' for 'FACILITY'
+GIS-77885,INSTALL_DATE,two_digit_year,1990-03-10
+SS1789,ASSET_ID,duplicate_record,same asset as GIS-77885 (G0240)
+SS1789,ASSET_DESC,name_variant,'Torrens W.P.S.' for 'Torrens Water Pump Station'
+SS1789,ASSET_TAG,tag_variant,'TOR WPS' for 'TOR-WPS'
+SS1789,REGION,non_standard_value,'Metro' for 'METRO'
+SS1789,INSTALL_DATE,two_digit_year,1990-03-10
+SS1789,INSTALL_DATE,conflicting_value,2000-03-07 vs 1990-03-10
+271306,ASSET_DESC,name_variant,'PUMP SET' for 'Pump Set'
+271306,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS7382,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+SS7382,INSTALL_DATE,two_digit_year,2009-05-14
+260184,ASSET_DESC,name_variant,'Pump 2' for 'Duty Pump No. 2'
+260184,REGION,non_standard_value,'MET' for 'METRO'
+260184,INSTALL_DATE,two_digit_year,2002-06-13
+260184,LATITUDE,zero_coordinates,
+SS1687,ASSET_DESC,name_variant,'Duty Pump (Unit 3)' for 'Duty Pump No. 3'
+SS1687,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+SS1687,REGION,non_standard_value,'MET' for 'METRO'
+SS1687,LATITUDE,missing_value,
+SS1687,MODEL,missing_value,'UNKNOWN'
+H018685,ASSET_ID,duplicate_record,same asset as SS1687 (G0244)
+H018685,ASSET_DESC,name_variant,'Pump No.3 - Duty' for 'Duty Pump No. 3'
+H018685,ASSET_TAG,tag_variant,'OLD-TOR-PMP-PMP-03' for 'TOR-PMP-PMP-03'
+H018685,INSTALL_DATE,excel_serial_date,2005-10-28
+H018685,CRITICALITY,non_standard_value,'Med' for '3'
+H018685,RATING,inconsistent_units,110kW written as 110 kW
+238309,ASSET_ID,duplicate_record,same asset as SS1687 (G0244)
+238309,ASSET_TAG,tag_variant,'TORPMPPMP03' for 'TOR-PMP-PMP-03'
+238309,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+238309,MANUFACTURER,non_standard_value,'Grunfos' for 'Grundfos'
+238309,SERIAL_NO,serial_variant,'TBA' for '14111213'
+238309,RATING,inconsistent_units,110kW written as 110 kW
+292461,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H029782,ASSET_ID,duplicate_record,same asset as 292461 (G0245)
+H029782,ASSET_DESC,name_variant,'Pump Motor (Unit 1)' for 'Pump Motor No. 1'
+H029782,ASSET_TAG,missing_value,'' for 'TOR-PMP-MTR-01'
+H029782,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+H029782,MANUFACTURER,non_standard_value,'Weg' for 'WEG'
+H029782,INSTALL_DATE,conflicting_value,2020-10-13 vs 2010-10-16
+H029782,CRITICALITY,non_standard_value,'High' for '4'
+H029782,RATING,inconsistent_units,90kW written as 0.09 MW
+SS3270,ASSET_ID,duplicate_record,same asset as 292461 (G0245)
+SS3270,ASSET_DESC,name_variant,'Pump Motor (Unit 1)' for 'Pump Motor No. 1'
+SS3270,ASSET_TAG,tag_variant,'tor-pmp-mtr-01' for 'TOR-PMP-MTR-01'
+SS3270,MANUFACTURER,non_standard_value,'W.E.G.' for 'WEG'
+SS3270,SERIAL_NO,serial_variant,'UNKNOWN' for 'S/N 70079037'
+SS3270,INSTALL_DATE,year_only,2010-10-16
+SS3270,CRITICALITY,non_standard_value,'High' for '4'
+SS3270,RATING,inconsistent_units,90kW written as 0.09 MW
+SS3270,LATITUDE,missing_value,
+SS3270,SITE_CODE,missing_value,'-'
+GIS-61960,ASSET_ID,duplicate_record,same asset as 292461 (G0245)
+GIS-61960,ASSET_DESC,name_variant,'Motor No.1 - Pump' for 'Pump Motor No. 1'
+GIS-61960,ASSET_TAG,tag_variant,'OLD-TOR-PMP-MTR-01' for 'TOR-PMP-MTR-01'
+GIS-61960,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-61960,ASSET_CLASS,non_standard_value,'MOTOR' for 'MOTOR\\LV'
+GIS-61960,MANUFACTURER,non_standard_value,'W.E.G.' for 'WEG'
+GIS-61960,CRITICALITY,non_standard_value,'Med' for '4'
+H020024,INSTALL_DATE,month_day_swapped,1998-04-02
+GIS-48598,ASSET_TAG,tag_variant,'TOR-PMP-MTR-3' for 'TOR-PMP-MTR-03'
+GIS-48598,ASSET_CLASS,non_standard_value,'MOTOR' for 'MOTOR\\LV'
+GIS-48598,REGION,non_standard_value,'MET' for 'METRO'
+GIS-48598,STATUS,non_standard_value,'INACTIVE' for 'DECOMMISSIONED'
+GIS-48598,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+GIS-48598,INSTALL_DATE,two_digit_year,1998-07-24
+SS9977,ASSET_ID,duplicate_record,same asset as GIS-48598 (G0247)
+SS9977,ASSET_DESC,name_variant,'Motor No.3 - Pump' for 'Pump Motor No. 3'
+SS9977,ASSET_TAG,tag_variant,'TOR-PMP-MTR-3' for 'TOR-PMP-MTR-03'
+SS9977,MODEL,model_variant,'W22 315 ' for 'W22 315'
+SS9977,INSTALL_DATE,conflicting_value,1998-08-23 vs 1998-07-24
+SS9977,RATING,inconsistent_units,15kW written as 15 kW
+SS9977,MODEL,missing_value,''
+SS9495,ASSET_DESC,name_variant,'Drive 1' for 'Pump Variable Speed Drive No. 1'
+SS9495,ASSET_CLASS,non_standard_value,'DRIVE\\VSD' for 'VSD'
+SS9495,MANUFACTURER,non_standard_value,'Danfoss VLT' for 'Danfoss'
+SS9495,INSTALL_DATE,year_only,2016-08-20
+GIS-98175,ASSET_CLASS,non_standard_value,'V.S.D.' for 'VSD'
+GIS-98175,STATUS,non_standard_value,'Op' for 'OPERATING'
+272928,ASSET_ID,duplicate_record,same asset as GIS-98175 (G0249)
+272928,ASSET_DESC,name_variant,'Pump Variable Speed Drive (Unit 2)' for 'Pump Variable Speed Drive No. 2'
+272928,REGION,non_standard_value,'MET' for 'METRO'
+272928,MANUFACTURER,non_standard_value,'A.B.B.' for 'ABB'
+272928,INSTALL_DATE,month_day_swapped,1999-07-11
+272928,RATING,inconsistent_units,75kW written as 0.075 MW
+H032006,ASSET_ID,duplicate_record,same asset as GIS-98175 (G0249)
+H032006,ASSET_DESC,name_variant,'Pump Variable Speed Drive 02' for 'Pump Variable Speed Drive No. 2'
+H032006,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H032006,MANUFACTURER,non_standard_value,'abb' for 'ABB'
+H032006,SERIAL_NO,serial_variant,'' for '47485318'
+H032006,INSTALL_DATE,conflicting_value,1999-08-10 vs 1999-07-11
+SS4573,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS4573,REGION,non_standard_value,'Metro' for 'METRO'
+SS4573,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+SS4573,LATITUDE,missing_value,
+H007779,ASSET_ID,duplicate_record,same asset as SS4573 (G0250)
+H007779,ASSET_DESC,name_variant,'Drive No.3 - Pump Variable Speed' for 'Pump Variable Speed Drive No. 3'
+H007779,ASSET_TAG,tag_variant,'TORPMPVSD03' for 'TOR-PMP-VSD-03'
+H007779,REGION,non_standard_value,'Metro' for 'METRO'
+H007779,MANUFACTURER,non_standard_value,'Danfos' for 'Danfoss'
+H007779,MODEL,model_variant,'' for 'ACQ580'
+H007779,SERIAL_NO,serial_variant,'UNKNOWN' for 'SN12495627'
+H007779,INSTALL_DATE,year_only,2017-03-24
+H007779,CRITICALITY,non_standard_value,'C' for '1'
+204148,ASSET_ID,duplicate_record,same asset as SS4573 (G0250)
+204148,ASSET_TAG,tag_variant,'TORPMPVSD03' for 'TOR-PMP-VSD-03'
+204148,ASSET_LEVEL,non_standard_value,'L3' for '3'
+204148,MODEL,model_variant,'ACQ580' for 'ACQ580'
+SS7876,ASSET_TAG,tag_variant,'OLD-TOR-PMP-FIT-01' for 'TOR-PMP-FIT-01'
+GIS-81355,ASSET_LEVEL,non_standard_value,'System' for '2'
+GIS-81355,LATITUDE,zero_coordinates,
+258561,ASSET_DESC,name_variant,'Suction Isolation Valve 1' for 'Suction Isolation Valve No. 1'
+258561,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+GIS-18301,ASSET_ID,duplicate_record,same asset as 258561 (G0253)
+GIS-18301,ASSET_DESC,name_variant,'Suction Isolation Valve 1' for 'Suction Isolation Valve No. 1'
+GIS-18301,ASSET_TAG,tag_variant,'tor-vlv-sv-01' for 'TOR-VLV-SV-01'
+GIS-18301,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-18301,ASSET_CLASS,non_standard_value,'VALVE' for 'VALVE\\BFLY'
+GIS-18301,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-18301,MANUFACTURER,non_standard_value,'Emerson Keystone' for 'Keystone'
+GIS-18301,CRITICALITY,non_standard_value,'Low' for '1'
+GIS-18301,MANUFACTURER,missing_value,' '
+H054855,ASSET_ID,duplicate_record,same asset as 258561 (G0253)
+H054855,ASSET_DESC,name_variant,'SUCTION ISOLATION VALVE #1' for 'Suction Isolation Valve No. 1'
+H054855,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+H054855,SERIAL_NO,serial_variant,'' for 'S/N 39286906'
+H054855,LATITUDE,lat_long_swapped,
+GIS-19542,ASSET_TAG,tag_variant,'TOR-VLV-SV-2' for 'TOR-VLV-SV-02'
+GIS-19542,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS7126,ASSET_ID,duplicate_record,same asset as GIS-19542 (G0254)
+SS7126,ASSET_TAG,tag_variant,'TOR-VLV-SV-2' for 'TOR-VLV-SV-02'
+SS7126,ASSET_LEVEL,non_standard_value,'L3' for '3'
+SS7126,REGION,non_standard_value,'METROPOLITAN' for 'METRO'
+SS7126,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS7126,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+SS7126,MODEL,model_variant,'FIG 990' for 'Fig 990'
+SS7126,SERIAL_NO,serial_variant,'TBA' for 'SN85774104'
+SS7126,INSTALL_DATE,two_digit_year,1996-02-27
+SS7126,INSTALL_DATE,conflicting_value,1996-03-28 vs 1996-02-27
+SS7126,MODEL,missing_value,'-'
+250200,ASSET_DESC,name_variant,'Valve No.3 - Suction Isolation' for 'Suction Isolation Valve No. 3'
+250200,ASSET_CLASS,non_standard_value,'BUTTERFLY VALVE' for 'VALVE\\BFLY'
+250200,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+275298,REGION,non_standard_value,'MET' for 'METRO'
+275298,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+275298,INSTALL_DATE,missing_value,'TBA'
+SS8037,ASSET_ID,duplicate_record,same asset as 275298 (G0256)
+SS8037,ASSET_DESC,name_variant,'Valve 1' for 'Delivery Check Valve No. 1'
+SS8037,ASSET_TAG,tag_variant,'tor-vlv-nrv-01' for 'TOR-VLV-NRV-01'
+SS8037,ASSET_CLASS,non_standard_value,'Non Return Valve' for 'VALVE\\CHECK'
+SS8037,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+SS8037,SERIAL_NO,serial_variant,'5220255' for '52202555'
+GIS-37462,ASSET_ID,duplicate_record,same asset as 275298 (G0256)
+GIS-37462,ASSET_DESC,name_variant,'Delivery Check Valve (Unit 1)' for 'Delivery Check Valve No. 1'
+GIS-37462,ASSET_TAG,tag_variant,'TOR VLV NRV 01' for 'TOR-VLV-NRV-01'
+GIS-37462,MANUFACTURER,non_standard_value,'A.V.K.' for 'AVK'
+GIS-37462,MODEL,model_variant,'Series41' for 'Series 41'
+GIS-37462,SERIAL_NO,serial_variant,'52202555' for '52202555'
+220204,ASSET_LEVEL,non_standard_value,'EQUIP' for '3'
+220204,STATUS,non_standard_value,'OPR' for 'OPERATING'
+220204,INSTALL_DATE,two_digit_year,1999-01-07
+H064210,ASSET_ID,duplicate_record,same asset as 220204 (G0257)
+H064210,ASSET_DESC,name_variant,'Delivery Check Valve 02' for 'Delivery Check Valve No. 2'
+H064210,ASSET_TAG,tag_variant,'tor-vlv-nrv-02' for 'TOR-VLV-NRV-02'
+H064210,ASSET_CLASS,non_standard_value,'Check Valve' for 'VALVE\\CHECK'
+H064210,REGION,non_standard_value,'Metro' for 'METRO'
+H064210,MANUFACTURER,non_standard_value,'AVK Valves' for 'AVK'
+H064210,SERIAL_NO,serial_variant,'UNKNOWN' for '83240656'
+H064210,CRITICALITY,non_standard_value,'High' for '2'
+SS6128,ASSET_ID,duplicate_record,same asset as 220204 (G0257)
+SS6128,ASSET_DESC,name_variant,'Valve 2' for 'Delivery Check Valve No. 2'
+SS6128,ASSET_TAG,tag_variant,'TORVLVNRV02' for 'TOR-VLV-NRV-02'
+SS6128,ASSET_LEVEL,non_standard_value,'Level 3' for '3'
+SS6128,ASSET_CLASS,non_standard_value,'Check Valve' for 'VALVE\\CHECK'
+SS6128,STATUS,non_standard_value,'Op' for 'OPERATING'
+SS6128,INSTALL_DATE,year_only,1999-01-07
+SS6128,INSTALL_DATE,conflicting_value,1998-12-08 vs 1999-01-07
+SS6128,LATITUDE,missing_value,
+SS6128,SITE_CODE,missing_value,'TBA'
+SS4075,REGION,non_standard_value,'Metro' for 'METRO'
+H004214,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+H004214,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+262202,ASSET_ID,duplicate_record,same asset as H004214 (G0259)
+262202,ASSET_DESC,name_variant,'TOR Electrical and Controls' for 'Electrical & Control'
+262202,ASSET_TAG,tag_variant,'TOR-ELC-1' for 'TOR-ELC'
+262202,INSTALL_DATE,two_digit_year,1996-05-24
+SS3969,STATUS,non_standard_value,'Active' for 'OPERATING'
+SS3969,LATITUDE,missing_value,
+GIS-31560,ASSET_ID,duplicate_record,same asset as SS3969 (G0260)
+GIS-31560,ASSET_DESC,name_variant,'Cabinet' for 'Pump Control Cabinet'
+GIS-31560,MANUFACTURER,non_standard_value,'Square D' for 'Schneider Electric'
+GIS-31560,SERIAL_NO,serial_variant,'SN-37236087' for 'SN37236087'
+GIS-23819,REGION,non_standard_value,'MET' for 'METRO'
+GIS-23819,STATUS,non_standard_value,'Active' for 'OPERATING'
+GIS-23819,MANUFACTURER,non_standard_value,'Kingfisher RTU' for 'Kingfisher'
+H093326,ASSET_ID,duplicate_record,same asset as GIS-23819 (G0261)
+H093326,STATUS,non_standard_value,'ACTIVE' for 'OPERATING'
+H093326,MANUFACTURER,non_standard_value,'KINGFISHER' for 'Kingfisher'
+H093326,INSTALL_DATE,conflicting_value,2002-06-01 vs 2003-06-01
+H093326,LATITUDE,lat_long_swapped,
+H093326,SITE_CODE,missing_value,'-'
+GIS-72299,ASSET_TAG,tag_variant,'trr-res' for 'TRR-RES'
+GIS-72299,STATUS,non_standard_value,'IN SVC' for 'OPERATING'
+SS1800,ASSET_ID,duplicate_record,same asset as GIS-72299 (G0262)
+SS1800,ASSET_DESC,name_variant,'Torrens Res.' for 'Torrens Storage Reservoir'
+SS1800,ASSET_LEVEL,non_standard_value,'Facility' for '1'
+SS1800,CRITICALITY,non_standard_value,'3' for '2'
+SS1800,LATITUDE,missing_value,
+SS4791,ASSET_DESC,name_variant,'RESERVOIR TANK (TORRENS)' for 'Storage Tank'
+SS4791,INSTALL_DATE,year_only,1966-06-27
+H094380,ASSET_ID,duplicate_record,same asset as SS4791 (G0263)
+H094380,ASSET_DESC,name_variant,'Tank (TORRENS)' for 'Storage Tank'
+H094380,ASSET_TAG,tag_variant,'trr-tnk' for 'TRR-TNK'
+H094380,REGION,non_standard_value,'Metro' for 'METRO'
+H094380,STATUS,non_standard_value,'In Service' for 'OPERATING'
+H094380,INSTALL_DATE,year_only,1966-06-27
+H094380,CRITICALITY,non_standard_value,'Med' for '2'
+SS3225,STATUS,non_standard_value,'Op' for 'OPERATING'
+GIS-57384,ASSET_ID,duplicate_record,same asset as SS3225 (G0264)
+GIS-57384,ASSET_DESC,name_variant,'RESERVOIR STRUCTURE' for 'Reservoir Structure'
+GIS-57384,ASSET_TAG,tag_variant,'TRR-TNK-STR-1' for 'TRR-TNK-STR-01'
+GIS-57384,ASSET_CLASS,non_standard_value,'Reservoir' for 'STRUCT\\TANK'
+237746,ASSET_ID,duplicate_record,same asset as SS3225 (G0264)
+237746,ASSET_DESC,name_variant,'RESERVOIR STRUCTURE' for 'Reservoir Structure'
+237746,ASSET_TAG,missing_value,'' for 'TRR-TNK-STR-01'
+237746,REGION,non_standard_value,'Metro' for 'METRO'
+237746,CRITICALITY,non_standard_value,'Med' for '2'
+237746,LATITUDE,sign_lost,34.869844 should be negative
+H098781,ASSET_ID,duplicate_record,same asset as SS3225 (G0264)
+H098781,ASSET_DESC,name_variant,'RESERVOIR STRUCTURE' for 'Reservoir Structure'
+H098781,ASSET_TAG,tag_variant,'OLD-TRR-TNK-STR-01' for 'TRR-TNK-STR-01'
+H098781,ASSET_LEVEL,non_standard_value,'3.0' for '3'
+H098781,INSTALL_DATE,month_day_swapped,2011-02-12
+H098781,INSTALL_DATE,conflicting_value,2011-01-13 vs 2011-02-12
+250591,ASSET_TAG,missing_value,'' for 'TRR-TNK-LIT-01'
+250591,ASSET_CLASS,non_standard_value,'LIT' for 'INSTR\\LEVEL'
+250591,STATUS,non_standard_value,'OPR' for 'OPERATING'
+250591,INSTALL_DATE,year_only,1976-05-17
+GIS-77460,ASSET_LEVEL,non_standard_value,'System' for '2'
+GIS-77460,ASSET_CLASS,non_standard_value,'PROC AREA' for 'SYSTEM'
+GIS-77460,INSTALL_DATE,excel_serial_date,1965-05-24
+GIS-77460,SITE_CODE,missing_value,''
+H088724,ASSET_ID,duplicate_record,same asset as GIS-77460 (G0266)
+H088724,ASSET_DESC,name_variant,'Inlet/Outlet Valves (TORRENS)' for 'Inlet & Outlet Valves'
+H088724,ASSET_TAG,tag_variant,'TRR-VLV-1' for 'TRR-VLV'
+H088724,INSTALL_DATE,two_digit_year,1965-05-24
+H088724,STATUS,status_conflict,'Removed' while another record of G0266 is operating
+H011951,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+SS8992,ASSET_ID,duplicate_record,same asset as H011951 (G0267)
+SS8992,ASSET_DESC,name_variant,'inlet valve' for 'Inlet Valve'
+SS8992,ASSET_TAG,tag_variant,'trr-vlv-inv-01' for 'TRR-VLV-INV-01'
+SS8992,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+SS8992,MODEL,model_variant,'Fig990' for 'Fig 990'
+SS8992,INSTALL_DATE,missing_value,'UNKNOWN'
+SS8992,SITE_CODE,missing_value,''
+GIS-97711,ASSET_ID,duplicate_record,same asset as H011951 (G0267)
+GIS-97711,ASSET_DESC,name_variant,'Valve' for 'Inlet Valve'
+GIS-97711,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+GIS-97711,RATING,missing_value,' '
+222033,ASSET_ID,duplicate_record,same asset as H011951 (G0267)
+222033,ASSET_DESC,name_variant,'Inlet Valve - main' for 'Inlet Valve'
+222033,ASSET_TAG,tag_variant,'TRR-VLV-INV-1' for 'TRR-VLV-INV-01'
+222033,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+222033,SERIAL_NO,serial_variant,'TBA' for 'S/N 24477691'
+222033,LATITUDE,lat_long_swapped,
+SS3028,INSTALL_DATE,excel_serial_date,1990-07-28
+H032824,ASSET_ID,duplicate_record,same asset as SS3028 (G0268)
+H032824,REGION,non_standard_value,'Metro' for 'METRO'
+H032824,MANUFACTURER,non_standard_value,'KEYSTONE' for 'Keystone'
+H032824,MODEL,model_variant,'' for 'Fig 990'
+H032824,SERIAL_NO,serial_variant,'' for 'S/N 13982017'
+214156,ASSET_ID,duplicate_record,same asset as SS3028 (G0268)
+214156,ASSET_TAG,tag_variant,'TRR-VLV-OTV-1' for 'TRR-VLV-OTV-01'
+214156,ASSET_LEVEL,non_standard_value,'Equipment' for '3'
+214156,ASSET_CLASS,non_standard_value,'Butterfly Valve' for 'VALVE\\BFLY'
+214156,MANUFACTURER,non_standard_value,'Tyco Keystone' for 'Keystone'
+214156,MODEL,model_variant,'Fig 990 ' for 'Fig 990'
+GIS-72323,ASSET_ID,duplicate_record,same asset as SS3028 (G0268)
+GIS-72323,ASSET_DESC,name_variant,'OUTLET VALVE' for 'Outlet Valve'
+GIS-72323,ASSET_TAG,tag_variant,'TRR VLV OTV 01' for 'TRR-VLV-OTV-01'
+GIS-72323,ASSET_LEVEL,non_standard_value,'L3' for '3'
+GIS-72323,STATUS,non_standard_value,'In Service' for 'OPERATING'
+GIS-72323,SERIAL_NO,serial_variant,'' for 'S/N 13982017'
+244033,INSTALL_DATE,two_digit_year,1983-03-27
+H023147,ASSET_LEVEL,non_standard_value,'PROC' for '2'
+H023147,ASSET_CLASS,non_standard_value,'System' for 'SYSTEM'
+GIS-59460,ASSET_TAG,tag_variant,'OLD-TRR-WQM-CLA-01' for 'TRR-WQM-CLA-01'
+GIS-59460,ASSET_CLASS,non_standard_value,'WQ ANALYSER' for 'INSTR\\ANALYSER'
+SS5220,ASSET_ID,duplicate_record,same asset as GIS-59460 (G0271)
+SS5220,ASSET_DESC,name_variant,'chlorine residual analyser' for 'Chlorine Residual Analyser'
+SS5220,ASSET_TAG,tag_variant,'TRR WQM CLA 01' for 'TRR-WQM-CLA-01'
+H095196,STATUS,non_standard_value,'OPERATING ' for 'OPERATING'
+GIS-55835,ASSET_ID,duplicate_record,same asset as H095196 (G0272)
+GIS-55835,ASSET_DESC,name_variant,'Rechlorination Dosing Pump (Unit 1)' for 'Rechlorination Dosing Pump No. 1'
+GIS-55835,ASSET_TAG,missing_value,'' for 'TRR-WQM-DOS-01'
+GIS-55835,MANUFACTURER,non_standard_value,'Grundfos Pumps Pty Ltd' for 'Grundfos'
+GIS-55835,MODEL,model_variant,'DDA 7.5-16' for 'DDA 7.5-16'
+GIS-55835,SERIAL_NO,serial_variant,'4878854' for '48788546'
+GIS-55835,INSTALL_DATE,conflicting_value,1998-01-17 vs 1997-01-17
+GIS-55835,CRITICALITY,non_standard_value,'Low' for '4'
+GIS-55835,RATING,inconsistent_units,0.55kW written as 0.55 kW
+SS3147,ASSET_TAG,tag_variant,'TRRWQMDOS02' for 'TRR-WQM-DOS-02'
+SS3147,STATUS,non_standard_value,'In Service' for 'OPERATING'
+SS3147,LATITUDE,missing_value,
+SS3147,INSTALL_DATE,missing_value,'UNKNOWN'
+216836,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to H075019
+251796,PARENT_ASSET_ID,orphan_parent,SS1539 doesn't exist; should be G0002
+SS1430,PARENT_ASSET_ID,missing_parent,should be under G0002
+SS1470,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to H075019
+H090135,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+GIS-70067,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+GIS-44315,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to H090135
+H040317,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to GIS-70067
+SS8433,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to SS1470
+H095366,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to SS1470
+GIS-58474,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to H090135
+H016843,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to H090135
+GIS-71307,PARENT_ASSET_ID,parent_is_duplicate,parent G0007 has 3 records; linked to GIS-70067
+GIS-96237,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+H029099,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+217423,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+GIS-11264,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+GIS-11264,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+268610,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to GIS-96237
+H021533,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+GIS-67564,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to GIS-96237
+201992,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+H081046,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+GIS-89639,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+271250,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to GIS-96237
+GIS-52896,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+SS4695,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+SS4695,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+GIS-97963,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+293657,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+H034167,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+H066467,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+SS9944,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+282726,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+H077512,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to GIS-96237
+GIS-44722,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+H030961,PARENT_ASSET_ID,parent_is_duplicate,parent G0012 has 2 records; linked to H029099
+239480,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+GIS-67314,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to SS5746
+SS6017,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to H075019
+SS2336,PARENT_ASSET_ID,parent_is_duplicate,parent G0023 has 3 records; linked to 239480
+SS9762,PARENT_ASSET_ID,parent_is_duplicate,parent G0023 has 3 records; linked to SS6017
+GIS-20373,PARENT_ASSET_ID,parent_is_duplicate,parent G0023 has 3 records; linked to SS6017
+SS6181,PARENT_ASSET_ID,parent_is_duplicate,parent G0023 has 3 records; linked to SS6017
+H080143,PARENT_ASSET_ID,parent_is_duplicate,parent G0023 has 3 records; linked to GIS-67314
+223785,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to SS5746
+H090133,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+SS4088,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to SS5746
+SS2331,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to H090133
+297442,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to 223785
+GIS-19187,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to H090133
+226543,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to 223785
+SS1677,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to SS4088
+220304,PARENT_ASSET_ID,parent_is_duplicate,parent G0028 has 3 records; linked to SS4088
+266255,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+266255,PARENT_ASSET_ID,missing_parent,should be under G0001
+SS7621,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0001
+H093547,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to SS5746
+SS0995,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+SS0995,PARENT_ASSET_ID,missing_parent,should be under G0001
+GIS-25159,PARENT_ASSET_ID,parent_is_duplicate,parent G0001 has 3 records; linked to 204118
+H001619,PARENT_ASSET_ID,parent_is_duplicate,parent G0037 has 3 records; linked to GIS-25159
+H038842,PARENT_ASSET_ID,parent_is_duplicate,parent G0037 has 3 records; linked to GIS-25159
+281243,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+H076927,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to H047826
+GIS-64120,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to GIS-33637
+SS1639,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to GIS-64120
+GIS-89189,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to GIS-64120
+SS6446,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to 281243
+SS6446,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+241305,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to 281243
+SS9389,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to H076927
+GIS-73053,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to H076927
+H004998,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to H076927
+SS3943,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to 281243
+287042,PARENT_ASSET_ID,parent_is_duplicate,parent G0041 has 3 records; linked to 281243
+272971,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to GIS-33637
+H071527,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+SS6738,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+SS9444,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+SS9444,PARENT_ASSET_ID,missing_parent,should be under G0047
+GIS-22374,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to H071527
+GIS-22374,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+GIS-83153,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+SS1527,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to H071527
+GIS-79231,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+SS7357,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+291699,PARENT_ASSET_ID,parent_is_duplicate,parent G0047 has 2 records; linked to 272971
+291699,PARENT_ASSET_ID,orphan_parent,GIS-48287 doesn't exist; should be G0047
+GIS-13125,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to SS2074
+SS3665,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to SS2074
+GIS-72751,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+SS1293,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to GIS-13125
+277022,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+H001373,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+SS0453,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to GIS-13125
+H065733,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+H093494,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to GIS-13125
+263347,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to GIS-13125
+281664,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+GIS-77559,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+276742,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to SS3665
+H070494,PARENT_ASSET_ID,parent_is_duplicate,parent G0053 has 2 records; linked to GIS-13125
+257281,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+257281,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H065187,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to H047826
+H067776,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to H065187
+GIS-75337,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to 257281
+SS9337,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to 257281
+216408,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to 257281
+SS0675,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to 257281
+GIS-79155,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to H065187
+H029396,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to H065187
+GIS-12373,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to 257281
+H048170,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to H065187
+SS5308,PARENT_ASSET_ID,parent_is_duplicate,parent G0062 has 2 records; linked to H065187
+SS1984,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+248795,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+GIS-92602,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to 236466
+SS7815,PARENT_ASSET_ID,parent_is_duplicate,parent G0040 has 4 records; linked to GIS-33637
+SS9349,PARENT_ASSET_ID,parent_is_duplicate,parent G0078 has 3 records; linked to SS7815
+GIS-79825,PARENT_ASSET_ID,parent_is_duplicate,parent G0078 has 3 records; linked to GIS-92602
+GIS-83995,PARENT_ASSET_ID,parent_is_duplicate,parent G0078 has 3 records; linked to GIS-92602
+GIS-18242,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+GIS-18242,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H076036,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to H066848
+SS9329,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+H014357,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+H075362,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+GIS-73069,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+217751,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+GIS-22039,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+208374,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+SS4004,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+H005562,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+GIS-29807,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+257941,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to GIS-18242
+SS2356,PARENT_ASSET_ID,parent_is_duplicate,parent G0082 has 2 records; linked to H076036
+GIS-52303,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+GIS-52303,PARENT_ASSET_ID,orphan_parent,H025340 doesn't exist; should be G0081
+204661,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to 231100
+247606,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to 204661
+SS4120,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+SS4120,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H080858,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+GIS-83380,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to 204661
+GIS-93582,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+SS5341,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to 204661
+SS5341,PARENT_ASSET_ID,orphan_parent,SS6691 doesn't exist; should be G0088
+H049045,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+H049045,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0081
+211851,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to 204661
+H018282,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+294428,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+294428,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H090927,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+223045,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to 204661
+SS1734,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+H083636,PARENT_ASSET_ID,parent_is_duplicate,parent G0088 has 2 records; linked to GIS-52303
+H037631,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+263058,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+221624,PARENT_ASSET_ID,missing_parent,should be under G0094
+GIS-39723,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to SS8396
+SS3571,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to H066848
+H057988,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+203939,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to SS3571
+H056536,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to GIS-39723
+GIS-13515,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to SS3571
+SS4847,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to H057988
+SS4847,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H014772,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to H057988
+SS1340,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to H057988
+264475,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to H057988
+SS6337,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to SS3571
+GIS-25021,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to SS3571
+GIS-13004,PARENT_ASSET_ID,parent_is_duplicate,parent G0103 has 3 records; linked to SS3571
+H068820,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+GIS-78684,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to 231100
+H080990,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to GIS-78684
+250802,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+H060701,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+255729,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+240065,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+GIS-56899,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to GIS-78684
+GIS-56899,PARENT_ASSET_ID,missing_parent,should be under G0108
+SS2639,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+GIS-63490,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+GIS-52342,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+SS0741,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+SS9162,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+227918,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+227918,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0081
+H088752,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to GIS-78684
+GIS-87668,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+SS0407,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to GIS-78684
+264082,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+SS5026,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+SS8068,PARENT_ASSET_ID,parent_is_duplicate,parent G0108 has 2 records; linked to H068820
+GIS-86995,PARENT_ASSET_ID,parent_is_duplicate,parent G0081 has 4 records; linked to GIS-50540
+299388,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+299388,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+SS0120,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to SS5293
+H038895,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+GIS-56554,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+265371,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to SS0120
+290711,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to GIS-56554
+H069258,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to GIS-56554
+GIS-72610,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to SS0120
+GIS-88158,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to H038895
+251662,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to GIS-56554
+GIS-50091,PARENT_ASSET_ID,parent_is_duplicate,parent G0128 has 3 records; linked to GIS-56554
+GIS-77950,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to SS5293
+GIS-12963,PARENT_ASSET_ID,orphan_parent,SS0309 doesn't exist; should be G0133
+209757,PARENT_ASSET_ID,orphan_parent,H061407 doesn't exist; should be G0133
+SS4544,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H050422,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+214797,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to SS5293
+H096048,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to H050422
+GIS-81884,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to 214797
+215002,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to 214797
+SS5537,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to H050422
+221206,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to 214797
+GIS-32338,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to H050422
+SS4485,PARENT_ASSET_ID,parent_is_duplicate,parent G0144 has 2 records; linked to H050422
+SS6231,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+264389,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to SS5293
+276362,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to SS6231
+SS3880,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to 264389
+H084846,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to 264389
+H084846,PARENT_ASSET_ID,missing_parent,should be under G0149
+277447,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to 264389
+SS1353,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to 264389
+273558,PARENT_ASSET_ID,parent_is_duplicate,parent G0149 has 2 records; linked to SS6231
+273558,PARENT_ASSET_ID,missing_parent,should be under G0149
+H032265,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to GIS-71618
+H007218,PARENT_ASSET_ID,parent_is_duplicate,parent G0122 has 2 records; linked to SS5293
+H015274,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H068547,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to H038493
+296034,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+GIS-10908,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to H038493
+H081611,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to GIS-10908
+SS6281,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to GIS-10908
+245503,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to H068547
+H088156,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to GIS-10908
+SS9998,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to 296034
+GIS-37681,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to 296034
+SS1564,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to 296034
+SS4737,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to 296034
+H048252,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to H068547
+H019221,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to H068547
+GIS-11784,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to H068547
+GIS-11784,PARENT_ASSET_ID,missing_parent,should be under G0162
+SS5990,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to 296034
+SS5990,PARENT_ASSET_ID,missing_parent,should be under G0162
+249937,PARENT_ASSET_ID,parent_is_duplicate,parent G0162 has 3 records; linked to GIS-10908
+SS1574,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+268121,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0161
+H048770,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0161
+263685,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to H038493
+GIS-70823,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0161
+272176,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0161
+H054435,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0161
+266476,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+SS6532,PARENT_ASSET_ID,missing_parent,should be under G0183
+GIS-67850,PARENT_ASSET_ID,missing_parent,should be under G0183
+SS4021,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+GIS-82570,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+SS8351,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+GIS-28220,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+219791,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+H016736,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+H016736,PARENT_ASSET_ID,missing_parent,should be under G0188
+SS8862,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+H054000,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+H017256,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+SS7349,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+239128,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+GIS-16772,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+H056428,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+SS7367,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+H066486,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to GIS-82570
+GIS-32163,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+290527,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+H071732,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+293848,PARENT_ASSET_ID,parent_is_duplicate,parent G0188 has 2 records; linked to SS4021
+GIS-64800,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to 213410
+225074,PARENT_ASSET_ID,parent_is_duplicate,parent G0161 has 2 records; linked to H038493
+GIS-43415,PARENT_ASSET_ID,parent_is_duplicate,parent G0199 has 2 records; linked to GIS-64800
+H009279,PARENT_ASSET_ID,parent_is_duplicate,parent G0199 has 2 records; linked to GIS-64800
+237901,PARENT_ASSET_ID,parent_is_duplicate,parent G0199 has 2 records; linked to GIS-64800
+SS4474,PARENT_ASSET_ID,parent_is_duplicate,parent G0199 has 2 records; linked to 225074
+SS4474,PARENT_ASSET_ID,missing_parent,should be under G0199
+217200,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to H057089
+217200,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+SS5810,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to GIS-32825
+H022760,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to SS5810
+H022760,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0202
+H026908,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to 217200
+H026908,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0202
+H066461,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to 217200
+GIS-98703,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to 217200
+SS3494,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to 217200
+SS3494,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+262763,PARENT_ASSET_ID,parent_is_duplicate,parent G0203 has 2 records; linked to 217200
+SS5949,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to SS4863
+237164,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to GIS-32825
+GIS-97288,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to GIS-32825
+GIS-96584,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to 237164
+SS0781,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+211029,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+H065450,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to 237164
+GIS-21341,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+235277,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to GIS-97288
+GIS-48584,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+292801,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+SS8877,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to SS5949
+GIS-99484,PARENT_ASSET_ID,parent_is_duplicate,parent G0207 has 3 records; linked to GIS-97288
+SS7644,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to H057089
+GIS-74082,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0202
+SS9425,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to GIS-32825
+GIS-75846,PARENT_ASSET_ID,parent_is_duplicate,parent G0202 has 3 records; linked to SS4863
+GIS-95383,PARENT_ASSET_ID,parent_is_duplicate,parent G0218 has 2 records; linked to GIS-75846
+233896,PARENT_ASSET_ID,parent_is_duplicate,parent G0218 has 2 records; linked to GIS-75846
+275126,PARENT_ASSET_ID,parent_is_duplicate,parent G0218 has 2 records; linked to GIS-75846
+229805,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to GIS-34986
+SS2324,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to GIS-34986
+H039665,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to SS8009
+H058264,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to H039665
+207875,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to 229805
+SS1452,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to 229805
+291383,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to 229805
+SS1436,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to 229805
+202654,PARENT_ASSET_ID,parent_is_duplicate,parent G0222 has 3 records; linked to H039665
+216941,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to 277127
+GIS-44828,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+282688,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to SS8009
+GIS-38420,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to GIS-34986
+H026423,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+SS6422,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+SS6422,PARENT_ASSET_ID,orphan_parent,SS5462 doesn't exist; should be G0231
+GIS-86133,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+297508,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+SS7144,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+H086988,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+GIS-12844,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+SS3699,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+SS0465,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+GIS-23775,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+211157,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to GIS-38420
+288234,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+GIS-10529,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+SS0622,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+H066444,PARENT_ASSET_ID,parent_is_duplicate,parent G0231 has 2 records; linked to 282688
+GIS-56176,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to 277127
+GIS-56176,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+289235,PARENT_ASSET_ID,parent_is_duplicate,parent G0221 has 3 records; linked to 277127
+H018066,PARENT_ASSET_ID,parent_is_duplicate,parent G0237 has 2 records; linked to 289235
+SS4076,PARENT_ASSET_ID,parent_is_duplicate,parent G0237 has 2 records; linked to 289235
+SS4076,PARENT_ASSET_ID,missing_parent,should be under G0237
+H055452,PARENT_ASSET_ID,parent_is_duplicate,parent G0237 has 2 records; linked to GIS-56176
+H055452,PARENT_ASSET_ID,orphan_parent,249838 doesn't exist; should be G0237
+271306,PARENT_ASSET_ID,parent_is_duplicate,parent G0240 has 2 records; linked to SS1789
+271306,PARENT_ASSET_ID,missing_parent,should be under G0240
+292461,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0240
+H029782,PARENT_ASSET_ID,orphan_parent,SS3009 doesn't exist; should be G0241
+SS9977,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+SS7876,PARENT_ASSET_ID,missing_parent,should be under G0241
+GIS-81355,PARENT_ASSET_ID,parent_is_duplicate,parent G0240 has 2 records; linked to SS1789
+258561,PARENT_ASSET_ID,orphan_parent,GIS-91002 doesn't exist; should be G0252
+H064210,PARENT_ASSET_ID,level_skipped,equipment linked straight to facility G0240
+H004214,PARENT_ASSET_ID,parent_is_duplicate,parent G0240 has 2 records; linked to GIS-77885
+262202,PARENT_ASSET_ID,parent_is_duplicate,parent G0240 has 2 records; linked to SS1789
+SS3969,PARENT_ASSET_ID,parent_is_duplicate,parent G0259 has 2 records; linked to H004214
+GIS-31560,PARENT_ASSET_ID,parent_is_duplicate,parent G0259 has 2 records; linked to 262202
+GIS-23819,PARENT_ASSET_ID,parent_is_duplicate,parent G0259 has 2 records; linked to 262202
+H093326,PARENT_ASSET_ID,parent_is_duplicate,parent G0259 has 2 records; linked to 262202
+H093326,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+SS4791,PARENT_ASSET_ID,parent_is_duplicate,parent G0262 has 2 records; linked to GIS-72299
+H094380,PARENT_ASSET_ID,parent_is_duplicate,parent G0262 has 2 records; linked to SS1800
+SS3225,PARENT_ASSET_ID,parent_is_duplicate,parent G0263 has 2 records; linked to H094380
+GIS-57384,PARENT_ASSET_ID,parent_is_duplicate,parent G0263 has 2 records; linked to H094380
+GIS-57384,PARENT_ASSET_ID,orphan_parent,SS0531 doesn't exist; should be G0263
+237746,PARENT_ASSET_ID,parent_is_duplicate,parent G0263 has 2 records; linked to H094380
+H098781,PARENT_ASSET_ID,parent_is_duplicate,parent G0263 has 2 records; linked to SS4791
+250591,PARENT_ASSET_ID,parent_is_duplicate,parent G0263 has 2 records; linked to SS4791
+GIS-77460,PARENT_ASSET_ID,parent_is_duplicate,parent G0262 has 2 records; linked to GIS-72299
+H088724,PARENT_ASSET_ID,parent_is_duplicate,parent G0262 has 2 records; linked to GIS-72299
+H011951,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to H088724
+SS8992,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+GIS-97711,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+222033,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+222033,PARENT_ASSET_ID,orphan_parent,H072458 doesn't exist; should be G0266
+SS3028,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to H088724
+H032824,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+214156,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+GIS-72323,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to H088724
+244033,PARENT_ASSET_ID,parent_is_duplicate,parent G0266 has 2 records; linked to GIS-77460
+H023147,PARENT_ASSET_ID,parent_is_duplicate,parent G0262 has 2 records; linked to GIS-72299
+SS5220,PARENT_ASSET_ID,parent_by_tag,"parent entered as its tag, not its ID"
+H050422,PARENT_ASSET_ID,circular_parent,parent is its own child H096048
+GIS-18242,PARENT_ASSET_ID,circular_parent,parent is its own child SS9329
+SS2065,*,exact_duplicate_row,row loaded twice
+GIS-79155,*,exact_duplicate_row,row loaded twice
+293657,*,exact_duplicate_row,row loaded twice
+H076927,*,exact_duplicate_row,row loaded twice
+262202,*,exact_duplicate_row,row loaded twice
+275298,*,exact_duplicate_row,row loaded twice
+GIS-34986,*,exact_duplicate_row,row loaded twice
+SS8068,*,exact_duplicate_row,row loaded twice

@@ -354,12 +354,16 @@ SQL warehouse writes the table with `read_files()`:
 The result page shows how many rows were loaded and the query for that load.
 
 
-`sample-data/` has two fictional sources for the same water utility, for trying
-the features end to end:
+`sample-data/` has fictional data for the same water utility, for trying the
+features end to end:
 
 - `crm/`: a clean CRM customer table (1,000 rows).
 - `billing/`: a legacy billing extract of the same customers, with injected
   data quality issues and a ground-truth issue list.
+- `assets/`: a three-level asset hierarchy (facility → system → equipment)
+  from a legacy register. The same assets were entered several times with
+  different names, tags, codes and parents. It comes with the clean hierarchy
+  and match keys as ground truth.
 
 Each folder has a README with load steps for Lakebase and Unity Catalog.
 
