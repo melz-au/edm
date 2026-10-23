@@ -31,8 +31,8 @@ export default function ErdMarkers() {
             viewBox="0 0 24 20"
             refX="24"
             refY="10"
-            markerWidth="24"
-            markerHeight="20"
+            markerWidth="18"
+            markerHeight="15"
             markerUnits="userSpaceOnUse"
             orient="auto-start-reverse"
           >

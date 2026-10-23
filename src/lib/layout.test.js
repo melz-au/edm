@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildGraph, connectedComponents, shelfPack } from './layout.js';
+import { CONCEPT_HEIGHT, CONCEPT_WIDTH, NODE_WIDTH, buildGraph, connectedComponents, nodeHeight, shelfPack } from './layout.js';
 import { deriveView } from './modelLevels.js';
 import { demoModel } from '../../server/model.js';
 
@@ -40,11 +40,11 @@ test('shelfPack wraps rows at the target width', () => {
 test('unrelated tables fill a landscape viewport instead of one column', () => {
   const model = { tables: Array.from({ length: 24 }, (_, i) => table(`t${i}`)), relationships: [] };
   const { nodes } = buildGraph(model, { viewport: { width: 1600, height: 900 } });
-  const b = bounds(nodes, () => ({ width: 280, height: 40 + 4 * 26 + 8 }));
+  const b = bounds(nodes, () => ({ width: NODE_WIDTH, height: nodeHeight(4) }));
   const columns = new Set(nodes.map((n) => n.position.x)).size;
   assert.ok(columns >= 5, `expected several columns, got ${columns}`);
   assert.ok(b.width / b.height > 1, 'drawing should be landscape like the viewport');
-  assert.ok(!overlaps(nodes, () => 280, () => 152));
+  assert.ok(!overlaps(nodes, () => NODE_WIDTH, () => nodeHeight(4)));
 });
 
 test('a portrait viewport gives a taller arrangement', () => {
@@ -59,7 +59,7 @@ test('conceptual chains switch to top-to-bottom in a tall viewport', () => {
   const view = deriveView(demoModel(), 'conceptual');
   const { nodes, edges } = buildGraph(view, { viewport: { width: 500, height: 1400 } });
   assert.ok(edges.some((e) => e.sourceHandle === '__table-bottom' && e.targetHandle === '__table-top'));
-  assert.ok(!overlaps(nodes, () => 180, () => 60));
+  assert.ok(!overlaps(nodes, () => CONCEPT_WIDTH, () => CONCEPT_HEIGHT));
 });
 
 test('physical view keeps left-to-right column-level edges', () => {
