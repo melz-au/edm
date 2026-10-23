@@ -1,4 +1,3 @@
-# Databricks Apps configuration.
 # The platform runs `npm install` and `npm run build` automatically because a
 # package.json is present, then launches the command below.
 command: ['npm', 'run', 'start']
@@ -27,8 +26,8 @@ env:
   # Add a "SQL warehouse" resource to the app (permission: Can use). The app
   # finds it automatically. To pin a specific one, set ERD_WAREHOUSE_NAME, or
   # give the resource the key "sql-warehouse" and uncomment:
-  # - name: DATABRICKS_WAREHOUSE_ID
-  #   valueFrom: sql-warehouse
+  - name: 'Serverless Starter Warehouse'
+    valueFrom: sql-warehouse
 
   # --- Reference & master data (stored in Lakebase) ---------------------------
   # Comma-separated emails of data stewards who may approve changes. When
@@ -42,8 +41,8 @@ env:
   # - name: ERD_EDITABLE_SCHEMAS
   #   value: 'maximo'
   # Let a steward approve their own requests (single-person teams only).
-  # - name: ERD_ALLOW_SELF_APPROVAL
-  #   value: 'false'
+  - name: ERD_ALLOW_SELF_APPROVAL
+    value: 'true'
 
 
   # --- CSV upload to bronze tables (needs the SQL warehouse above) ------------
