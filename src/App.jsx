@@ -13,7 +13,7 @@ import ErdMarkers from './components/ErdMarkers.jsx';
 import CodeSetDialog from './components/CodeSetDialog.jsx';
 import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
-import EntityDialog from './components/EntityDialog.jsx';
+import EntityEditor, { starterEntity } from './components/EntityEditor.jsx';
 import ModelPanel from './components/ModelPanel.jsx';
 import DdlDialog from './components/DdlDialog.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
@@ -30,6 +30,7 @@ import {
   placeNodes,
   proposedTableId,
   removeEntity,
+  upsertEntity,
   scopeName,
   validateProposal,
 } from './lib/proposals.js';
@@ -93,6 +94,10 @@ export default function App() {
   const [dirty, setDirty] = useState(false);
   // Node positions for the next layout: saved ones, or the current ones while editing.
   const nextPositions = useRef(null);
+  // The proposed entity open in the panel editor: { name, isNew, before } (before = state to restore on discard).
+  const [editing, setEditing] = useState(null);
+  // Right-click menu on the canvas: { x, y } within the canvas, the flow position, and the node clicked, if any.
+  const [menu, setMenu] = useState(null);
 
   // Runs an async loader, ignoring results from superseded requests.
   const run = useCallback(async (loader, onResult) => {
@@ -162,6 +167,8 @@ export default function App() {
     setProposal(emptyProposal());
     setSavedModel(null);
     setDirty(false);
+    setEditing(null);
+    setMenu(null);
     nextPositions.current = null;
   }, [source, scope]);
 
@@ -260,34 +267,66 @@ export default function App() {
     setDirty(true);
   };
 
-  const saveEntity = (next, name) => {
-    const previous = dialog.entity?.name;
-    const id = proposedTableId(scope, name);
-    const positions = currentPositions();
-    if (previous && previous !== name) {
-      const oldId = proposedTableId(scope, previous);
-      positions[id] = positions[oldId];
-      delete positions[oldId];
-    } else if (!previous) {
-      // New entities go in the free space nearest the middle of the screen.
+  /**
+   * Puts a starter entity on the canvas and opens it in the panel editor:
+   * at `at` (a flow position, from the right-click menu), or in the free space
+   * nearest the middle of the screen.
+   */
+  const startNewEntity = (at = null) => {
+    const entity = starterEntity(source, merged.model);
+    const id = proposedTableId(scope, entity.name);
+    const size = { width: NODE_WIDTH, height: nodeHeight(level === 'conceptual' || columnMode === 'none' ? 0 : entity.columns.length) };
+    const rects = rf.getNodes().map((n) => ({
+      ...n.position,
+      width: n.measured?.width ?? NODE_WIDTH,
+      height: n.measured?.height ?? 200,
+    }));
+    let preferred = at;
+    if (!preferred) {
       const box = canvasRef.current.getBoundingClientRect();
       const centre = rf.screenToFlowPosition({ x: box.left + box.width / 2, y: box.top + box.height / 2 });
-      const entity = next.tables.find((t) => t.name === name);
-      const size = { width: NODE_WIDTH, height: nodeHeight(level === 'conceptual' || columnMode === 'none' ? 0 : entity.columns.length) };
-      const rects = rf.getNodes().map((n) => ({
-        ...n.position,
-        width: n.measured?.width ?? NODE_WIDTH,
-        height: n.measured?.height ?? 200,
-      }));
-      const spot = freeSpot(rects, { x: centre.x - size.width / 2, y: centre.y - size.height / 2 }, size);
-      positions[id] = spot;
+      preferred = { x: centre.x - size.width / 2, y: centre.y - size.height / 2 };
+    }
+    const spot = freeSpot(rects, preferred, size, { gap: 16, step: 20 });
+    if (!at) {
       requestAnimationFrame(() =>
         rf.setCenter(spot.x + size.width / 2, spot.y + size.height / 2, { zoom: rf.getZoom(), duration: 300 }),
       );
     }
-    editProposal(next, positions);
-    setDialog(null);
+    setEditing({ name: entity.name, isNew: true, before: { proposal, dirty } });
+    editProposal(upsertEntity(proposal, scope, entity), { ...currentPositions(), [id]: spot });
     setSelectedId(id);
+  };
+
+  const editEntity = (name) => {
+    setMenu(null);
+    setEditing({ name, isNew: false });
+    setSelectedId(proposedTableId(scope, name));
+  };
+
+  const saveEntity = (next, name) => {
+    const previous = editing.name;
+    const id = proposedTableId(scope, name);
+    const positions = currentPositions();
+    if (previous !== name) {
+      const oldId = proposedTableId(scope, previous);
+      positions[id] = positions[oldId];
+      delete positions[oldId];
+    }
+    editProposal(next, positions);
+    setEditing(null);
+    setSelectedId(id);
+  };
+
+  // Discarding a just-placed entity takes it off the canvas again.
+  const cancelEditing = () => {
+    if (editing?.isNew) {
+      nextPositions.current = { positions: currentPositions(), keepViewport: true };
+      setProposal(editing.before.proposal);
+      setDirty(editing.before.dirty);
+      setSelectedId(null);
+    }
+    setEditing(null);
   };
 
   const removeProposed = (table) => {
@@ -299,10 +338,12 @@ export default function App() {
       : '';
     if (!window.confirm(`Remove the proposed entity ${table.name} from the model?${also}`)) return;
     setSelectedId(null);
+    setEditing(null);
     editProposal(removeEntity(proposal, scope, table.name));
   };
 
   const openModel = (row) => {
+    setEditing(null);
     nextPositions.current = { positions: row.content.positions ?? {} };
     setProposal(validateProposal(row.content));
     setSavedModel(row);
@@ -311,6 +352,7 @@ export default function App() {
   };
 
   const restoreVersion = (v) => {
+    setEditing(null);
     nextPositions.current = { positions: v.content.positions ?? {} };
     setProposal(validateProposal(v.content));
     setDirty(true);
@@ -318,6 +360,7 @@ export default function App() {
   };
 
   const closeModel = () => {
+    setEditing(null);
     nextPositions.current = null;
     setProposal(emptyProposal());
     setSavedModel(null);
@@ -666,7 +709,7 @@ export default function App() {
               }}
               onRestore={restoreVersion}
               onClose={closeModel}
-              onAddEntity={() => setDialog({ type: 'entity', entity: null })}
+              onAddEntity={() => (editing ? setNotice('Finish or cancel the entity you are editing first.') : startNewEntity())}
               onGenerateDdl={() => setDialog({ type: 'ddl', only: null })}
               confirmDiscard={confirmDiscard}
             />
@@ -740,7 +783,23 @@ export default function App() {
             onNodeClick={(_, node) => setSelectedId(node.id)}
             onNodeMouseEnter={(_, node) => setHoveredId(node.id)}
             onNodeMouseLeave={() => setHoveredId(null)}
-            onPaneClick={() => setSelectedId(null)}
+            onPaneClick={() => {
+              setMenu(null);
+              if (!editing) setSelectedId(null);
+            }}
+            onPaneContextMenu={(e) => {
+              if (!model || !scope) return;
+              e.preventDefault();
+              const box = canvasRef.current.getBoundingClientRect();
+              setMenu({ x: e.clientX - box.left, y: e.clientY - box.top, flow: rf.screenToFlowPosition({ x: e.clientX, y: e.clientY }) });
+            }}
+            onNodeContextMenu={(e, node) => {
+              if (!node.data.table.proposed) return;
+              e.preventDefault();
+              const box = canvasRef.current.getBoundingClientRect();
+              setMenu({ x: e.clientX - box.left, y: e.clientY - box.top, node: node.data.table });
+            }}
+            onMoveStart={() => setMenu(null)}
             nodesConnectable={false}
             edgesFocusable={false}
             minZoom={0.05}
@@ -775,7 +834,51 @@ export default function App() {
             <div className="overlay">Choose a {source === 'uc' ? 'catalog and schema' : 'schema'} to draw its ERD.</div>
           )}
 
-          {selectedTable && (
+          {menu && (
+            <div className="context-menu" style={{ left: menu.x, top: menu.y }} onContextMenu={(e) => e.preventDefault()}>
+              {menu.node ? (
+                <>
+                  <button disabled={Boolean(editing)} onClick={() => editEntity(menu.node.name)}>Edit {menu.node.name}</button>
+                  <button
+                    disabled={Boolean(editing)}
+                    onClick={() => {
+                      setMenu(null);
+                      removeProposed(menu.node);
+                    }}
+                  >
+                    Remove from model
+                  </button>
+                </>
+              ) : (
+                <button
+                  disabled={Boolean(editing)}
+                  title={editing ? 'Finish or cancel the entity you are editing first' : undefined}
+                  onClick={() => {
+                    setMenu(null);
+                    startNewEntity(menu.flow);
+                  }}
+                >
+                  Propose new entity here
+                </button>
+              )}
+            </div>
+          )}
+
+          {editing && proposal.tables.some((t) => t.name === editing.name) && (
+            <EntityEditor
+              key={`${editing.name}:${editing.isNew}`}
+              source={source}
+              scope={scope}
+              model={merged.model}
+              proposal={proposal}
+              entity={proposal.tables.find((t) => t.name === editing.name)}
+              isNew={editing.isNew}
+              onSave={saveEntity}
+              onCancel={cancelEditing}
+            />
+          )}
+
+          {selectedTable && !editing && (
             <TableDetails
               table={selectedTable}
               level={level}
@@ -788,11 +891,7 @@ export default function App() {
               onProfile={() => profileOne(selectedTable)}
               linked={linked}
               mapped={mapped}
-              onEditEntity={
-                selectedTable.proposed
-                  ? () => setDialog({ type: 'entity', entity: proposal.tables.find((t) => t.name === selectedTable.name) })
-                  : null
-              }
+              onEditEntity={selectedTable.proposed ? () => editEntity(selectedTable.name) : null}
               onRemoveEntity={selectedTable.proposed ? () => removeProposed(selectedTable) : null}
               onShowDdl={selectedTable.proposed ? () => setDialog({ type: 'ddl', only: [selectedTable.id], title: `DDL for ${selectedTable.name}` }) : null}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
@@ -829,17 +928,6 @@ export default function App() {
             setMappingsVersion((v) => v + 1);
           }}
           onSubmitted={submitted}
-        />
-      )}
-      {dialog?.type === 'entity' && (
-        <EntityDialog
-          source={source}
-          scope={scope}
-          model={merged.model}
-          proposal={proposal}
-          entity={dialog.entity}
-          onSave={saveEntity}
-          onClose={() => setDialog(null)}
         />
       )}
       {dialog?.type === 'ddl' && (

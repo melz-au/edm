@@ -36,19 +36,23 @@ configuration.
 You can design new tables on top of a schema's ERD and save the result as a
 **data model**:
 
-1. In the sidebar's **Data model** section, choose **+ Propose entity**. Give
-   it a table name, a description and its columns: name, data type
-   (suggestions match the source, e.g. `STRING`/`BIGINT` for Unity Catalog and
-   `text`/`bigint` for Lakebase), primary key, required, and **References**.
+1. **Right-click an empty part of the diagram** and choose **Propose new
+   entity here**, or use **+ Propose entity** in the sidebar's **Data model**
+   section. A starter entity appears on the canvas (where you clicked, or in
+   the free space nearest the middle of the screen), and its editor opens in
+   the details panel. Enter the table name, a description and its columns:
+   name, data type (suggestions match the source, e.g. `STRING`/`BIGINT` for
+   Unity Catalog and `text`/`bigint` for Lakebase), primary key, required, and
+   what it references.
    A reference can point at the key of an existing table, another proposed
    entity, or the entity itself (e.g. `parent_id`). Picking one fills in the
-   column's name and type.
+   column's name and type. **Add to model** (Ctrl+Enter) keeps it; **Discard**
+   (Esc) takes a new entity off the canvas again.
 2. Proposed entities are drawn in purple with a dashed border and a
    *proposed* badge, and their relationships are dashed purple lines. They
    work at the logical and conceptual levels too, with cardinality from their
-   keys. A new entity goes in the free space nearest the middle of the screen.
-   Select one to **Edit entity** (renaming it updates references to it) or
-   **Remove from model**.
+   keys. Select one, or right-click it, to **Edit** it in the panel (renaming
+   it updates references to it) or **Remove from model**.
 3. **Save as…** stores the model in Lakebase with a name and description:
    the proposed entities and where every table sits on the diagram. **Save**
    stores a new version. Dragging tables or re-running the layout counts as a
