@@ -31,6 +31,58 @@ configuration.
   declared, so this helps there. Inferred links are drawn dashed.
 - Tables referenced from outside the selected schema appear as dashed "REF" nodes.
 
+## Data models and proposed entities
+
+You can design new tables on top of a schema's ERD and save the result as a
+**data model**:
+
+1. In the sidebar's **Data model** section, choose **+ Propose entity**. Give
+   it a table name, a description and its columns: name, data type
+   (suggestions match the source, e.g. `STRING`/`BIGINT` for Unity Catalog and
+   `text`/`bigint` for Lakebase), primary key, required, and **References**.
+   A reference can point at the key of an existing table, another proposed
+   entity, or the entity itself (e.g. `parent_id`). Picking one fills in the
+   column's name and type.
+2. Proposed entities are drawn in purple with a dashed border and a
+   *proposed* badge, and their relationships are dashed purple lines. They
+   work at the logical and conceptual levels too, with cardinality from their
+   keys. A new entity goes in the free space nearest the middle of the screen.
+   Select one to **Edit entity** (renaming it updates references to it) or
+   **Remove from model**.
+3. **Save as…** stores the model in Lakebase with a name and description:
+   the proposed entities and where every table sits on the diagram. **Save**
+   stores a new version. Dragging tables or re-running the layout counts as a
+   change.
+
+Each model belongs to one schema. The **Data model** list shows that schema's
+saved models; opening one restores its entities and layout. Several people can
+work on the same model: a save is refused (with who saved in between) if the
+model changed since you opened it, so nobody's work is silently overwritten.
+**History** lists every version and can restore an earlier one as unsaved
+changes. **Export JSON** downloads the model, which also works without
+Lakebase. Only the model's creator or a data steward can delete it.
+
+**Generate DDL** (sidebar, or **DDL** on one selected entity) writes the
+`CREATE TABLE` script for the proposed entities, to copy or download as
+`.sql`. The dialect follows the source:
+
+- **Lakebase:** Postgres, with `"schema"."table"` names and `COMMENT ON` statements.
+- **Unity Catalog (and the demo):** Databricks SQL, with
+  `` `catalog`.`schema`.`table` `` names and inline `COMMENT`s. Foreign keys
+  there are informational and not enforced.
+
+Tables are created first with their primary keys, then foreign keys are added
+with `ALTER TABLE`, so entities can reference each other in any order.
+Both dialects require a foreign key to point at the parent's primary key. A
+reference to any other column is written out commented, with the reason. The
+app never runs the script: run it with an identity that can create tables in
+the schema. `IF NOT EXISTS` can be switched off.
+
+Proposals never change the source schema. When a table with a proposed
+entity's name appears in the schema (it has been built), the real table is
+shown instead and the sidebar offers to remove the proposal. References to
+tables that have gone are listed as a warning.
+
 ## Categorical fields, reference data and master data
 
 **Detect categorical fields.** *Detect categorical fields* (sidebar, or per
@@ -257,6 +309,7 @@ which is created on first use:
 | `code_mapping_v` | View joining the mappings to set name, code and label, for pipelines |
 | `setting`, `publish_log` | Unity Catalog publish settings and run history |
 | `dq_rule` | Data quality rules per table, with their latest result |
+| `data_model`, `data_model_version` | Saved data models (proposed entities and diagram layout per schema) and every saved version |
 | `writeback_outbox` | Approved corrections waiting to be sent to a source system, with their API payload and status |
 | `change_request` | Every proposed change, its status and review |
 | `audit_log` | Every applied change with before/after JSON |
@@ -330,7 +383,10 @@ server/   Express: serves dist/ and the /api endpoints
   dqstore.js       stores data quality rules and runs them
   corrections.js   proposes fixes for failing values, classed safe / review / manual
   writeback.js     write-back proposals, approval handler and the outbox
+  datamodels.js    saved data models and their versions (Lakebase)
 src/lib/modelLevels.js  physical → logical → conceptual transforms
+src/lib/proposals.js    proposed entities: validation, merging into the ERD, placement (shared with the server)
+src/lib/ddl.js          CREATE TABLE scripts for proposed entities (Postgres or Databricks SQL)
 app.yaml  Databricks Apps entry point (npm run start)
 ```
 
@@ -359,6 +415,9 @@ app.yaml  Databricks Apps entry point (npm run start)
 | `GET /api/writeback/outbox?status=` · `GET …/outbox/counts` | Outbox entries (stewards; PII masked) and counts by status |
 | `GET /api/writeback/outbox/export?format=json\|csv&status=` | Outbox export with real values (stewards) |
 | `POST /api/writeback/outbox/ack` | Mark entries `sent`, `failed` or `cancelled` (`{ids, status, response}`, stewards) |
+| `GET /api/models?source=&scope=` · `GET /api/models/:id` | Saved data models for a schema (`main.sales`, `maximo`, `demo.retail`); one model with its content |
+| `POST /api/models` · `PUT /api/models/:id` · `DELETE /api/models/:id` | Create (`{name, description, source, scope, content}`), save a new version (`{…, version}`; 409 if someone saved in between) or delete |
+| `GET /api/models/:id/versions[/:version]` | A model's saved versions |
 | `GET /api/refdata/audit` | Change history |
 | `GET /api/ingest/table?catalog=&schema=&table=` | Whether an upload's target table exists, and its columns |
 | `POST /api/ingest/schema` | Create a schema for uploads (`{catalog, schema}`) |
