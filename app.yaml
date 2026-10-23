@@ -25,9 +25,10 @@ env:
   # --- Categorical field detection on Unity Catalog tables -------------------
   # Add a "SQL warehouse" resource to the app (permission: Can use). The app
   # finds it automatically. To pin a specific one, set ERD_WAREHOUSE_NAME, or
-  # give the resource the key "sql-warehouse" and uncomment:
-  - name: 'Serverless Starter Warehouse'
-    valueFrom: sql-warehouse
+  # give the resource the key "sql-warehouse" and use DATABRICKS_WAREHOUSE_ID
+  # with valueFrom: sql-warehouse instead.
+  - name: ERD_WAREHOUSE_NAME
+    value: 'Serverless Starter Warehouse'
 
   # --- Reference & master data (stored in Lakebase) ---------------------------
   # Comma-separated emails of data stewards who may approve changes. When
