@@ -38,21 +38,28 @@ You can design new tables on top of a schema's ERD and save the result as a
 
 1. **Right-click an empty part of the diagram** and choose **Propose new
    entity here**, or use **+ Propose entity** in the sidebar's **Data model**
-   section. A starter entity appears on the canvas (where you clicked, or in
-   the free space nearest the middle of the screen), and its editor opens in
-   the details panel. Enter the table name, a description and its columns:
-   name, data type (suggestions match the source, e.g. `STRING`/`BIGINT` for
-   Unity Catalog and `text`/`bigint` for Lakebase), primary key, required, and
-   what it references.
-   A reference can point at the key of an existing table, another proposed
-   entity, or the entity itself (e.g. `parent_id`). Picking one fills in the
-   column's name and type. **Add to model** (Ctrl+Enter) keeps it; **Discard**
-   (Esc) takes a new entity off the canvas again.
+   section. A starter entity appears on the canvas, where you clicked or in the
+   free space nearest the middle of the screen, and the entity itself becomes
+   an editable form. Everything is edited right there on the diagram:
+   - **The header:** the table name, with a description line under it.
+   - **Each column:** its name and data type, then the **PK** and **REQ**
+     (required, `NOT NULL`) toggles. Type suggestions match the source, e.g.
+     `STRING`/`BIGINT` for Unity Catalog and `text`/`bigint` for Lakebase.
+   - **The reference line:** what the column points at. That can be the key of
+     an existing table, another proposed entity, or the entity itself (e.g.
+     `parent_id`). Picking one fills in the column's name and type.
+   - **The column buttons:** ✎ adds a column description, ↑ ↓ reorder the
+     column, and × removes it.
+   - **+ Add column**, or **Enter** in a column name, adds the next column.
+
+   **Done** (Ctrl+Enter) keeps the entity. **Discard** (Esc) takes a new
+   entity off the canvas again.
 2. Proposed entities are drawn in purple with a dashed border and a
    *proposed* badge, and their relationships are dashed purple lines. They
    work at the logical and conceptual levels too, with cardinality from their
-   keys. Select one, or right-click it, to **Edit** it in the panel (renaming
-   it updates references to it) or **Remove from model**.
+   keys. **Double-click** one, or right-click it and choose **Edit**, to edit
+   it in place again (renaming it updates references to it). Right-click
+   **Remove from model** deletes it.
 3. **Save as…** stores the model in Lakebase with a name and description:
    the proposed entities and where every table sits on the diagram. **Save**
    stores a new version. Dragging tables or re-running the layout counts as a

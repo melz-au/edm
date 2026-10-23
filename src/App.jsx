@@ -13,7 +13,7 @@ import ErdMarkers from './components/ErdMarkers.jsx';
 import CodeSetDialog from './components/CodeSetDialog.jsx';
 import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
-import EntityEditor, { starterEntity } from './components/EntityEditor.jsx';
+import { starterEntity } from './components/EntityEditor.jsx';
 import ModelPanel from './components/ModelPanel.jsx';
 import DdlDialog from './components/DdlDialog.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
@@ -288,20 +288,27 @@ export default function App() {
       preferred = { x: centre.x - size.width / 2, y: centre.y - size.height / 2 };
     }
     const spot = freeSpot(rects, preferred, size, { gap: 16, step: 20 });
-    if (!at) {
-      requestAnimationFrame(() =>
-        rf.setCenter(spot.x + size.width / 2, spot.y + size.height / 2, { zoom: rf.getZoom(), duration: 300 }),
-      );
-    }
+    showEditor(id, spot);
     setEditing({ name: entity.name, isNew: true, before: { proposal, dirty } });
     editProposal(upsertEntity(proposal, scope, entity), { ...currentPositions(), [id]: spot });
     setSelectedId(id);
   };
 
+  // Brings the entity being edited to the middle of the screen at a readable zoom.
+  const showEditor = (id, spot = null) =>
+    requestAnimationFrame(() => {
+      const node = rf.getNode(id);
+      const p = spot ?? node?.position;
+      if (!p) return;
+      rf.setCenter(p.x + 200, p.y + 120, { zoom: Math.max(rf.getZoom(), 1), duration: 300 });
+    });
+
   const editEntity = (name) => {
     setMenu(null);
+    const id = proposedTableId(scope, name);
     setEditing({ name, isNew: false });
-    setSelectedId(proposedTableId(scope, name));
+    setSelectedId(id);
+    showEditor(id);
   };
 
   const saveEntity = (next, name) => {
@@ -455,6 +462,24 @@ export default function App() {
   const activeId = hoveredId ?? selectedId;
   const query = search.trim().toLowerCase();
 
+  // The proposed entity being edited on the canvas, and what its node needs to be the form.
+  const editedEntity = editing && proposal.tables.find((t) => t.name === editing.name);
+  const editorFor = editedEntity
+    ? {
+        id: proposedTableId(scope, editedEntity.name),
+        props: {
+          source,
+          scope,
+          model: merged.model,
+          proposal,
+          entity: editedEntity,
+          isNew: editing.isNew,
+          onSave: saveEntity,
+          onCancel: cancelEditing,
+        },
+      }
+    : null;
+
   const { displayNodes, displayEdges } = useMemo(() => {
     const neighbours = new Set();
     const columnsByTable = new Map();
@@ -491,12 +516,21 @@ export default function App() {
         ...n,
         selected: n.id === selectedId,
         className: classes.join(' '),
-        data: { ...n.data, highlightColumns: columnsByTable.get(n.id), categorical: categoricalByTable.get(n.id), pii: piiByTable.get(n.id), dq: dqScores.get(n.id) },
+        data: {
+          ...n.data,
+          highlightColumns: columnsByTable.get(n.id),
+          categorical: categoricalByTable.get(n.id),
+          pii: piiByTable.get(n.id),
+          dq: dqScores.get(n.id),
+          editor: n.id === editorFor?.id ? editorFor.props : undefined,
+        },
+        // The node being edited sits above its neighbours while it is larger.
+        ...(n.id === editorFor?.id ? { zIndex: 1000, className: 'editing' } : {}),
       };
     });
 
     return { displayNodes, displayEdges };
-  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable, dqScores]);
+  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable, dqScores, editorFor]);
 
   const filteredTables = useMemo(
     () =>
@@ -781,6 +815,8 @@ export default function App() {
               }
             }}
             onNodeClick={(_, node) => setSelectedId(node.id)}
+            onNodeDoubleClick={(_, node) => node.data.table.proposed && !editing && editEntity(node.data.table.name)}
+            deleteKeyCode={null}
             onNodeMouseEnter={(_, node) => setHoveredId(node.id)}
             onNodeMouseLeave={() => setHoveredId(null)}
             onPaneClick={() => {
@@ -862,20 +898,6 @@ export default function App() {
                 </button>
               )}
             </div>
-          )}
-
-          {editing && proposal.tables.some((t) => t.name === editing.name) && (
-            <EntityEditor
-              key={`${editing.name}:${editing.isNew}`}
-              source={source}
-              scope={scope}
-              model={merged.model}
-              proposal={proposal}
-              entity={proposal.tables.find((t) => t.name === editing.name)}
-              isNew={editing.isNew}
-              onSave={saveEntity}
-              onCancel={cancelEditing}
-            />
           )}
 
           {selectedTable && !editing && (

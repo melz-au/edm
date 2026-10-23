@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
+import EntityEditor from './EntityEditor.jsx';
 import {
   TABLE_HANDLE_BOTTOM,
   TABLE_HANDLE_IN,
@@ -18,6 +19,8 @@ const TYPE_BADGE = {
 };
 
 function TableNode({ data }) {
+  // A proposed entity being edited is its own form.
+  if (data.editor) return <EntityEditor {...data.editor} />;
   const { table, columnMode, level, highlightColumns, categorical, pii, dq } = data;
   const columns = visibleColumns(table, columnMode);
   const hidden = table.columns.length - columns.length;

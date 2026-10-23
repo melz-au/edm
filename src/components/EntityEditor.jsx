@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Handle, Position } from '@xyflow/react';
 import { IDENT, proposedTableId, referenceTargets, upsertEntity, validateProposal } from '../lib/proposals.js';
+import { TABLE_HANDLE_BOTTOM, TABLE_HANDLE_IN, TABLE_HANDLE_OUT, TABLE_HANDLE_TOP } from '../lib/layout.js';
 
 // Suggested data types for the source the entity will be built in.
 export const TYPES = {
@@ -20,16 +22,19 @@ export function starterEntity(source, model) {
   };
 }
 
-const blankColumn = () => ({ name: '', type: '', pk: false, required: false, comment: '', ref: '' });
+const blankColumn = () => ({ name: '', type: '', pk: false, required: false, comment: '', ref: '', orig: null, showComment: false });
 const refKey = (r) => `${r.table}|${r.column}`;
 // Self-references are keyed by this marker, so they survive renaming the entity.
 const SELF = '__self__';
+// React Flow: don't start a node drag, a pan or a zoom from form controls.
+const NO_FLOW = 'nodrag nopan nowheel';
 
 /**
- * Edits a proposed entity in the details panel: its name, description and
- * columns, with keys and references to existing or other proposed entities.
- * Changes go into the unsaved data model; saving the model stores them.
- * `isNew` means the entity was just placed on the canvas, so Cancel removes it.
+ * A proposed entity being edited in place on the diagram: the node itself
+ * becomes the form (name, description, and each column's name, type, key,
+ * required flag, reference and description). Changes go into the unsaved
+ * data model when Done is pressed; saving the model stores them.
+ * `isNew` means the entity was just placed on the canvas, so Discard removes it.
  */
 export default function EntityEditor({ source, scope, model, proposal, entity, isNew, onSave, onCancel }) {
   const [name, setName] = useState(entity.name);
@@ -37,10 +42,12 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
   const [rows, setRows] = useState(() =>
     entity.columns.map((c) => ({
       name: c.name,
+      orig: c.name,
       type: c.type,
       pk: c.pk,
       required: !c.nullable,
       comment: c.comment ?? '',
+      showComment: Boolean(c.comment),
       ref: c.references
         ? refKey(c.references.table === proposedTableId(scope, entity.name) ? { ...c.references, table: SELF } : c.references)
         : '',
@@ -48,11 +55,31 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
   );
   const [error, setError] = useState(null);
   const nameRef = useRef(null);
+  const focusRow = useRef(null);
+  const rowRefs = useRef([]);
 
+  // React Flow keeps a new node hidden until it has measured it, and a hidden
+  // input can't take focus, so keep trying briefly.
   useEffect(() => {
-    nameRef.current?.focus();
-    if (isNew) nameRef.current?.select();
+    let tries = 0;
+    const timer = setInterval(() => {
+      const el = nameRef.current;
+      if (el) {
+        el.focus();
+        if (isNew) el.select();
+      }
+      if (document.activeElement === el || ++tries > 20) clearInterval(timer);
+    }, 25);
+    return () => clearInterval(timer);
   }, [isNew]);
+
+  // Focus the name of a column that was just added.
+  useEffect(() => {
+    if (focusRow.current !== null) {
+      rowRefs.current[focusRow.current]?.focus();
+      focusRow.current = null;
+    }
+  }, [rows.length]);
 
   const oldId = proposedTableId(scope, entity.name);
   const validName = IDENT.test(name.trim());
@@ -87,6 +114,10 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
       [next[i], next[j]] = [next[j], next[i]];
       return next;
     });
+  const addColumn = (at = rows.length) => {
+    focusRow.current = at;
+    setRows((rs) => [...rs.slice(0, at), blankColumn(), ...rs.slice(at)]);
+  };
 
   const chooseRef = (i, key) => {
     const target = byKey.get(key);
@@ -128,63 +159,101 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
   };
 
   const onKeyDown = (e) => {
+    e.stopPropagation();
     if (e.key === 'Escape') onCancel();
     else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) save();
   };
 
+  // Enter in a column's name adds the next column.
+  const onNameKey = (i) => (e) => {
+    if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      addColumn(i + 1);
+    }
+  };
+
   return (
-    <div className="details entity-editor" onKeyDown={onKeyDown}>
-      <div className="details__header">
-        <div>
-          <div className="details__title">
-            {isNew ? 'New entity' : `Edit ${entity.name}`}
-            <span className="tag proposed">proposed</span>
-          </div>
-          <div className="details__subtitle">in {scope} · save the data model to keep it</div>
-        </div>
-        <button className="icon-btn" onClick={onCancel} aria-label="Cancel">×</button>
+    <div className="table-node proposed editing" onKeyDown={onKeyDown}>
+      <Handle type="target" position={Position.Top} id={TABLE_HANDLE_TOP} className="erd-handle" />
+      <Handle type="source" position={Position.Bottom} id={TABLE_HANDLE_BOTTOM} className="erd-handle" />
+      <div className="table-node__header">
+        <Handle type="target" position={Position.Left} id={TABLE_HANDLE_IN} className="erd-handle" />
+        <input
+          ref={nameRef}
+          className={`entity-name ${NO_FLOW}`}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="table_name"
+          aria-label="Table name"
+        />
+        <span className="table-node__badge proposed">{isNew ? 'new' : 'editing'}</span>
+        <Handle type="source" position={Position.Right} id={TABLE_HANDLE_OUT} className="erd-handle" />
       </div>
-
-      <label className="field">
-        <span>Table name</span>
-        <input ref={nameRef} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. service_request" />
-      </label>
-      <label className="field">
-        <span>Description</span>
-        <input value={comment} onChange={(e) => setComment(e.target.value)} placeholder="What does each row represent?" />
-      </label>
-
-      <h4>Columns</h4>
+      <input
+        className={`entity-desc ${NO_FLOW}`}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Description: what does each row represent?"
+        aria-label="Description"
+      />
       <datalist id="entity-types">
         {TYPES[source].map((t) => <option key={t} value={t} />)}
       </datalist>
       {rows.map((r, i) => (
-        <div key={i} className="entity-col">
-          <div className="entity-col__line">
-            <input className="grow" value={r.name} onChange={(e) => update(i, { name: e.target.value })} placeholder="column_name" aria-label="Column name" />
-            <input className="type" list="entity-types" value={r.type} onChange={(e) => update(i, { type: e.target.value })} placeholder="type" aria-label="Data type" />
-            <span className="row-actions">
-              <button className="icon-btn" title="Move up" onClick={() => move(i, -1)} disabled={i === 0}>↑</button>
-              <button className="icon-btn" title="Move down" onClick={() => move(i, 1)} disabled={i === rows.length - 1}>↓</button>
-              <button className="icon-btn" title="Remove column" onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>×</button>
-            </span>
-          </div>
-          <div className="entity-col__line">
-            <label className="check" title="Primary key">
-              <input type="checkbox" checked={r.pk} onChange={(e) => update(i, { pk: e.target.checked })} aria-label="Primary key" />
+        <div key={i} className="edit-col">
+          <div className="edit-col__line">
+            {r.orig && <Handle type="target" position={Position.Left} id={`${r.orig}-in`} className="erd-handle" />}
+            <button
+              className={`key-toggle ${r.pk ? 'on pk' : ''} ${NO_FLOW}`}
+              title={r.pk ? 'Primary key (click to remove)' : 'Make part of the primary key'}
+              aria-label="Primary key"
+              aria-pressed={r.pk}
+              onClick={() => update(i, { pk: !r.pk })}
+            >
               PK
-            </label>
-            <label className="check" title="Value is required (NOT NULL)">
-              <input
-                type="checkbox"
-                checked={r.pk || r.required}
-                disabled={r.pk}
-                onChange={(e) => update(i, { required: e.target.checked })}
-                aria-label="Required"
-              />
-              Required
-            </label>
-            <select className="grow" value={r.ref} onChange={(e) => chooseRef(i, e.target.value)} aria-label="References" title="References">
+            </button>
+            <input
+              ref={(el) => (rowRefs.current[i] = el)}
+              className={`col-name ${NO_FLOW}`}
+              value={r.name}
+              onChange={(e) => update(i, { name: e.target.value })}
+              onKeyDown={onNameKey(i)}
+              placeholder="column_name"
+              aria-label="Column name"
+            />
+            <input
+              className={`col-type ${NO_FLOW}`}
+              list="entity-types"
+              value={r.type}
+              onChange={(e) => update(i, { type: e.target.value })}
+              placeholder="type"
+              aria-label="Data type"
+            />
+            <button
+              className={`key-toggle ${r.pk || r.required ? 'on' : ''} ${NO_FLOW}`}
+              title={r.pk ? 'Primary key columns are required' : r.required ? 'Required (click to allow empty values)' : 'Optional (click to require a value)'}
+              aria-label="Required"
+              aria-pressed={r.pk || r.required}
+              disabled={r.pk}
+              onClick={() => update(i, { required: !r.required })}
+            >
+              REQ
+            </button>
+            <span className="edit-col__actions">
+              <button className={`icon-btn ${NO_FLOW}`} title="Description" aria-label="Column description" onClick={() => update(i, { showComment: !r.showComment })}>✎</button>
+              <button className={`icon-btn ${NO_FLOW}`} title="Move up" aria-label="Move up" onClick={() => move(i, -1)} disabled={i === 0}>↑</button>
+              <button className={`icon-btn ${NO_FLOW}`} title="Move down" aria-label="Move down" onClick={() => move(i, 1)} disabled={i === rows.length - 1}>↓</button>
+              <button className={`icon-btn ${NO_FLOW}`} title="Remove column" aria-label="Remove column" onClick={() => setRows((rs) => rs.filter((_, j) => j !== i))}>×</button>
+            </span>
+            {r.orig && <Handle type="source" position={Position.Right} id={`${r.orig}-out`} className="erd-handle" />}
+          </div>
+          <div className="edit-col__line sub">
+            <select
+              className={`col-ref ${r.ref ? 'set' : ''} ${NO_FLOW}`}
+              value={r.ref}
+              onChange={(e) => chooseRef(i, e.target.value)}
+              aria-label="References"
+            >
               <option value="">No reference</option>
               {r.ref && !byKey.has(r.ref) && <option value={r.ref}>{r.ref.replace('|', '.')} (missing)</option>}
               {tableGroups.map(([label, cols]) => (
@@ -196,16 +265,23 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
               ))}
             </select>
           </div>
-          <input className="entity-col__comment" value={r.comment} onChange={(e) => update(i, { comment: e.target.value })} placeholder="Description (optional)" aria-label="Column description" />
+          {r.showComment && (
+            <input
+              className={`col-desc ${NO_FLOW}`}
+              value={r.comment}
+              onChange={(e) => update(i, { comment: e.target.value })}
+              placeholder="Column description"
+              aria-label="Description of column"
+            />
+          )}
         </div>
       ))}
-      <button className="btn small" onClick={() => setRows((rs) => [...rs, blankColumn()])}>+ Add column</button>
-
-      {error && <div className="error inline">{error}</div>}
-      <div className="entity-editor__footer">
-        <span className="muted small">Ctrl+Enter saves · Esc cancels</span>
-        <button className="btn small" onClick={onCancel}>{isNew ? 'Discard' : 'Cancel'}</button>
-        <button className="btn small primary" disabled={!name.trim()} onClick={save}>{isNew ? 'Add to model' : 'Update entity'}</button>
+      <button className={`add-col ${NO_FLOW}`} onClick={() => addColumn()}>+ Add column</button>
+      {error && <div className="edit-error">{error}</div>}
+      <div className="edit-footer">
+        <span className="hint">Enter: next column · Ctrl+Enter: done · Esc: {isNew ? 'discard' : 'cancel'}</span>
+        <button className={`btn small ${NO_FLOW}`} onClick={onCancel}>{isNew ? 'Discard' : 'Cancel'}</button>
+        <button className={`btn small primary ${NO_FLOW}`} disabled={!name.trim()} onClick={save}>Done</button>
       </div>
     </div>
   );
