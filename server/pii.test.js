@@ -38,6 +38,10 @@ test('value formats: email, phone, card, IP, SSN, TFN', () => {
   assert.equal(detectByValues(['9d9262af-2c8d-0e44', 'a1b2c3d4-0000', 'ffff-0000-1111']), null);
   assert.equal(detectByValues(['10:30:00', '11:45:00', '09:00:00']), null);
   assert.equal(detectByValues(['62397.77', '1844.82', '7457.72']), null);
+  // Coordinates and other signed or decimal numbers.
+  assert.equal(detectByValues(['-34.463597', '-34.884299', '-35.0102']), null);
+  assert.equal(detectByValues(['139.01262', '138.734778', '138.5512']), null);
+  assert.equal(detectByValues(['-0.0005', '-123456789', '+0.25']), null);
   assert.equal(detectByValues(['OPERATING', 'BROKEN', 'NOT READY']), null);
   assert.equal(detectByValues(['SN99245317', 'SN12345678', 'SN55554444']), null);
 });
