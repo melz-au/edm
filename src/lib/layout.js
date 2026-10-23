@@ -1,12 +1,13 @@
 import dagre from '@dagrejs/dagre';
 
-export const NODE_WIDTH = 280;
-export const CONCEPT_WIDTH = 180;
-export const CONCEPT_HEIGHT = 60;
-export const HEADER_HEIGHT = 40;
-export const ROW_HEIGHT = 26;
-export const FOOTER_HEIGHT = 8;
-export const MORE_HEIGHT = 20;
+// Keep in step with the .table-node sizes in styles.css.
+export const NODE_WIDTH = 220;
+export const CONCEPT_WIDTH = 140;
+export const CONCEPT_HEIGHT = 44;
+export const HEADER_HEIGHT = 28;
+export const ROW_HEIGHT = 18;
+export const FOOTER_HEIGHT = 4;
+export const MORE_HEIGHT = 14;
 
 export const TABLE_HANDLE_IN = '__table-in';
 export const TABLE_HANDLE_OUT = '__table-out';
@@ -14,7 +15,7 @@ export const TABLE_HANDLE_TOP = '__table-top';
 export const TABLE_HANDLE_BOTTOM = '__table-bottom';
 
 // Space between separately laid-out groups of tables.
-const GROUP_GAP = 60;
+const GROUP_GAP = 36;
 const DEFAULT_VIEWPORT = { width: 1200, height: 800 };
 
 export function visibleColumns(table, columnMode) {
@@ -53,8 +54,8 @@ function layoutGroup(ids, sizes, relationships, dir, compact) {
   const g = new dagre.graphlib.Graph({ multigraph: true });
   g.setGraph({
     rankdir: dir,
-    nodesep: compact ? 50 : 40,
-    ranksep: dir === 'TB' ? 90 : compact ? 140 : 120,
+    nodesep: compact ? 30 : 20,
+    ranksep: dir === 'TB' ? 60 : compact ? 100 : 80,
     marginx: 0,
     marginy: 0,
   });

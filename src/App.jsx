@@ -241,7 +241,7 @@ export default function App() {
     nextPositions.current = null;
     setNodes(known ? placeNodes(graph.nodes, known.positions) : graph.nodes);
     setEdges(graph.edges);
-    if (!known?.keepViewport) requestAnimationFrame(() => rf.fitView({ padding: 0.15, duration: 300 }));
+    if (!known?.keepViewport) requestAnimationFrame(() => rf.fitView({ padding: 0.06, duration: 300 }));
   }, [view, columnMode, rf, setNodes]);
 
   const autoLayout = () => {
