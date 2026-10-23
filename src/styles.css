@@ -559,3 +559,15 @@ input.invalid { border-color: #f04438 !important; background: #fffbfa; }
 .row-actions { white-space: nowrap; }
 .row-actions .icon-btn { font-size: 15px; padding: 0 2px; }
 .row-actions .icon-btn:disabled { opacity: 0.3; cursor: default; }
+.ddl {
+  margin: 0;
+  padding: 12px 14px;
+  max-height: 60vh;
+  overflow: auto;
+  background: #0f1f25;
+  color: #e6edf0;
+  border-radius: 6px;
+  font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre;
+}
+.modal__footer .check { margin-right: auto; }

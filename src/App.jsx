@@ -15,6 +15,7 @@ import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import EntityDialog from './components/EntityDialog.jsx';
 import ModelPanel from './components/ModelPanel.jsx';
+import DdlDialog from './components/DdlDialog.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
 import Writeback from './pages/Writeback.jsx';
@@ -666,6 +667,7 @@ export default function App() {
               onRestore={restoreVersion}
               onClose={closeModel}
               onAddEntity={() => setDialog({ type: 'entity', entity: null })}
+              onGenerateDdl={() => setDialog({ type: 'ddl', only: null })}
               confirmDiscard={confirmDiscard}
             />
           )}
@@ -792,6 +794,7 @@ export default function App() {
                   : null
               }
               onRemoveEntity={selectedTable.proposed ? () => removeProposed(selectedTable) : null}
+              onShowDdl={selectedTable.proposed ? () => setDialog({ type: 'ddl', only: [selectedTable.id], title: `DDL for ${selectedTable.name}` }) : null}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
               onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
               dqSource={refdataAvailable && canProfile ? source : null}
@@ -836,6 +839,17 @@ export default function App() {
           proposal={proposal}
           entity={dialog.entity}
           onSave={saveEntity}
+          onClose={() => setDialog(null)}
+        />
+      )}
+      {dialog?.type === 'ddl' && (
+        <DdlDialog
+          source={source}
+          scope={scope}
+          model={merged.model}
+          saved={savedModel}
+          only={dialog.only}
+          title={dialog.title}
           onClose={() => setDialog(null)}
         />
       )}

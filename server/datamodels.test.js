@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 
 const enabled = Boolean(process.env.ERD_TEST_PGHOST);
 const REF = `refdata_models_${process.pid}`;
+const BUILD = `ddl_models_${process.pid}`;
 let datamodels;
 let lakebase;
 
@@ -25,7 +26,7 @@ before(async () => {
 
 after(async () => {
   if (!enabled) return;
-  await lakebase.query(`DROP SCHEMA IF EXISTS ${REF} CASCADE`);
+  await lakebase.query(`DROP SCHEMA IF EXISTS ${REF} CASCADE; DROP SCHEMA IF EXISTS ${BUILD} CASCADE`);
   await lakebase.close();
 });
 
@@ -78,4 +79,63 @@ test('data models: create, list, save with versions, conflicts, delete', { skip:
   await datamodels.deleteModel(created.id, 'analyst@x.com');
   await assert.rejects(datamodels.getModel(created.id), (err) => err.status === 404);
   assert.deepEqual(await datamodels.listVersions(created.id), [], 'history goes with the model');
+});
+
+test('generated Postgres DDL runs and creates the keys and comments', { skip: !enabled }, async () => {
+  const { applyProposals, validateProposal } = await import('../src/lib/proposals.js');
+  const { generateDdl } = await import('../src/lib/ddl.js');
+  await lakebase.query(`CREATE SCHEMA ${BUILD}; CREATE TABLE ${BUILD}.asset (assetnum text PRIMARY KEY, siteid text)`);
+  const erd = await lakebase.getErd(BUILD);
+  const proposal = validateProposal({
+    tables: [
+      {
+        name: 'work_task',
+        columns: [
+          { name: 'task_id', type: 'bigint', pk: true },
+          { name: 'request_id', type: 'bigint', nullable: false, references: { table: `${BUILD}.work_request`, column: 'request_id' } },
+        ],
+      },
+      {
+        name: 'work_request',
+        comment: "Customer's request",
+        columns: [
+          { name: 'request_id', type: 'bigint', pk: true },
+          { name: 'assetnum', type: 'text', nullable: false, references: { table: `${BUILD}.asset`, column: 'assetnum' }, comment: 'Asset to work on' },
+          { name: 'site', type: 'text', references: { table: `${BUILD}.asset`, column: 'siteid' } },
+          { name: 'parent_id', type: 'bigint', references: { table: `${BUILD}.work_request`, column: 'request_id' } },
+          { name: 'raised_at', type: 'timestamptz', nullable: false },
+          { name: 'cost', type: 'numeric(18,2)' },
+        ],
+      },
+    ],
+  });
+  const { model } = applyProposals(erd, { source: 'lakebase', scope: BUILD, proposal });
+  await lakebase.query(generateDdl(model, { source: 'lakebase' }));
+
+  // The schema now reads back as the proposal: keys, foreign keys and comments.
+  const built = await lakebase.getErd(BUILD);
+  const request = built.tables.find((t) => t.name === 'work_request');
+  assert.deepEqual(
+    request.columns.map((c) => [c.name, c.type, c.nullable, c.pk]),
+    [
+      ['request_id', 'bigint', false, true],
+      ['assetnum', 'text', false, false],
+      ['site', 'text', true, false],
+      ['parent_id', 'bigint', true, false],
+      ['raised_at', 'timestamp with time zone', false, false],
+      ['cost', 'numeric(18,2)', true, false],
+    ],
+  );
+  assert.equal(request.comment, "Customer's request");
+  assert.equal(request.columns[1].comment, 'Asset to work on');
+  assert.deepEqual(
+    built.relationships.map((r) => `${r.from.table}.${r.from.columns} → ${r.to.table}.${r.to.columns}`).sort(),
+    [
+      `${BUILD}.work_request.assetnum → ${BUILD}.asset.assetnum`,
+      `${BUILD}.work_request.parent_id → ${BUILD}.work_request.request_id`,
+      `${BUILD}.work_task.request_id → ${BUILD}.work_request.request_id`,
+    ],
+  );
+  // Once built, the proposals show as built rather than proposed.
+  assert.deepEqual(applyProposals(built, { source: 'lakebase', scope: BUILD, proposal }).built, ['work_task', 'work_request']);
 });

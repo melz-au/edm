@@ -110,6 +110,7 @@ export default function ModelPanel({
   onRestore,
   onClose,
   onAddEntity,
+  onGenerateDdl,
   confirmDiscard,
 }) {
   const [models, setModels] = useState([]);
@@ -225,6 +226,7 @@ export default function ModelPanel({
         )}
       </div>
       <div className="model-panel__links small">
+        <button className="link" onClick={onGenerateDdl} disabled={!entityCount}>Generate DDL</button>
         <button className="link" onClick={exportJson} disabled={!entityCount && !saved}>Export JSON</button>
         {saved && <button className="link" onClick={() => setDialog('history')}>History</button>}
         {canDelete && <button className="link danger" onClick={remove}>Delete</button>}

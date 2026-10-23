@@ -62,6 +62,22 @@ model changed since you opened it, so nobody's work is silently overwritten.
 changes. **Export JSON** downloads the model, which also works without
 Lakebase. Only the model's creator or a data steward can delete it.
 
+**Generate DDL** (sidebar, or **DDL** on one selected entity) writes the
+`CREATE TABLE` script for the proposed entities, to copy or download as
+`.sql`. The dialect follows the source:
+
+- **Lakebase:** Postgres, with `"schema"."table"` names and `COMMENT ON` statements.
+- **Unity Catalog (and the demo):** Databricks SQL, with
+  `` `catalog`.`schema`.`table` `` names and inline `COMMENT`s. Foreign keys
+  there are informational and not enforced.
+
+Tables are created first with their primary keys, then foreign keys are added
+with `ALTER TABLE`, so entities can reference each other in any order.
+Both dialects require a foreign key to point at the parent's primary key. A
+reference to any other column is written out commented, with the reason. The
+app never runs the script: run it with an identity that can create tables in
+the schema. `IF NOT EXISTS` can be switched off.
+
 Proposals never change the source schema. When a table with a proposed
 entity's name appears in the schema (it has been built), the real table is
 shown instead and the sidebar offers to remove the proposal. References to
@@ -370,6 +386,7 @@ server/   Express: serves dist/ and the /api endpoints
   datamodels.js    saved data models and their versions (Lakebase)
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 src/lib/proposals.js    proposed entities: validation, merging into the ERD, placement (shared with the server)
+src/lib/ddl.js          CREATE TABLE scripts for proposed entities (Postgres or Databricks SQL)
 app.yaml  Databricks Apps entry point (npm run start)
 ```
 

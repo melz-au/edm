@@ -141,6 +141,7 @@ export default function TableDetails({
   onChangeSubmitted,
   onEditEntity,
   onRemoveEntity,
+  onShowDdl,
 }) {
   const categorical = new Set(profile?.columns.filter((c) => c.categorical).map((c) => c.name));
   const piiNames = new Set(profile?.columns.filter((c) => c.pii).map((c) => c.name));
@@ -194,6 +195,7 @@ export default function TableDetails({
           <p className="muted small">Proposed in this data model; it doesn't exist in the source yet.</p>
           <div className="details__actions">
             {onEditEntity && <button className="btn small" onClick={onEditEntity}>Edit entity</button>}
+            {onShowDdl && <button className="btn small" onClick={onShowDdl}>DDL</button>}
             {onRemoveEntity && <button className="btn small danger" onClick={onRemoveEntity}>Remove from model</button>}
           </div>
         </>
