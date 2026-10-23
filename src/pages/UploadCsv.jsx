@@ -141,9 +141,13 @@ export default function UploadCsv({ config }) {
   useEffect(() => {
     setExisting(null);
     setMode(null);
-    if (!catalog || !NAME_RE.test(schema) || !NAME_RE.test(table)) return;
-    // A schema that doesn't exist yet has no tables.
-    if (!schemas.some((s) => s.name === schema)) return setExisting({ exists: false });
+    if (!catalog || !schema || !NAME_RE.test(table)) return;
+    // A schema that doesn't exist yet has no tables. Existing schemas may have
+    // any name (e.g. with a hyphen); only new ones must follow NAME_RE.
+    if (!schemas.some((s) => s.name === schema)) {
+      if (NAME_RE.test(schema)) setExisting({ exists: false });
+      return;
+    }
     let current = true;
     const timer = setTimeout(() => {
       api
@@ -201,17 +205,27 @@ export default function UploadCsv({ config }) {
     ? 'Use lower-case letters, numbers and _ only, not starting with a number.'
     : null;
   const busy = ['creating-schema', 'uploading', 'loading'].includes(status.state);
-  const ready =
-    parsed?.data.length > 0 &&
-    problems.size === 0 &&
-    catalog &&
-    schema &&
-    !schemaNameError &&
-    table &&
-    !tableNameError &&
-    existing !== null &&
-    (!existing.exists || mode) &&
-    !busy;
+  // What still stops the load, shown under the button so it is never disabled without a reason.
+  const blocker = !parsed?.data.length
+    ? 'The file has no data rows.'
+    : problems.size
+      ? 'Fix the column names marked above.'
+      : !catalog
+        ? 'Choose a catalog.'
+        : !schema
+          ? creatingSchema ? 'Type a name for the new schema.' : 'Choose a schema.'
+          : schemaNameError
+            ? 'Fix the schema name.'
+            : !table
+              ? 'Enter a table name.'
+              : tableNameError
+                ? 'Fix the table name.'
+                : existing === null
+                  ? 'Checking whether the table already exists…'
+                  : existing.exists && !mode
+                    ? `${table} already exists: choose whether to add the rows to it or replace it.`
+                    : null;
+  const ready = !blocker && !busy;
 
   const load = async () => {
     setError(null);
@@ -556,6 +570,7 @@ export default function UploadCsv({ config }) {
                 />
               </div>
             )}
+            {blocker && !busy && <p className="muted small">{blocker}</p>}
             {status.state !== 'uploading' && busy && (
               <p className="muted small">This can take a minute if the SQL warehouse is starting up.</p>
             )}
