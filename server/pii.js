@@ -125,6 +125,8 @@ const VALUE_TESTS = [
     'phone',
     (v) => {
       if (!/^\+?[\d\s\-().]{8,20}$/.test(v)) return false;
+      // Signed or decimal numbers (coordinates, measurements) aren't phone numbers.
+      if (/^-|^\+?\d+\.\d+$/.test(v)) return false;
       const d = digitsOf(v);
       if (d.length < 8 || d.length > 15) return false;
       // Needs a phone-like shape: international prefix, trunk 0, or separators.
