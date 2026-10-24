@@ -6,18 +6,35 @@
 //   {
 //     tables: [{ name, comment, columns: [{ name, type, nullable, pk, comment,
 //                                           references?: { table, column } }] }],
-//     positions: { [tableId]: { x, y } }
+//     positions: { [tableId]: { x, y } },
+//     relationships: [{ id, from: { table, column }, to: { table, column },
+//                       fromEnd, toEnd, phrase }],      drawn on the diagram
+//     cardinality: { [relationshipId]: { fromEnd, toEnd, phrase } }
 //   }
 // `references.table` is a table id from the merged model (existing or
-// proposed); each reference becomes a relationship.
+// proposed); each reference becomes a relationship. Drawn relationships and
+// cardinality overrides are model annotations: they change how the diagram
+// reads, never the source schema. An end is how many rows of that end's
+// table go with one row of the other: 'one' (exactly one), 'zero-one',
+// 'one-many' or 'many' (zero or many). `from` is the referencing (child) side.
 //
 // Used by both the browser and the server, so no browser or Node APIs here.
 
 export const IDENT = /^[A-Za-z_][A-Za-z0-9_]{0,62}$/;
 const TYPE = /^[A-Za-z][A-Za-z0-9_ ]*(\([0-9, ]+\))?(\[\])?$/;
-export const LIMITS = { tables: 200, columns: 300, comment: 1000, type: 64 };
+export const LIMITS = { tables: 200, columns: 300, comment: 1000, type: 64, relationships: 500, phrase: 100 };
 
-export const emptyProposal = () => ({ tables: [], positions: {} });
+export const ENDS = ['one', 'zero-one', 'one-many', 'many'];
+export const END_LABELS = { one: 'exactly one', 'zero-one': 'zero or one', 'one-many': 'one or many', many: 'zero or many' };
+const isMany = (end) => end === 'many' || end === 'one-many';
+
+/** "N:1", "1:1", "1:N" or "M:N" for a from end and a to end. */
+export function cardinalityText(fromEnd, toEnd) {
+  if (isMany(fromEnd)) return isMany(toEnd) ? 'M:N' : 'N:1';
+  return isMany(toEnd) ? '1:N' : '1:1';
+}
+
+export const emptyProposal = () => ({ tables: [], positions: {}, relationships: [], cardinality: {} });
 
 /** The part of the source a data model belongs to: "main.sales", "maximo" or "demo.retail". */
 export function scopeName(source, catalog, schema) {
@@ -102,7 +119,35 @@ export function validateProposal(content) {
   for (const [id, p] of Object.entries(content.positions ?? {})) {
     if (Number.isFinite(p?.x) && Number.isFinite(p?.y)) positions[id] = { x: Math.round(p.x), y: Math.round(p.y) };
   }
-  return { tables: out, positions };
+
+  const ends = (e, what) => {
+    const fromEnd = str(e?.fromEnd);
+    const toEnd = str(e?.toEnd);
+    if (!ENDS.includes(fromEnd) || !ENDS.includes(toEnd)) throw new ProposalError(`${what} has an unknown cardinality`);
+    const phrase = str(e.phrase).slice(0, LIMITS.phrase) || null;
+    return { fromEnd, toEnd, phrase };
+  };
+  const relIn = Array.isArray(content.relationships) ? content.relationships : [];
+  if (relIn.length > LIMITS.relationships) throw new ProposalError(`A model can hold at most ${LIMITS.relationships} drawn relationships`);
+  const seenRels = new Set();
+  const relationships = relIn.map((rel) => {
+    const id = str(rel?.id).slice(0, 100);
+    if (!id || seenRels.has(id)) throw new ProposalError('A drawn relationship has a missing or repeated id');
+    seenRels.add(id);
+    const end = (side) => {
+      const table = str(rel[side]?.table);
+      const column = str(rel[side]?.column);
+      if (!table || table.length > 300) throw new ProposalError('A drawn relationship is missing a table');
+      if (column && !IDENT.test(column)) throw new ProposalError(`"${column}" isn't a valid column name`);
+      return { table, column: column || null };
+    };
+    return { id, from: end('from'), to: end('to'), ...ends(rel, 'A drawn relationship') };
+  });
+  const cardinality = {};
+  for (const [id, e] of Object.entries(content.cardinality ?? {}).slice(0, 2000)) {
+    if (id.length <= 300) cardinality[id] = ends(e, `Relationship ${id}`);
+  }
+  return { tables: out, positions, relationships, cardinality };
 }
 
 /**
@@ -113,11 +158,12 @@ export function validateProposal(content) {
  *   broken  "table.column → target" references whose target no longer exists
  */
 export function applyProposals(model, { source, scope, proposal }) {
-  if (!model || !scope || !proposal?.tables?.length) return { model, built: [], broken: [] };
+  const empty = !proposal?.tables?.length && !proposal?.relationships?.length && !Object.keys(proposal?.cardinality ?? {}).length;
+  if (!model || !scope || empty) return { model, built: [], broken: [] };
   const existing = new Set(model.tables.filter((t) => !t.external).map((t) => t.id));
   const built = [];
   const added = [];
-  for (const t of proposal.tables) {
+  for (const t of proposal.tables ?? []) {
     const id = proposedTableId(scope, t.name);
     if (existing.has(id)) {
       built.push(t.name);
@@ -167,7 +213,55 @@ export function applyProposals(model, { source, scope, proposal }) {
       });
     }
   }
-  return { model: { ...model, tables, relationships }, built, broken };
+
+  // Relationships drawn on the diagram. A column that has gone is dropped, so
+  // the relationship stays between the tables.
+  const label = (id) => tables.find((t) => t.id === id)?.name ?? id;
+  for (const d of proposal.relationships ?? []) {
+    if (!columnsOf.has(d.from.table) || !columnsOf.has(d.to.table)) {
+      broken.push(`${label(d.from.table)} → ${label(d.to.table)} (drawn)`);
+      continue;
+    }
+    const cols = (side) => (side.column && columnsOf.get(side.table).has(side.column) ? [side.column] : []);
+    relationships.push({
+      id: d.id,
+      name: d.phrase ?? `${label(d.from.table)} → ${label(d.to.table)}`,
+      from: { table: d.from.table, columns: cols(d.from) },
+      to: { table: d.to.table, columns: cols(d.to) },
+      inferred: false,
+      drawn: true,
+      override: { fromEnd: d.fromEnd, toEnd: d.toEnd },
+      phrase: d.phrase,
+    });
+  }
+
+  // Cardinality set on the diagram wins over what the keys imply.
+  const overrides = proposal.cardinality ?? {};
+  const withOverrides = relationships.map((rel) =>
+    overrides[rel.id]
+      ? { ...rel, override: { fromEnd: overrides[rel.id].fromEnd, toEnd: overrides[rel.id].toEnd }, phrase: overrides[rel.id].phrase }
+      : rel,
+  );
+  return { model: { ...model, tables, relationships: withOverrides }, built, broken };
+}
+
+/** Sets the cardinality (and phrase) of a relationship: a drawn one in place, any other as an override. */
+export function setCardinality(proposal, rel, { fromEnd, toEnd, phrase = null }) {
+  if (rel.drawn) {
+    return {
+      ...proposal,
+      relationships: proposal.relationships.map((d) => (d.id === rel.id ? { ...d, fromEnd, toEnd, phrase } : d)),
+    };
+  }
+  return { ...proposal, cardinality: { ...proposal.cardinality, [rel.id]: { fromEnd, toEnd, phrase } } };
+}
+
+/** Removes a drawn relationship, or an override so the keys decide again. */
+export function clearRelationship(proposal, rel) {
+  if (rel.drawn) return { ...proposal, relationships: proposal.relationships.filter((d) => d.id !== rel.id) };
+  const cardinality = { ...proposal.cardinality };
+  delete cardinality[rel.id];
+  return { ...proposal, cardinality };
 }
 
 /** Columns another entity can reference: primary keys, or every column when a table has none. */
@@ -199,7 +293,13 @@ export function removeEntity(proposal, scope, name, { keepReferences = false } =
     );
   const positions = { ...proposal.positions };
   delete positions[id];
-  return { ...proposal, tables, positions };
+  const relationships = (proposal.relationships ?? []).filter(
+    (d) => keepReferences || (d.from.table !== id && d.to.table !== id),
+  );
+  const cardinality = Object.fromEntries(
+    Object.entries(proposal.cardinality ?? {}).filter(([relId]) => keepReferences || !relId.startsWith(`${id}:proposed:`)),
+  );
+  return { ...proposal, tables, positions, relationships, cardinality };
 }
 
 /** Adds or replaces (by its previous name) a proposed entity, renaming references to it. */
@@ -221,7 +321,16 @@ export function upsertEntity(proposal, scope, entity, previousName = null) {
     positions[newId] = positions[oldId];
     delete positions[oldId];
   }
-  return { ...proposal, tables, positions };
+  // Drawn relationships and overrides on its own foreign keys follow the rename.
+  const moveEnd = (e) => (renamed && e.table === oldId ? { ...e, table: newId } : e);
+  const relationships = (proposal.relationships ?? []).map((d) => ({ ...d, from: moveEnd(d.from), to: moveEnd(d.to) }));
+  const cardinality = Object.fromEntries(
+    Object.entries(proposal.cardinality ?? {}).map(([relId, e]) => [
+      renamed && relId.startsWith(`${oldId}:proposed:`) ? `${newId}${relId.slice(oldId.length)}` : relId,
+      e,
+    ]),
+  );
+  return { ...proposal, tables, positions, relationships, cardinality };
 }
 
 /**

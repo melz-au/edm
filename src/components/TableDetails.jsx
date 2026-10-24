@@ -1,4 +1,4 @@
-const CARDINALITY_TEXT = { 'N:1': 'many-to-one', '1:1': 'one-to-one', 'M:N': 'many-to-many' };
+const CARDINALITY_TEXT = { 'N:1': 'many-to-one', '1:1': 'one-to-one', '1:N': 'one-to-many', 'M:N': 'many-to-many' };
 
 import { useState } from 'react';
 import DataQuality from './DataQuality.jsx';
@@ -150,8 +150,9 @@ export default function TableDetails({
   const incoming = relationships.filter((r) => r.to.table === table.id && r.from.table !== table.id);
   const label = (id) => tablesById.get(id)?.label ?? tablesById.get(id)?.name ?? id;
 
+  // Physical view shows the key columns; a relationship drawn between tables has none.
   const describe = (r, cols) =>
-    physical ? (
+    physical && cols.length && !r.override ? (
       <code>({cols.join(', ')})</code>
     ) : (
       <span className="tag">
@@ -172,6 +173,8 @@ export default function TableDetails({
           {describe(r, r[cols].columns)}
           {r.inferred && <span className="tag">inferred</span>}
           {r.proposed && <span className="tag proposed">proposed</span>}
+          {r.drawn && <span className="tag proposed">drawn</span>}
+          {r.phrase && <span className="tag">{r.phrase}</span>}
         </li>
       ))}
     </ul>

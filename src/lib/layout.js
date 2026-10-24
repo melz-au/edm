@@ -258,7 +258,9 @@ export function buildGraph(
       type: 'smoothstep',
       markerStart: `erd-${r.childEnd ?? 'many'}`,
       markerEnd: `erd-${r.parentEnd ?? 'one'}`,
-      className: ['erd-edge', r.inferred && 'inferred', r.proposed && 'proposed'].filter(Boolean).join(' '),
+      className: ['erd-edge', r.inferred && 'inferred', r.proposed && 'proposed', r.drawn && 'drawn', r.override && 'overridden']
+        .filter(Boolean)
+        .join(' '),
       data: { relationship: r },
     };
   });

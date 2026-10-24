@@ -89,3 +89,14 @@ test('quoted identifiers are escaped and long constraint names fit Postgres', ()
   const name = /CONSTRAINT "([^"]+)"/.exec(sql)[1];
   assert.equal(name.length, 63);
 });
+
+test('drawn relationships are listed as comments, not keys', () => {
+  const p = validateProposal({
+    tables: [{ name: 'job', columns: [{ name: 'id', type: 'bigint', pk: true }] }],
+    relationships: [{ id: 'drawn:a', from: { table: 'maximo.job' }, to: { table: 'maximo.asset' }, fromEnd: 'many', toEnd: 'zero-one', phrase: 'maintains' }],
+  });
+  const { model } = applyProposals(existing(undefined, 'maximo'), { source: 'lakebase', scope: 'maximo', proposal: p });
+  const sql = generateDdl(model, { source: 'lakebase' });
+  assert.match(sql, /-- Relationships drawn in the data model \(documentation, not declared as keys\):\n--   job \(zero or many\) → asset \(zero or one\): maintains/);
+  assert.doesNotMatch(sql, /ALTER TABLE/);
+});
