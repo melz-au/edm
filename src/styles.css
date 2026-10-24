@@ -664,3 +664,41 @@ input.invalid { border-color: #f04438 !important; background: #fffbfa; }
 .edit-error { margin: 6px 8px; color: #b42318; font-size: 12px; }
 .edit-footer { display: flex; align-items: center; gap: 6px; padding: 8px; }
 .edit-footer .hint { margin-right: auto; color: var(--muted); font-size: 10px; }
+
+/* Drawing and editing relationships */
+.erd-handle.react-flow__handle.connectable { pointer-events: all; }
+.react-flow__node:hover .erd-handle.connectable,
+.react-flow.connecting .erd-handle.connectable {
+  width: 9px;
+  height: 9px;
+  background: var(--proposed);
+  border: 2px solid var(--panel);
+  cursor: crosshair;
+}
+.erd-edge.drawn .react-flow__edge-path { stroke: var(--proposed); stroke-width: 1.75; }
+.erd-edge.overridden .react-flow__edge-path { stroke: var(--proposed); }
+.react-flow__edge.erd-edge { cursor: pointer; }
+.rel-editor {
+  position: absolute;
+  z-index: 20;
+  width: 330px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--proposed);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+  font-size: 13px;
+}
+.rel-editor__head { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+.rel-editor__head .icon-btn { margin-left: auto; }
+.rel-editor__line { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin: 6px 0; }
+.rel-editor select, .rel-editor input {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 12px;
+  background: var(--panel);
+}
+.rel-editor input { flex: 1; }
+.rel-editor__actions { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.rel-editor__actions .grow { flex: 1; }

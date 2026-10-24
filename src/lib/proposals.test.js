@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   applyProposals,
+  cardinalityText,
+  clearRelationship,
+  setCardinality,
   freeSpot,
   placeNodes,
   referenceTargets,
@@ -171,4 +174,70 @@ test('freeSpot finds the nearest gap clear of other tables', () => {
   const clear = spot.x + 100 + 40 <= r.x || r.x + r.width + 40 <= spot.x || spot.y + 100 + 40 <= r.y || r.y + r.height + 40 <= spot.y;
   assert.ok(clear, JSON.stringify(spot));
   assert.ok(Math.hypot(spot.x, spot.y) <= 200, 'stays close to the preferred spot');
+});
+
+test('cardinalityText reads both ends', () => {
+  assert.equal(cardinalityText('many', 'one'), 'N:1');
+  assert.equal(cardinalityText('one-many', 'zero-one'), 'N:1');
+  assert.equal(cardinalityText('zero-one', 'one'), '1:1');
+  assert.equal(cardinalityText('one', 'many'), '1:N');
+  assert.equal(cardinalityText('many', 'one-many'), 'M:N');
+});
+
+test('drawn relationships and cardinality overrides validate and apply', () => {
+  const p = validateProposal({
+    tables: [request],
+    relationships: [
+      { id: 'drawn:a', from: { table: 'maximo.service_request' }, to: { table: 'maximo.asset', column: 'assetnum' }, fromEnd: 'one-many', toEnd: 'zero-one', phrase: ' is raised for ' },
+      { id: 'drawn:b', from: { table: 'maximo.gone' }, to: { table: 'maximo.asset' }, fromEnd: 'many', toEnd: 'one' },
+    ],
+    cardinality: { 'maximo.service_request:proposed:assetnum': { fromEnd: 'one', toEnd: 'one' } },
+  });
+  assert.equal(p.relationships[0].phrase, 'is raised for');
+  assert.throws(() => validateProposal({ relationships: [{ id: 'x', from: { table: 'a' }, to: { table: 'b' }, fromEnd: 'lots', toEnd: 'one' }] }), /unknown cardinality/);
+  assert.throws(() => validateProposal({ relationships: [{ id: 'x', from: { table: 'a' }, to: { table: 'b' }, fromEnd: 'one', toEnd: 'one' }, { id: 'x', from: { table: 'a' }, to: { table: 'b' }, fromEnd: 'one', toEnd: 'one' }] }), /repeated id/);
+
+  const { model, broken } = applyProposals(base, { source: 'lakebase', scope: 'maximo', proposal: p });
+  assert.deepEqual(broken, ['maximo.gone → asset (drawn)']);
+  const drawn = model.relationships.find((r) => r.id === 'drawn:a');
+  assert.deepEqual([drawn.from.columns, drawn.to.columns, drawn.drawn, drawn.override], [[], ['assetnum'], true, { fromEnd: 'one-many', toEnd: 'zero-one' }]);
+
+  const view = deriveView(model, 'logical');
+  const fk = view.relationships.find((r) => r.id === 'maximo.service_request:proposed:assetnum');
+  assert.deepEqual([fk.childEnd, fk.parentEnd, fk.cardinality], ['one', 'one', '1:1'], 'override wins over the keys');
+  const d = view.relationships.find((r) => r.id === 'drawn:a');
+  assert.deepEqual([d.childEnd, d.parentEnd, d.cardinality], ['one-many', 'zero-one', 'N:1']);
+  assert.equal(d.label, 'Service Request is raised for Asset (N:1)');
+  // Without an override the keys decide (NOT NULL FK → exactly one).
+  const keys = deriveView(applyProposals(base, { source: 'lakebase', scope: 'maximo', proposal: { ...p, cardinality: {} } }).model, 'logical');
+  assert.equal(keys.relationships.find((r) => r.id === fk.id).parentEnd, 'one');
+});
+
+test('setCardinality and clearRelationship for drawn and derived relationships', () => {
+  let p = validateProposal({
+    tables: [request],
+    relationships: [{ id: 'drawn:a', from: { table: 'maximo.service_request' }, to: { table: 'maximo.asset' }, fromEnd: 'many', toEnd: 'one' }],
+  });
+  p = setCardinality(p, { id: 'drawn:a', drawn: true }, { fromEnd: 'zero-one', toEnd: 'one-many', phrase: 'covers' });
+  assert.deepEqual(p.relationships[0], { id: 'drawn:a', from: { table: 'maximo.service_request', column: null }, to: { table: 'maximo.asset', column: null }, fromEnd: 'zero-one', toEnd: 'one-many', phrase: 'covers' });
+  p = setCardinality(p, { id: 'maximo.x:fk' }, { fromEnd: 'one', toEnd: 'one' });
+  assert.deepEqual(p.cardinality, { 'maximo.x:fk': { fromEnd: 'one', toEnd: 'one', phrase: null } });
+  assert.deepEqual(clearRelationship(p, { id: 'maximo.x:fk' }).cardinality, {});
+  assert.deepEqual(clearRelationship(p, { id: 'drawn:a', drawn: true }).relationships, []);
+  assert.doesNotThrow(() => validateProposal(p), 'edited content still validates');
+});
+
+test('renaming or removing an entity carries its drawn relationships and overrides', () => {
+  let p = validateProposal({
+    tables: [request],
+    relationships: [{ id: 'drawn:a', from: { table: 'maximo.asset' }, to: { table: 'maximo.service_request' }, fromEnd: 'many', toEnd: 'one' }],
+    cardinality: { 'maximo.service_request:proposed:assetnum': { fromEnd: 'one', toEnd: 'one' } },
+  });
+  p = upsertEntity(p, 'maximo', { ...p.tables[0], name: 'job' }, 'service_request');
+  assert.equal(p.relationships[0].to.table, 'maximo.job');
+  assert.deepEqual(Object.keys(p.cardinality), ['maximo.job:proposed:assetnum']);
+  const removed = removeEntity(p, 'maximo', 'job');
+  assert.deepEqual([removed.relationships, removed.cardinality], [[], {}]);
+  const built = removeEntity(p, 'maximo', 'job', { keepReferences: true });
+  assert.equal(built.relationships.length, 1, 'a built entity keeps its drawn relationships');
 });

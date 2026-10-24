@@ -3,6 +3,7 @@
 //   erd-one       exactly one          ─┼┼
 //   erd-zero-one  zero or one          ─○┼
 //   erd-many      zero or many         ─○<
+//   erd-one-many  one or many          ─┼<
 // orient="auto-start-reverse" lets the same shape work at either end of a path.
 const MARKERS = {
   'erd-one': <path d="M0 10 H24 M16 3 V17 M20 3 V17" className="erd-marker" />,
@@ -12,6 +13,7 @@ const MARKERS = {
       <circle cx="11" cy="10" r="4" className="erd-marker erd-marker--hollow" />
     </>
   ),
+  'erd-one-many': <path d="M0 10 H24 M16 10 L24 2 M16 10 L24 18 M11 3 V17" className="erd-marker" />,
   'erd-many': (
     <>
       <path d="M0 10 H24 M16 10 L24 2 M16 10 L24 18" className="erd-marker" />

@@ -60,8 +60,25 @@ You can design new tables on top of a schema's ERD and save the result as a
    keys. **Double-click** one, or right-click it and choose **Edit**, to edit
    it in place again (renaming it updates references to it). Right-click
    **Remove from model** deletes it.
-3. **Save as…** stores the model in Lakebase with a name and description:
-   the proposed entities and where every table sits on the diagram. **Save**
+3. **Draw and edit relationships.** Hover over a table to show its
+   connection points, then drag from one table (its header or a column row) to
+   another. That draws a relationship, many-to-one by default, and opens its
+   editor. **Click any relationship line** to edit it:
+   - **Both ends:** each end is exactly one, zero or one, one or many, or zero
+     or many, as read in sentences: "Each *asset spec* has *zero or one*
+     *class structure*" and "Each *class structure* has *one or many* *asset
+     spec*". The crow's foot markers follow.
+   - **A verb phrase**, such as *is classified by*, shown on the line and in
+     the logical view's labels.
+   - **Delete relationship** removes a drawn relationship. **Reset to keys**
+     makes an existing relationship take its cardinality from the keys again.
+
+   Drawn relationships and edited cardinalities are drawn in purple. They are
+   part of the data model, saved with it, and never change the source schema.
+   Generated DDL lists drawn relationships as comments, not as keys.
+4. **Save as…** stores the model in Lakebase with a name and description:
+   the proposed entities, drawn relationships, cardinalities, and where every
+   table sits on the diagram. **Save**
    stores a new version. Dragging tables or re-running the layout counts as a
    change.
 

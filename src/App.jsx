@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Background,
+  ConnectionMode,
   Controls,
   MiniMap,
   ReactFlow,
@@ -16,6 +17,7 @@ import MasterDataEditor from './components/MasterDataEditor.jsx';
 import { starterEntity } from './components/EntityEditor.jsx';
 import ModelPanel from './components/ModelPanel.jsx';
 import DdlDialog from './components/DdlDialog.jsx';
+import RelationshipEditor from './components/RelationshipEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
 import Approvals from './pages/Approvals.jsx';
 import Writeback from './pages/Writeback.jsx';
@@ -25,6 +27,7 @@ import { NODE_WIDTH, buildGraph, nodeHeight } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
 import {
   applyProposals,
+  clearRelationship,
   emptyProposal,
   freeSpot,
   placeNodes,
@@ -32,6 +35,7 @@ import {
   removeEntity,
   upsertEntity,
   scopeName,
+  setCardinality,
   validateProposal,
 } from './lib/proposals.js';
 
@@ -98,6 +102,8 @@ export default function App() {
   const [editing, setEditing] = useState(null);
   // Right-click menu on the canvas: { x, y } within the canvas, the flow position, and the node clicked, if any.
   const [menu, setMenu] = useState(null);
+  // The relationship whose cardinality is being edited: { id, x, y } within the canvas.
+  const [relEdit, setRelEdit] = useState(null);
 
   // Runs an async loader, ignoring results from superseded requests.
   const run = useCallback(async (loader, onResult) => {
@@ -169,6 +175,7 @@ export default function App() {
     setDirty(false);
     setEditing(null);
     setMenu(null);
+    setRelEdit(null);
     nextPositions.current = null;
   }, [source, scope]);
 
@@ -258,7 +265,12 @@ export default function App() {
   };
 
   const currentPositions = () => Object.fromEntries(rf.getNodes().map((n) => [n.id, { ...n.position }]));
-  const modelContent = () => ({ tables: proposal.tables, positions: currentPositions() });
+  const modelContent = () => ({
+    tables: proposal.tables,
+    positions: currentPositions(),
+    relationships: proposal.relationships ?? [],
+    cardinality: proposal.cardinality ?? {},
+  });
 
   // Changes the proposed entities while keeping the diagram where it is.
   const editProposal = (next, positions = currentPositions()) => {
@@ -335,6 +347,36 @@ export default function App() {
     }
     setEditing(null);
   };
+
+  // Relationships drawn by dragging from one table (or column) to another.
+  const handleColumn = (handle) => /^(.+)-(in|out)$/.exec(handle ?? '')?.[1] ?? null;
+  const canvasPoint = (flow) => {
+    const box = canvasRef.current.getBoundingClientRect();
+    const p = rf.flowToScreenPosition(flow);
+    return { x: Math.min(Math.max(p.x - box.left, 8), box.width - 340), y: Math.min(Math.max(p.y - box.top, 8), box.height - 260) };
+  };
+  const drawRelationship = ({ source: from, sourceHandle, target: to, targetHandle }) => {
+    if (!from || !to) return;
+    const id = `drawn:${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+    const relationship = {
+      id,
+      from: { table: from, column: handleColumn(sourceHandle) },
+      to: { table: to, column: handleColumn(targetHandle) },
+      fromEnd: 'many',
+      toEnd: 'one',
+      phrase: null,
+    };
+    editProposal({ ...proposal, relationships: [...(proposal.relationships ?? []), relationship] });
+    // Open the editor between the two tables so the cardinality can be set straight away.
+    const a = rf.getNode(from);
+    const b = rf.getNode(to);
+    const mid = {
+      x: ((a?.position.x ?? 0) + (b?.position.x ?? 0)) / 2 + NODE_WIDTH / 2,
+      y: ((a?.position.y ?? 0) + (b?.position.y ?? 0)) / 2,
+    };
+    setRelEdit({ id, ...canvasPoint(mid) });
+  };
+  const editedRel = relEdit && view?.relationships.find((r) => r.id === relEdit.id);
 
   const removeProposed = (table) => {
     const referencedBy = proposal.tables.filter(
@@ -500,7 +542,7 @@ export default function App() {
       return {
         ...e,
         className: `${e.className}${connected ? ' active' : ''}${activeId && !connected ? ' dimmed' : ''}`,
-        label: connected ? e.data.relationship.label : undefined,
+        label: connected ? e.data.relationship.label : e.data.relationship.phrase || undefined,
         zIndex: connected ? 10 : 0,
       };
     });
@@ -821,8 +863,20 @@ export default function App() {
             onNodeMouseLeave={() => setHoveredId(null)}
             onPaneClick={() => {
               setMenu(null);
+              setRelEdit(null);
               if (!editing) setSelectedId(null);
             }}
+            onEdgeClick={(e, edge) => {
+              if (!model || !scope) return;
+              const box = canvasRef.current.getBoundingClientRect();
+              setMenu(null);
+              setRelEdit({
+                id: edge.id,
+                x: Math.min(e.clientX - box.left + 8, box.width - 340),
+                y: Math.min(e.clientY - box.top + 8, box.height - 260),
+              });
+            }}
+            onConnect={drawRelationship}
             onPaneContextMenu={(e) => {
               if (!model || !scope) return;
               e.preventDefault();
@@ -836,7 +890,9 @@ export default function App() {
               setMenu({ x: e.clientX - box.left, y: e.clientY - box.top, node: node.data.table });
             }}
             onMoveStart={() => setMenu(null)}
-            nodesConnectable={false}
+            nodesConnectable={Boolean(model && scope) && !editing}
+            connectionMode={ConnectionMode.Loose}
+            connectionLineStyle={{ stroke: '#6941c6', strokeWidth: 2, strokeDasharray: '5 4' }}
             edgesFocusable={false}
             minZoom={0.05}
             maxZoom={2}
@@ -898,6 +954,21 @@ export default function App() {
                 </button>
               )}
             </div>
+          )}
+
+          {editedRel && (
+            <RelationshipEditor
+              rel={editedRel}
+              fromLabel={tablesById.get(editedRel.from.table)?.label ?? editedRel.from.table}
+              toLabel={tablesById.get(editedRel.to.table)?.label ?? editedRel.to.table}
+              position={relEdit}
+              onChange={(ends) => editProposal(setCardinality(proposal, editedRel, ends))}
+              onClear={() => {
+                editProposal(clearRelationship(proposal, editedRel));
+                if (editedRel.drawn) setRelEdit(null);
+              }}
+              onClose={() => setRelEdit(null)}
+            />
           )}
 
           {selectedTable && !editing && (

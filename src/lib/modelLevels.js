@@ -10,6 +10,8 @@
 //   parentEnd: 'one' | 'zero-one'   (FK columns NOT NULL → mandatory)
 //   childEnd:  'many' | 'zero-one'  (FK columns == child PK → one-to-one)
 
+import { cardinalityText } from './proposals.js';
+
 export const LEVELS = [
   { id: 'physical', label: 'Physical' },
   { id: 'logical', label: 'Logical' },
@@ -88,6 +90,11 @@ export function logicalType(physical = '') {
 const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
 
 function withCardinality(rel, tablesById) {
+  // Cardinality drawn or set on the diagram wins over what the keys imply.
+  if (rel.override) {
+    const { fromEnd, toEnd } = rel.override;
+    return { ...rel, childEnd: fromEnd, parentEnd: toEnd, cardinality: cardinalityText(fromEnd, toEnd) };
+  }
   const child = tablesById.get(rel.from.table);
   const cols = new Map((child?.columns ?? []).map((c) => [c.name, c]));
   const fkCols = rel.from.columns.map((n) => cols.get(n)).filter(Boolean);
@@ -141,8 +148,12 @@ export function deriveView(model, level = 'physical') {
 
   let relationships = model.relationships.map((r) => {
     const rel = withCardinality(r, tablesById);
-    if (level !== 'physical') {
-      rel.label = `${labels.get(r.from.table) ?? r.from.table} ${rel.cardinality} ${labels.get(r.to.table) ?? r.to.table}`;
+    const fromLabel = labels.get(r.from.table) ?? r.from.table;
+    const toLabel = labels.get(r.to.table) ?? r.to.table;
+    if (r.phrase) {
+      rel.label = `${fromLabel} ${r.phrase} ${toLabel} (${rel.cardinality})`;
+    } else if (level !== 'physical') {
+      rel.label = `${fromLabel} ${rel.cardinality} ${toLabel}`;
     } else {
       rel.label = r.name;
     }

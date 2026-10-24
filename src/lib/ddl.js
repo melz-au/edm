@@ -8,6 +8,8 @@
 // single-column primary key can't be declared as a foreign key in either
 // dialect, so it is written out commented, with the reason.
 
+import { END_LABELS } from './proposals.js';
+
 const DIALECT = {
   pg: {
     name: 'Postgres (Lakebase)',
@@ -87,6 +89,23 @@ export function generateDdl(model, { source, only = null, ifNotExists = true, he
   }
 
   if (foreignKeys.length) out.push('-- Relationships', ...foreignKeys, '');
+
+  // Relationships drawn on the diagram document the design; they aren't keys.
+  const wantedIds = new Set(wanted.map((t) => t.id));
+  const name = (id) => byId.get(id)?.name ?? id;
+  const drawn = (model?.relationships ?? []).filter(
+    (r) => r.drawn && (wantedIds.has(r.from.table) || wantedIds.has(r.to.table)),
+  );
+  if (drawn.length) {
+    out.push('-- Relationships drawn in the data model (documentation, not declared as keys):');
+    for (const r of drawn) {
+      const cols = r.from.columns.length && r.to.columns.length ? ` [${r.from.columns[0]} → ${r.to.columns[0]}]` : '';
+      out.push(
+        `--   ${name(r.from.table)} (${END_LABELS[r.override.fromEnd]}) → ${name(r.to.table)} (${END_LABELS[r.override.toEnd]})${r.phrase ? `: ${r.phrase}` : ''}${cols}`,
+      );
+    }
+    out.push('');
+  }
   return out.join('\n');
 }
 
