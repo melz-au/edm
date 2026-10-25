@@ -82,6 +82,61 @@ You can design new tables on top of a schema's ERD and save the result as a
    stores a new version. Dragging tables or re-running the layout counts as a
    change.
 
+### Star schemas
+
+A data model can also describe a star schema. Annotations are saved with the
+model and work on existing tables as well as proposed ones; they never change
+the source schema.
+
+- **Roles.** In a table's details panel, set **Role** to *Fact*, *Dimension*
+  or *Bridge*. Tables named like `dim_…`, `fact_…`/`fct_…` or `bridge_…` are
+  suggested, and the sidebar's **Star schema** section can classify them all
+  at once. Facts and dimensions get a **FACT**/**DIM** badge on the diagram.
+- **Dimensions.** Choose the **surrogate key** (a single integer primary key
+  is assumed when none is chosen), tick the **business key** column(s) from the
+  source system, and pick **SCD type 1** (overwrite) or **type 2** (keep
+  versions). On the diagram the keys show as **SK** and **BK**.
+- **Facts.** Write the **grain**, what one row represents. It goes into the
+  table comment in generated DDL.
+- **Templates.** Right-click the diagram for **New dimension**, **New fact**
+  or **New date dimension**:
+  - a new dimension comes with a surrogate key, a business key and an SCD type
+  - the date dimension has a `yyyymmdd` smart key and calendar attributes
+  - a new fact references the date dimension when there is one
+
+**Generated DDL**:
+- a dimension's surrogate key becomes `GENERATED ALWAYS AS IDENTITY`; Unity
+  Catalog requires `BIGINT`, and smart keys can opt out
+- the business key gets a `UNIQUE` constraint in Postgres, plus the
+  version start column for SCD type 2; Unity Catalog doesn't enforce unique
+  constraints, so there it is noted as a comment
+
+**Checks.** The sidebar lists issues for the whole model, and the details panel
+lists each table's own. Tables with errors or warnings show a count on the
+diagram. Click a table name in the list to go to it.
+
+| Severity | Rule |
+| --- | --- |
+| Error | Dimension without a surrogate key *(fix: add one; the old key becomes the business key)* |
+| Error | SCD type 2 dimension without effective-from, effective-to and current-flag columns *(fix: add them)* |
+| Error | Dimension that references a fact |
+| Error | Fact that references no dimension |
+| Error | Fact that joins a dimension on something other than its surrogate key |
+| Warning | Surrogate key that isn't the only primary key, or isn't an integer |
+| Warning | Dimension without a business key, or with a nullable one *(fix: make required)* |
+| Warning | Nullable fact foreign key: use an "unknown" member row instead *(fix: make required)* |
+| Warning | Fact key type that differs from the dimension's surrogate key |
+| Warning | Fact joined directly to another fact |
+| Warning | Fact without a declared grain |
+| Warning | Bridge linking fewer than two tables |
+| Warning | Role that contradicts the table's name |
+| Note | Snowflaked dimension (references another dimension) |
+| Note | Dimension no fact uses |
+| Note | Fact without numeric measures (fine for a factless fact) |
+
+Fixes change proposed tables only; for existing tables the checks explain
+what to change at the source.
+
 Each model belongs to one schema. The **Data model** list shows that schema's
 saved models; opening one restores its entities and layout. Several people can
 work on the same model: a save is refused (with who saved in between) if the
@@ -419,6 +474,7 @@ server/   Express: serves dist/ and the /api endpoints
 src/lib/modelLevels.js  physical → logical → conceptual transforms
 src/lib/proposals.js    proposed entities: validation, merging into the ERD, placement (shared with the server)
 src/lib/ddl.js          CREATE TABLE scripts for proposed entities (Postgres or Databricks SQL)
+src/lib/star.js         star schema roles, keys, templates, fixes and pattern checks
 app.yaml  Databricks Apps entry point (npm run start)
 ```
 

@@ -139,3 +139,57 @@ test('generated Postgres DDL runs and creates the keys and comments', { skip: !e
   // Once built, the proposals show as built rather than proposed.
   assert.deepEqual(applyProposals(built, { source: 'lakebase', scope: BUILD, proposal }).built, ['work_task', 'work_request']);
 });
+
+test('generated star schema DDL runs: identity surrogate keys, business keys, fact keys', { skip: !enabled }, async () => {
+  const { applyProposals, validateProposal } = await import('../src/lib/proposals.js');
+  const { generateDdl } = await import('../src/lib/ddl.js');
+  const STAR = `${BUILD}_star`;
+  const col = (name, type, extra = {}) => ({ name, type, nullable: true, pk: false, ...extra });
+  const proposal = validateProposal({
+    tables: [
+      {
+        name: 'dim_customer',
+        columns: [
+          col('customer_sk', 'bigint', { pk: true }),
+          col('customer_id', 'text', { nullable: false }),
+          col('effective_from', 'timestamptz', { nullable: false }),
+          col('effective_to', 'timestamptz'),
+          col('is_current', 'boolean', { nullable: false }),
+        ],
+      },
+      {
+        name: 'fact_sales',
+        columns: [
+          col('customer_sk', 'bigint', { nullable: false, references: { table: `${STAR}.dim_customer`, column: 'customer_sk' } }),
+          col('amount', 'numeric(18,2)'),
+        ],
+      },
+    ],
+    star: {
+      [`${STAR}.dim_customer`]: { role: 'dimension', scd: 2, surrogate: 'customer_sk', business: ['customer_id'] },
+      [`${STAR}.fact_sales`]: { role: 'fact', grain: 'One row per sale' },
+    },
+  });
+  const { model } = applyProposals({ tables: [], relationships: [] }, { source: 'lakebase', scope: STAR, proposal });
+  try {
+    await lakebase.query(`CREATE SCHEMA ${STAR}`);
+    await lakebase.query(generateDdl(model, { source: 'lakebase', star: proposal.star }));
+    // The surrogate key is generated; two versions of one customer are allowed, a duplicate version is not.
+    const { rows } = await lakebase.query(
+      `INSERT INTO ${STAR}.dim_customer (customer_id, effective_from, is_current)
+       VALUES ('C1', '2024-01-01', false), ('C1', '2025-01-01', true) RETURNING customer_sk`,
+    );
+    assert.deepEqual(rows.map((r) => Number(r.customer_sk)), [1, 2]);
+    await assert.rejects(
+      lakebase.query(`INSERT INTO ${STAR}.dim_customer (customer_id, effective_from, is_current) VALUES ('C1', '2025-01-01', true)`),
+      /uq_dim_customer_business_key/,
+    );
+    await assert.rejects(lakebase.query(`INSERT INTO ${STAR}.dim_customer (customer_sk, customer_id, effective_from, is_current) VALUES (9, 'C2', now(), true)`), /non-DEFAULT value/);
+    await lakebase.query(`INSERT INTO ${STAR}.fact_sales VALUES (2, 10.5)`);
+    await assert.rejects(lakebase.query(`INSERT INTO ${STAR}.fact_sales VALUES (99, 1)`), /foreign key/);
+    const { rows: [c] } = await lakebase.query(`SELECT obj_description('${STAR}.fact_sales'::regclass) AS comment`);
+    assert.equal(c.comment, 'Grain: One row per sale');
+  } finally {
+    await lakebase.query(`DROP SCHEMA IF EXISTS ${STAR} CASCADE`);
+  }
+});
