@@ -16,6 +16,7 @@ import CodeMappingDialog from './components/CodeMappingDialog.jsx';
 import MasterDataEditor from './components/MasterDataEditor.jsx';
 import { starterEntity } from './components/EntityEditor.jsx';
 import ModelPanel from './components/ModelPanel.jsx';
+import StarPanel from './components/StarPanel.jsx';
 import DdlDialog from './components/DdlDialog.jsx';
 import RelationshipEditor from './components/RelationshipEditor.jsx';
 import ReferenceData from './pages/ReferenceData.jsx';
@@ -25,6 +26,7 @@ import UploadCsv from './pages/UploadCsv.jsx';
 import { api, sourceTableName } from './lib/api.js';
 import { NODE_WIDTH, buildGraph, nodeHeight } from './lib/layout.js';
 import { LEVELS, deriveView } from './lib/modelLevels.js';
+import { applyStarFix, checkStarSchema, roleSuggestions, starTemplate, surrogateOf } from './lib/star.js';
 import {
   applyProposals,
   clearRelationship,
@@ -33,6 +35,7 @@ import {
   placeNodes,
   proposedTableId,
   removeEntity,
+  renameStarColumns,
   upsertEntity,
   scopeName,
   setCardinality,
@@ -270,6 +273,7 @@ export default function App() {
     positions: currentPositions(),
     relationships: proposal.relationships ?? [],
     cardinality: proposal.cardinality ?? {},
+    star: proposal.star ?? {},
   });
 
   // Changes the proposed entities while keeping the diagram where it is.
@@ -284,8 +288,10 @@ export default function App() {
    * at `at` (a flow position, from the right-click menu), or in the free space
    * nearest the middle of the screen.
    */
-  const startNewEntity = (at = null) => {
-    const entity = starterEntity(source, merged.model);
+  const startNewEntity = (at = null, kind = null) => {
+    // kind: null for a plain entity, or a star schema template ('dimension', 'fact', 'date').
+    const template = kind ? starTemplate(kind, { source, scope, model: merged.model, star: proposal.star ?? {} }) : null;
+    const entity = template?.entity ?? starterEntity(source, merged.model);
     const id = proposedTableId(scope, entity.name);
     const size = { width: NODE_WIDTH, height: nodeHeight(level === 'conceptual' || columnMode === 'none' ? 0 : entity.columns.length) };
     const rects = rf.getNodes().map((n) => ({
@@ -302,7 +308,8 @@ export default function App() {
     const spot = freeSpot(rects, preferred, size, { gap: 16, step: 20 });
     showEditor(id, spot);
     setEditing({ name: entity.name, isNew: true, before: { proposal, dirty } });
-    editProposal(upsertEntity(proposal, scope, entity), { ...currentPositions(), [id]: spot });
+    const added = upsertEntity(proposal, scope, entity);
+    editProposal(template ? { ...added, star: { ...(added.star ?? {}), [id]: template.star } } : added, { ...currentPositions(), [id]: spot });
     setSelectedId(id);
   };
 
@@ -323,9 +330,11 @@ export default function App() {
     showEditor(id);
   };
 
-  const saveEntity = (next, name) => {
+  const saveEntity = (next, name, renames = {}) => {
     const previous = editing.name;
     const id = proposedTableId(scope, name);
+    const entity = next.tables.find((t) => t.name === name);
+    next = { ...next, star: renameStarColumns(next.star, id, renames, new Set(entity.columns.map((c) => c.name))) };
     const positions = currentPositions();
     if (previous !== name) {
       const oldId = proposedTableId(scope, previous);
@@ -501,11 +510,48 @@ export default function App() {
   );
 
   // Highlight the active table, its neighbours and connecting edges.
-  const activeId = hoveredId ?? selectedId;
+  // A table renamed or removed while hovered or selected must not dim the whole diagram.
+  const activeId = (hoveredId && tablesById.has(hoveredId) ? hoveredId : null) ?? (selectedId && tablesById.has(selectedId) ? selectedId : null);
   const query = search.trim().toLowerCase();
 
   // The proposed entity being edited on the canvas, and what its node needs to be the form.
   const editedEntity = editing && proposal.tables.find((t) => t.name === editing.name);
+  // Star schema: annotations, the issues found, and what each node shows.
+  const star = proposal.star ?? {};
+  const starIssues = useMemo(() => checkStarSchema(merged.model, star), [merged, star]);
+  const starSuggestions = useMemo(() => roleSuggestions(merged.model, star), [merged, star]);
+  const starByTable = useMemo(() => {
+    const out = new Map();
+    for (const t of merged.model?.tables ?? []) {
+      const a = star[t.id];
+      if (!a?.role) continue;
+      const own = starIssues.filter((i) => i.table === t.id);
+      out.set(t.id, {
+        role: a.role,
+        sk: a.role === 'dimension' ? surrogateOf(t, a)?.column.name : null,
+        bk: new Set(a.business ?? []),
+        errors: own.filter((i) => i.severity === 'error').length,
+        warnings: own.filter((i) => i.severity === 'warning').length,
+      });
+    }
+    return out;
+  }, [merged, star, starIssues]);
+  const setStar = (tableId, annotation) => {
+    const next = { ...star };
+    if (annotation) next[tableId] = annotation;
+    else delete next[tableId];
+    editProposal({ ...proposal, star: next });
+  };
+  const fixStar = (fix) => editProposal(validateProposal(applyStarFix(proposal, scope, fix, { source })));
+  const applyRoleSuggestions = () =>
+    editProposal({
+      ...proposal,
+      star: {
+        ...star,
+        ...Object.fromEntries(starSuggestions.map((s) => [s.table, { role: s.role, scd: 1, surrogate: null, business: [], grain: null, identity: true }])),
+      },
+    });
+
   const editorFor = editedEntity
     ? {
         id: proposedTableId(scope, editedEntity.name),
@@ -565,6 +611,7 @@ export default function App() {
           pii: piiByTable.get(n.id),
           dq: dqScores.get(n.id),
           editor: n.id === editorFor?.id ? editorFor.props : undefined,
+          star: starByTable.get(n.id),
         },
         // The node being edited sits above its neighbours while it is larger.
         ...(n.id === editorFor?.id ? { zIndex: 1000, className: 'editing' } : {}),
@@ -572,7 +619,7 @@ export default function App() {
     });
 
     return { displayNodes, displayEdges };
-  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable, dqScores, editorFor]);
+  }, [nodes, edges, activeId, selectedId, query, categoricalByTable, piiByTable, dqScores, editorFor, starByTable]);
 
   const filteredTables = useMemo(
     () =>
@@ -790,6 +837,17 @@ export default function App() {
               confirmDiscard={confirmDiscard}
             />
           )}
+          {model && scope && (
+            <StarPanel
+              star={star}
+              issues={starIssues}
+              suggestions={starSuggestions}
+              tableLabel={(id) => tablesById.get(id)?.label ?? id}
+              onSelect={focusTable}
+              onFix={fixStar}
+              onApplySuggestions={applyRoleSuggestions}
+            />
+          )}
           {merged.built.length > 0 && (
             <div className="notice warn small">
               Now built in the schema, so the real table is shown instead: {merged.built.join(', ')}.{' '}
@@ -942,16 +1000,26 @@ export default function App() {
                   </button>
                 </>
               ) : (
-                <button
-                  disabled={Boolean(editing)}
-                  title={editing ? 'Finish or cancel the entity you are editing first' : undefined}
-                  onClick={() => {
-                    setMenu(null);
-                    startNewEntity(menu.flow);
-                  }}
-                >
-                  Propose new entity here
-                </button>
+                <>
+                  {[
+                    [null, 'Propose new entity here'],
+                    ['dimension', 'New dimension here'],
+                    ['fact', 'New fact here'],
+                    ['date', 'New date dimension here'],
+                  ].map(([kind, text]) => (
+                    <button
+                      key={text}
+                      disabled={Boolean(editing)}
+                      title={editing ? 'Finish or cancel the entity you are editing first' : undefined}
+                      onClick={() => {
+                        setMenu(null);
+                        startNewEntity(menu.flow, kind);
+                      }}
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </>
               )}
             </div>
           )}
@@ -986,6 +1054,10 @@ export default function App() {
               mapped={mapped}
               onEditEntity={selectedTable.proposed ? () => editEntity(selectedTable.name) : null}
               onRemoveEntity={selectedTable.proposed ? () => removeProposed(selectedTable) : null}
+              starAnnotation={scope ? star[selectedTable.id] ?? null : undefined}
+              starIssues={starIssues.filter((i) => i.table === selectedTable.id)}
+              onStarChange={scope && !selectedTable.external ? (a) => setStar(selectedTable.id, a) : null}
+              onStarFix={fixStar}
               onShowDdl={selectedTable.proposed ? () => setDialog({ type: 'ddl', only: [selectedTable.id], title: `DDL for ${selectedTable.name}` }) : null}
               onCreateCodeSet={refdataAvailable ? (column) => setDialog({ type: 'codeSet', table: selectedTable, column }) : null}
               onMapCodes={refdataAvailable ? (column) => setDialog({ type: 'mapping', table: selectedTable, column }) : null}
@@ -1025,6 +1097,7 @@ export default function App() {
       )}
       {dialog?.type === 'ddl' && (
         <DdlDialog
+          star={proposal.star ?? {}}
           source={source}
           scope={scope}
           model={merged.model}

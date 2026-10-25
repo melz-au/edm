@@ -9,8 +9,10 @@
 //     positions: { [tableId]: { x, y } },
 //     relationships: [{ id, from: { table, column }, to: { table, column },
 //                       fromEnd, toEnd, phrase }],      drawn on the diagram
-//     cardinality: { [relationshipId]: { fromEnd, toEnd, phrase } }
+//     cardinality: { [relationshipId]: { fromEnd, toEnd, phrase } },
+//     star: { [tableId]: { role, scd, surrogate, business, grain, identity } }
 //   }
+// `star` classifies tables for star schema modelling (see star.js).
 // `references.table` is a table id from the merged model (existing or
 // proposed); each reference becomes a relationship. Drawn relationships and
 // cardinality overrides are model annotations: they change how the diagram
@@ -34,7 +36,7 @@ export function cardinalityText(fromEnd, toEnd) {
   return isMany(toEnd) ? '1:N' : '1:1';
 }
 
-export const emptyProposal = () => ({ tables: [], positions: {}, relationships: [], cardinality: {} });
+export const emptyProposal = () => ({ tables: [], positions: {}, relationships: [], cardinality: {}, star: {} });
 
 /** The part of the source a data model belongs to: "main.sales", "maximo" or "demo.retail". */
 export function scopeName(source, catalog, schema) {
@@ -147,7 +149,26 @@ export function validateProposal(content) {
   for (const [id, e] of Object.entries(content.cardinality ?? {}).slice(0, 2000)) {
     if (id.length <= 300) cardinality[id] = ends(e, `Relationship ${id}`);
   }
-  return { tables: out, positions, relationships, cardinality };
+  const star = {};
+  for (const [id, a] of Object.entries(content.star ?? {}).slice(0, 2000)) {
+    if (id.length > 300 || !a) continue;
+    const role = str(a.role);
+    if (!['fact', 'dimension', 'bridge'].includes(role)) continue;
+    const ident = (v) => {
+      const c = str(v);
+      if (c && !IDENT.test(c)) throw new ProposalError(`"${c}" isn't a valid column name`);
+      return c || null;
+    };
+    star[id] = {
+      role,
+      scd: role === 'dimension' && Number(a.scd) === 2 ? 2 : role === 'dimension' ? 1 : null,
+      surrogate: role === 'dimension' ? ident(a.surrogate) : null,
+      business: role === 'dimension' ? [...new Set((Array.isArray(a.business) ? a.business : []).map(ident).filter(Boolean))].slice(0, 20) : [],
+      grain: str(a.grain).slice(0, 300) || null,
+      identity: a.identity !== false,
+    };
+  }
+  return { tables: out, positions, relationships, cardinality, star };
 }
 
 /**
@@ -299,7 +320,9 @@ export function removeEntity(proposal, scope, name, { keepReferences = false } =
   const cardinality = Object.fromEntries(
     Object.entries(proposal.cardinality ?? {}).filter(([relId]) => keepReferences || !relId.startsWith(`${id}:proposed:`)),
   );
-  return { ...proposal, tables, positions, relationships, cardinality };
+  const star = { ...(proposal.star ?? {}) };
+  if (!keepReferences) delete star[id];
+  return { ...proposal, tables, positions, relationships, cardinality, star };
 }
 
 /** Adds or replaces (by its previous name) a proposed entity, renaming references to it. */
@@ -330,7 +353,32 @@ export function upsertEntity(proposal, scope, entity, previousName = null) {
       e,
     ]),
   );
-  return { ...proposal, tables, positions, relationships, cardinality };
+  const star = { ...(proposal.star ?? {}) };
+  if (renamed && star[oldId]) {
+    star[newId] = star[oldId];
+    delete star[oldId];
+  }
+  return { ...proposal, tables, positions, relationships, cardinality, star };
+}
+
+/**
+ * Keeps a table's star annotation in step with column renames and removals
+ * made in the entity editor. `renames` maps old column names to new ones;
+ * `remaining` is the set of column names the table now has.
+ */
+export function renameStarColumns(star, id, renames, remaining) {
+  const a = star?.[id];
+  if (!a) return star;
+  const map = (c) => renames[c] ?? c;
+  const keep = (c) => c && remaining.has(map(c));
+  return {
+    ...star,
+    [id]: {
+      ...a,
+      surrogate: keep(a.surrogate) ? map(a.surrogate) : null,
+      business: (a.business ?? []).filter(keep).map(map),
+    },
+  };
 }
 
 /**

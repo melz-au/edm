@@ -151,8 +151,10 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
         };
       });
     const next = upsertEntity(proposal, scope, { name: n, comment: comment.trim() || null, columns }, entity.name);
+    // Old → new column names, so annotations on columns (e.g. star schema keys) can follow.
+    const renames = Object.fromEntries(rows.filter((r) => r.orig && r.name.trim() && r.orig !== r.name.trim()).map((r) => [r.orig, r.name.trim()]));
     try {
-      onSave(validateProposal(next), n);
+      onSave(validateProposal(next), n, renames);
     } catch (err) {
       setError(err.message);
     }
@@ -173,7 +175,9 @@ export default function EntityEditor({ source, scope, model, proposal, entity, i
   };
 
   return (
-    <div className="table-node proposed editing" onKeyDown={onKeyDown}>
+    // Clicks inside the form are the form's: they must not reach React Flow's node
+    // click, which would reselect the node by its old id after a rename.
+    <div className="table-node proposed editing" onKeyDown={onKeyDown} onClick={(e) => e.stopPropagation()}>
       <Handle type="target" position={Position.Top} id={TABLE_HANDLE_TOP} className="erd-handle" />
       <Handle type="source" position={Position.Bottom} id={TABLE_HANDLE_BOTTOM} className="erd-handle" />
       <div className="table-node__header">

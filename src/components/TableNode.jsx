@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import EntityEditor from './EntityEditor.jsx';
+import { ROLE_BADGES } from '../lib/star.js';
 import {
   TABLE_HANDLE_BOTTOM,
   TABLE_HANDLE_IN,
@@ -21,20 +22,29 @@ const TYPE_BADGE = {
 function TableNode({ data }) {
   // A proposed entity being edited is its own form.
   if (data.editor) return <EntityEditor {...data.editor} />;
-  const { table, columnMode, level, highlightColumns, categorical, pii, dq } = data;
+  const { table, columnMode, level, highlightColumns, categorical, pii, dq, star } = data;
   const columns = visibleColumns(table, columnMode);
   const hidden = table.columns.length - columns.length;
   const badge = TYPE_BADGE[table.type];
 
   return (
-    <div className={`table-node level-${level}${table.external ? ' external' : ''}${table.proposed ? ' proposed' : ''}`}>
+    <div className={`table-node level-${level}${table.external ? ' external' : ''}${table.proposed ? ' proposed' : ''}${star ? ` role-${star.role}` : ''}`}>
       <Handle type="target" position={Position.Top} id={TABLE_HANDLE_TOP} className="erd-handle" />
       <Handle type="source" position={Position.Bottom} id={TABLE_HANDLE_BOTTOM} className="erd-handle" />
       <div className="table-node__header" title={[table.comment, table.id].filter(Boolean).join('\n')}>
         <Handle type="target" position={Position.Left} id={TABLE_HANDLE_IN} className="erd-handle" />
         <span className="table-node__name">{table.label ?? table.name}</span>
         {badge && level === 'physical' && <span className="table-node__badge">{badge}</span>}
+        {star && <span className={`table-node__badge role ${star.role}`}>{ROLE_BADGES[star.role]}</span>}
         {table.proposed && level !== 'conceptual' && <span className="table-node__badge proposed">proposed</span>}
+        {star && (star.errors > 0 || star.warnings > 0) && (
+          <span
+            className={`table-node__issues ${star.errors ? 'error' : 'warning'}`}
+            title={`Star schema: ${star.errors} error(s), ${star.warnings} warning(s)`}
+          >
+            {star.errors || star.warnings}
+          </span>
+        )}
         {table.external && <span className="table-node__schema">{table.schema}</span>}
         {dq && (
           <span
@@ -54,7 +64,12 @@ function TableNode({ data }) {
         >
           <Handle type="target" position={Position.Left} id={`${c.name}-in`} className="erd-handle" />
           <span className="table-node__keys">
-            {c.pk && <span className="key pk" title="Primary key">PK</span>}
+            {star?.sk === c.name ? (
+              <span className="key sk" title="Surrogate key">SK</span>
+            ) : (
+              c.pk && <span className="key pk" title="Primary key">PK</span>
+            )}
+            {star?.bk.has(c.name) && <span className="key bk" title="Business key">BK</span>}
             {c.fk && <span className="key fk" title="Foreign key">FK</span>}
             {pii?.has(c.name) && (
               <span className={`key pii ${pii.get(c.name).sensitivity}`} title={`Personal data: ${pii.get(c.name).label}`}>PII</span>

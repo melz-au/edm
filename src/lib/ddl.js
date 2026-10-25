@@ -9,6 +9,7 @@
 // dialect, so it is written out commented, with the reason.
 
 import { END_LABELS } from './proposals.js';
+import { isIntegerType, scd2Columns } from './star.js';
 
 const DIALECT = {
   pg: {
@@ -40,8 +41,12 @@ function qualified(d, table) {
  *                  references to proposed tables left out are written as comments
  *   ifNotExists    CREATE TABLE IF NOT EXISTS (default true)
  *   header         lines for the opening comment (model name, version, …)
+ *   star           star schema annotations (star.js): a dimension's surrogate key
+ *                  becomes an identity column, its business key a unique
+ *                  constraint (Postgres; Unity Catalog has none), and a fact's
+ *                  grain goes into the table comment
  */
-export function generateDdl(model, { source, only = null, ifNotExists = true, header = [] } = {}) {
+export function generateDdl(model, { source, only = null, ifNotExists = true, header = [], star = {} } = {}) {
   const dialect = dialectFor(source);
   const d = DIALECT[dialect];
   const byId = new Map((model?.tables ?? []).map((t) => [t.id, t]));
@@ -58,20 +63,45 @@ export function generateDdl(model, { source, only = null, ifNotExists = true, he
   for (const t of wanted) {
     const name = qualified(d, t);
     const pk = t.columns.filter((c) => c.pk).map((c) => c.name);
+    const ann = star[t.id];
+    // A generated surrogate key. Postgres takes any integer type; Databricks
+    // identity columns must be BIGINT.
+    const skCol = ann?.role === 'dimension' && ann.identity !== false && ann.surrogate
+      ? t.columns.find((c) => c.name === ann.surrogate)
+      : null;
+    const identityOk = skCol && (dialect === 'pg' ? isIntegerType(skCol.type) : /^bigint$/i.test(skCol.type.trim()));
+    const identity = identityOk ? skCol.name : null;
+    if (skCol && !identityOk) {
+      out.push(`-- Surrogate key ${skCol.name} is ${skCol.type}; make it ${dialect === 'pg' ? 'an integer type' : 'BIGINT'} to generate it as an identity column.`);
+    }
     const lines = t.columns.map((c) => {
       let line = `  ${d.quote(c.name)} ${c.type}${c.nullable ? '' : ' NOT NULL'}`;
+      if (c.name === identity) line += ' GENERATED ALWAYS AS IDENTITY';
       if (dialect === 'spark' && c.comment) line += ` COMMENT ${d.string(c.comment)}`;
       return line;
     });
     if (pk.length) {
       lines.push(`  CONSTRAINT ${d.quote(d.constraint(`pk_${t.name}`))} PRIMARY KEY (${pk.map(d.quote).join(', ')})`);
     }
+    // Business key: unique per row (with the version start for SCD type 2).
+    const business = ann?.role === 'dimension' ? (ann.business ?? []).filter((b) => t.columns.some((c) => c.name === b)) : [];
+    const versioned = ann?.scd === 2 ? scd2Columns(t).from : null;
+    const uniqueCols = business.length ? [...business, ...(versioned ? [versioned] : [])] : [];
+    if (uniqueCols.length && dialect === 'pg') {
+      lines.push(`  CONSTRAINT ${d.quote(d.constraint(`uq_${t.name}_business_key`))} UNIQUE (${uniqueCols.map(d.quote).join(', ')})`);
+    }
+    const role = ann?.role ? `${ann.role[0].toUpperCase()}${ann.role.slice(1)}${ann.role === 'dimension' ? ` (SCD type ${ann.scd ?? 1})` : ''}` : null;
+    const comment = [t.comment, ann?.role === 'fact' && ann.grain ? `Grain: ${ann.grain}` : null].filter(Boolean).join('. ') || null;
     let stmt = `CREATE TABLE ${ifNotExists ? 'IF NOT EXISTS ' : ''}${name} (\n${lines.join(',\n')}\n)`;
-    if (dialect === 'spark' && t.comment) stmt += `\nCOMMENT ${d.string(t.comment)}`;
+    if (dialect === 'spark' && comment) stmt += `\nCOMMENT ${d.string(comment)}`;
+    if (role) out.push(`-- ${role}`);
+    if (uniqueCols.length && dialect === 'spark') {
+      out.push(`-- Business key (keep unique in the load; Unity Catalog doesn't enforce it): ${uniqueCols.join(', ')}`);
+    }
     out.push(`${stmt};`);
 
     if (dialect === 'pg') {
-      if (t.comment) out.push(`COMMENT ON TABLE ${name} IS ${d.string(t.comment)};`);
+      if (comment) out.push(`COMMENT ON TABLE ${name} IS ${d.string(comment)};`);
       for (const c of t.columns.filter((c) => c.comment)) {
         out.push(`COMMENT ON COLUMN ${name}.${d.quote(c.name)} IS ${d.string(c.comment)};`);
       }
