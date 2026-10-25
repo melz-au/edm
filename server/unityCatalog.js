@@ -29,7 +29,34 @@ export async function getErd(catalog, schema, userToken) {
     { catalog_name: catalog, schema_name: schema, max_results: 50 },
     userToken,
   );
-  return buildModelFromUcTables(ucTables);
+  return buildModelFromUcTables(await withConstraints(ucTables, userToken));
+}
+
+const NO_CONSTRAINTS = new Set(['VIEW', 'MATERIALIZED_VIEW', 'METRIC_VIEW']);
+
+/**
+ * The List Tables API doesn't return table constraints, so primary and foreign
+ * keys would be missing. Fetch each table that could have them, a few at a
+ * time; a table that can't be fetched keeps what the list gave.
+ */
+async function withConstraints(ucTables, userToken, concurrency = 8) {
+  const out = [...ucTables];
+  const todo = out
+    .map((t, i) => [t, i])
+    .filter(([t]) => t.table_constraints === undefined && !NO_CONSTRAINTS.has(t.table_type));
+  const worker = async () => {
+    for (let item = todo.shift(); item; item = todo.shift()) {
+      const [t, i] = item;
+      try {
+        const full = await apiGet(`${UC}/tables/${encodeURIComponent(t.full_name)}`, {}, userToken);
+        out[i] = { ...t, ...full };
+      } catch {
+        // Keep the listed table: columns without keys beat no table.
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: concurrency }, worker));
+  return out;
 }
 
 /** One table's columns and keys (used to validate names before profiling). */

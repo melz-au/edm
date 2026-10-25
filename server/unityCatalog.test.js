@@ -7,6 +7,7 @@ let server;
 let tokenRequests = 0;
 const seenAuth = [];
 const statements = [];
+const tableGets = [];
 
 before(async () => {
   server = http.createServer((req, res) => {
@@ -65,13 +66,26 @@ before(async () => {
           }],
         }));
       }
+      // Like the real List Tables API, the second page has no table_constraints.
       return res.end(JSON.stringify({
         tables: [{
           name: 'customers', full_name: 'main.sales.customers', catalog_name: 'main', schema_name: 'sales',
           columns: [{ name: 'customer_id', type_text: 'bigint', position: 0 }],
-          table_constraints: [{ primary_key_constraint: { name: 'pk_c', child_columns: ['customer_id'] } }],
+        }, {
+          name: 'v_orders', full_name: 'main.sales.v_orders', catalog_name: 'main', schema_name: 'sales', table_type: 'VIEW',
+          columns: [{ name: 'order_id', type_text: 'bigint', position: 0 }],
         }],
       }));
+    }
+    if (url.pathname.startsWith('/api/2.1/unity-catalog/tables/')) {
+      tableGets.push(decodeURIComponent(url.pathname.split('/').pop()));
+      if (url.pathname.endsWith('main.sales.customers')) {
+        return res.end(JSON.stringify({
+          name: 'customers', full_name: 'main.sales.customers', catalog_name: 'main', schema_name: 'sales',
+          columns: [{ name: 'customer_id', type_text: 'bigint', position: 0 }],
+          table_constraints: [{ primary_key_constraint: { name: 'pk_c', child_columns: ['customer_id'] } }],
+        }));
+      }
     }
     res.statusCode = 404;
     res.end(JSON.stringify({ message: 'nope' }));
@@ -89,14 +103,16 @@ test('getErd paginates, maps keys and adds external parents', async () => {
   const model = await getErd('main', 'sales');
 
   assert.deepEqual(model.tables.map((t) => t.id), [
-    'main.sales.orders', 'main.sales.customers', 'main.ref.regions',
+    'main.sales.orders', 'main.sales.customers', 'main.sales.v_orders', 'main.ref.regions',
   ]);
+  assert.deepEqual(tableGets, ['main.sales.customers'], 'only tables listed without constraints are fetched, never views');
+  assert.equal(model.tables[1].columns[0].pk, true, 'primary key from the table fetch');
   const orders = model.tables[0];
   assert.deepEqual(orders.columns.map((c) => c.name), ['order_id', 'customer_id', 'region_id']);
   assert.equal(orders.columns[0].pk, true);
   assert.equal(orders.columns[1].fk, true);
   assert.equal(orders.columns[1].nullable, false);
-  assert.equal(model.tables[2].external, true);
+  assert.equal(model.tables[3].external, true);
   assert.equal(model.relationships.length, 2);
   assert.equal(tokenRequests, 1, 'service principal token is cached');
   assert.ok(seenAuth.every((h) => h === 'Bearer sp-token'));
