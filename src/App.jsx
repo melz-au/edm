@@ -442,9 +442,15 @@ export default function App() {
     const name = doc.name ?? 'the model';
     if (mentioned.length && !found.length && !content.tables.length) {
       const example = mentioned[0].slice(scope.length + 1);
+      const visible = (model?.tables ?? []).filter((t) => !t.external).map((t) => t.name ?? t.id.slice(scope.length + 1));
+      const sees = visible.length
+        ? `The app sees ${visible.length} other table${visible.length === 1 ? '' : 's'} there (${visible.slice(0, 5).join(', ')}${visible.length > 5 ? ', …' : ''}).`
+        : source === 'uc'
+          ? `The app sees no tables in ${scope}: load them there (check with SHOW TABLES IN ${scope}), or grant the app's service principal USE SCHEMA and SELECT on ${scope}.`
+          : `The app sees no tables in ${scope}.`;
       return {
         ok: false,
-        message: `None of the ${mentioned.length} tables in ${name} (e.g. ${example}) are in ${scope}. Open the schema that holds them, then import again.`,
+        message: `None of the ${mentioned.length} tables in ${name} (e.g. ${example}) are in ${scope}. ${sees} Open the schema that holds them, then import again.`,
       };
     }
     setEditing(null);

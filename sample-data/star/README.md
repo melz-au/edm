@@ -63,7 +63,7 @@ The data has realistic shapes:
 | `load_lakebase.sql` | Creates schema `water_star` in Lakebase/Postgres with primary keys, business-key `UNIQUE` constraints, foreign keys and comments, then loads the CSVs |
 | `water_star_model.json` | ERD Explorer data model, **Water utility star schema**, with every table's role, surrogate and business keys, SCD type and grain. Import it in the app (works for Lakebase and Unity Catalog) |
 | `load_model_lakebase.sql` | The same model saved with SQL straight into the app's Lakebase `refdata` tables, as an alternative for psql users |
-| `load_unity_catalog.sql` | Creates the tables in `main.water_star` with informational keys and loads the CSVs from a volume |
+| `load_unity_catalog.sql` | Creates the tables in `workspace.water_star` with informational keys and loads the CSVs from a volume |
 | `generate_star.py` | Seeded generator that rebuilds all of the above |
 
 ## Load
@@ -79,13 +79,27 @@ cd sample-data/star
 psql "host=<lakebase-host> dbname=databricks_postgres user=<you> sslmode=require" -f load_lakebase.sql
 ```
 
-**Unity Catalog:** create the schema and a volume, upload the CSV files to
-`/Volumes/main/water_star/raw/`, then run `load_unity_catalog.sql` in the SQL
-editor. The steps are at the top of the file, which can be re-run.
+**Unity Catalog:**
+1. In the SQL editor, create the schema and a volume:
+   ```sql
+   CREATE SCHEMA IF NOT EXISTS workspace.water_star;
+   CREATE VOLUME IF NOT EXISTS workspace.water_star.raw;
+   ```
+2. Upload the 11 CSV files to `/Volumes/workspace/water_star/raw/` (Catalog
+   Explorer → the volume → **Upload to this volume**).
+3. Run `load_unity_catalog.sql`. You can run it again safely.
+4. Check that the tables are there with `SHOW TABLES IN workspace.water_star`.
+
+The script uses the `workspace` catalog (Databricks Free Edition and newer
+workspaces). If yours is `main` or another catalog, replace
+`workspace.water_star` and `/Volumes/workspace/` throughout, or set `CATALOG`
+in `generate_star.py` and regenerate. The app's service principal needs
+`USE CATALOG` on the catalog and `USE SCHEMA, SELECT` on the schema, or the
+schema looks empty in ERD Explorer.
 
 **The annotated data model**, for either source:
 1. In ERD Explorer, open the schema (**water_star** in Lakebase, or
-   **main → water_star** in Unity Catalog).
+   **workspace → water_star** in Unity Catalog).
 2. In the **Data model** panel, choose **Import JSON** and pick
    `water_star_model.json`. The model was written for `water_star`; the app
    moves it onto the open schema.
