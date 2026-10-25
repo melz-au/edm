@@ -1,0 +1,11 @@
+site_sk,site_code,site_name,site_type,region,is_drinking_water
+-1,UNKNOWN,Unknown,Unknown,UNKNOWN,false
+1,ME-WWTP-006,Dunmore Wastewater Treatment Plant,Wastewater treatment plant,METRO,false
+2,ME-WTP-009,Hartley Water Treatment Plant,Water treatment plant,METRO,true
+3,SO-WTP-006,Stirling Water Treatment Plant,Water treatment plant,SOUTH,true
+4,RE-WWTP-015,Ironbark Wastewater Treatment Plant,Wastewater treatment plant,REGNL,false
+5,RE-WTP-006,Lyndale Water Treatment Plant,Water treatment plant,REGNL,true
+6,ME-SPS-001,Ashford Sewage Pump Station,Sewage pump station,METRO,false
+7,NO-SPS-006,Morphett Sewage Pump Station,Sewage pump station,NORTH,false
+8,ME-WPS-003,Torrens Water Pump Station,Water pump station,METRO,true
+9,ME-RES-008,Torrens Storage Reservoir,Storage reservoir,METRO,true

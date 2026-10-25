@@ -447,6 +447,11 @@ features end to end:
   from a legacy register. The same assets were entered several times with
   different names, tags, codes and parents. It comes with the clean hierarchy
   and match keys as ground truth.
+- `star/`: a star schema reporting warehouse built from the samples above:
+  - three facts: meter reads, work orders and water quality results
+  - eight dimensions, including an SCD type 2 customer dimension
+  - surrogate keys, business keys and unknown members
+  - a saved data model with the star annotations
 
 Each folder has a README with load steps for Lakebase and Unity Catalog.
 

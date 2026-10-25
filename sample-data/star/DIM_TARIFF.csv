@@ -1,0 +1,6 @@
+tariff_sk,tariff_code,tariff_name,customer_type,tier1_rate_per_kl,tier1_limit_kl_per_day,tier2_rate_per_kl,supply_charge_per_quarter
+-1,UNKNOWN,Unknown,UNKNOWN,0,0,0,0
+1,RES-STD,Residential standard,RESIDENTIAL,2.421,0.52,3.458,82.5
+2,RES-CONC,Residential concession,RESIDENTIAL,2.421,0.52,3.458,41.25
+3,BUS-STD,Business standard,BUSINESS,3.458,99.0,3.458,128.4
+4,BUS-LRG,Business large meter,BUSINESS,3.458,99.0,3.458,512.8
