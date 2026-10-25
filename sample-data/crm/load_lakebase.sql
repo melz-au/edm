@@ -1,3 +1,6 @@
+-- POSTGRES / LAKEBASE ONLY. Do not run this in the Databricks SQL editor: it uses Postgres types
+-- and psql's \copy. For Unity Catalog see load_unity_catalog.sql and README.md instead.
+--
 -- Loads CUSTOMER.csv into Lakebase (or any Postgres) as crm.customer.
 -- Run from this folder with psql, e.g.:
 --   psql "host=<lakebase-host> dbname=databricks_postgres user=<you> sslmode=require" -f load_lakebase.sql

@@ -1,3 +1,6 @@
+-- POSTGRES / LAKEBASE ONLY. Do not run this in the Databricks SQL editor: it uses Postgres types
+-- and psql's \copy. For Unity Catalog see load_unity_catalog.sql and README.md instead.
+--
 -- Loads CUSTOMER_MASTER.csv into Lakebase (or any Postgres) as a raw landing
 -- table: every column is text, exactly as extracted, and there is no primary
 -- key because the extract contains exact duplicate rows.
