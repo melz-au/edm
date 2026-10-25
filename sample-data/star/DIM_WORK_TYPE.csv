@@ -1,0 +1,7 @@
+work_type_sk,work_type_code,work_type_name,is_planned
+-1,UNKNOWN,Unknown,false
+1,PM,Preventive maintenance,true
+2,CM,Corrective maintenance,false
+3,EM,Emergency repair,false
+4,INSP,Inspection,true
+5,CAL,Calibration,true

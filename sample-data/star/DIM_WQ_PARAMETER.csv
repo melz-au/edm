@@ -1,0 +1,7 @@
+parameter_sk,parameter_code,parameter_name,unit,guideline_min,guideline_max
+-1,UNKNOWN,Unknown,n/a,,
+1,ECOLI,E. coli,MPN/100mL,,0.0
+2,TURB,Turbidity,NTU,,1.0
+3,CL_FREE,Free chlorine,mg/L,0.2,5.0
+4,PH,pH,pH units,6.5,8.5
+5,FLUORIDE,Fluoride,mg/L,,1.5
