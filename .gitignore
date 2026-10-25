@@ -5,3 +5,4 @@ dist/
 .databricks/
 *.log
 .DS_Store
+__pycache__/

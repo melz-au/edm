@@ -18,7 +18,21 @@ import random
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+
+
+def _here():
+    """This script's folder. Databricks runs .py files from a Git folder as notebooks,
+    where __file__ isn't set but the working directory is the script's folder."""
+    try:
+        return Path(__file__).resolve().parent
+    except NameError:
+        for candidate in (Path.cwd(), Path.cwd() / "sample-data" / "billing"):
+            if (candidate / "generate_billing_customers.py").exists():
+                return candidate
+        raise SystemExit("Run this from its own folder, sample-data/billing.")
+
+
+HERE = _here()
 rng = random.Random(20261021)
 issues = []
 
