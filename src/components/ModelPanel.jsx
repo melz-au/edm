@@ -119,12 +119,16 @@ export default function ModelPanel({
   const [dialog, setDialog] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const [imported, setImported] = useState(null); // { ok, message, name, description } of the last import
+  const [saveAsInitial, setSaveAsInitial] = useState(null);
 
   const refresh = useCallback(() => {
     if (!canSave || !scope) return setModels([]);
     api.models(source, scope).then(setModels).catch((err) => setError(err.message));
   }, [canSave, source, scope]);
   useEffect(refresh, [refresh]);
+  // An import message belongs to the schema it was made in.
+  useEffect(() => setImported(null), [source, scope]);
 
   const open = async (id) => {
     if (!confirmDiscard()) return;
@@ -160,6 +164,7 @@ export default function ModelPanel({
   const saveAs = async ({ name, description }) => {
     const row = await api.createModel({ name, description, source, scope, content: getContent() });
     setDialog(null);
+    setSaveAsInitial(null);
     onSaved(row);
     refresh();
   };
@@ -194,9 +199,15 @@ export default function ModelPanel({
     try {
       const doc = JSON.parse(await file.text());
       if (!doc || typeof doc !== 'object' || Array.isArray(doc)) throw new Error('not a data model');
-      onImport(doc);
+      const result = onImport(doc);
+      setImported(result);
+      // Go straight to saving it, so it shows in the Data model list.
+      if (result.ok && canSave) {
+        setSaveAsInitial({ name: result.name ?? file.name.replace(/\.json$/i, ''), description: result.description });
+        setDialog('saveAs');
+      }
     } catch (err) {
-      setError(`Could not import ${file.name}: ${err.message}`);
+      setImported({ ok: false, message: `Could not import ${file.name}: ${err.message}` });
     } finally {
       if (importRef.current) importRef.current.value = '';
     }
@@ -261,12 +272,20 @@ export default function ModelPanel({
         <div className="muted small">Saving data models needs a Lakebase database connected to this app; you can still export them as JSON.</div>
       )}
       {error && <div className="error inline">{error}</div>}
+      {imported && (
+        <div className={imported.ok ? 'notice small model-panel__import' : 'error inline'} onClick={() => setImported(null)} title="Dismiss">
+          {imported.message}
+        </div>
+      )}
 
       {dialog === 'saveAs' && (
         <SaveAsDialog
-          initial={{ name: saved ? `${saved.name} (copy)` : '', description: saved?.description }}
+          initial={saveAsInitial ?? { name: saved ? `${saved.name} (copy)` : '', description: saved?.description }}
           onSave={saveAs}
-          onClose={() => setDialog(null)}
+          onClose={() => {
+            setDialog(null);
+            setSaveAsInitial(null);
+          }}
         />
       )}
       {dialog === 'history' && saved && (

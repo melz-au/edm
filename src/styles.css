@@ -756,3 +756,4 @@ input.invalid { border-color: #f04438 !important; background: #fffbfa; }
 .star-summary .sev-error { color: #b42318; font-weight: 600; }
 .star-summary .sev-warning { color: #b54708; font-weight: 600; }
 .star-summary .sev.zero { color: var(--muted); font-weight: 400; }
+.model-panel__import { margin-top: 8px; cursor: pointer; }

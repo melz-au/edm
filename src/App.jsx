@@ -419,14 +419,33 @@ export default function App() {
   };
 
   // A model exported as JSON, possibly from another schema or source: its table
-  // ids are moved onto this schema, and it opens as unsaved changes.
+  // ids are moved onto this schema, and it opens as unsaved changes. Returns
+  // { ok, message } for the Data model panel to show next to the button.
   const importModel = (doc) => {
     let content;
     try {
       content = validateProposal(retargetContent(doc, doc.scope, scope));
     } catch (err) {
-      setError(`Could not import the model: ${err.message}`);
-      return;
+      return { ok: false, message: `Could not import ${doc.name ?? 'the model'}: ${err.message}` };
+    }
+    // Which of the tables the model talks about exist in this schema (or are proposed in it).
+    const here = new Set([
+      ...(model?.tables ?? []).filter((t) => !t.external).map((t) => t.id),
+      ...content.tables.map((t) => proposedTableId(scope, t.name)),
+    ]);
+    const mentioned = [...new Set([
+      ...Object.keys(content.star),
+      ...Object.keys(content.cardinality).map((id) => id.split(':')[0]),
+      ...content.relationships.flatMap((r) => [r.from.table, r.to.table]),
+    ])].filter((id) => !content.tables.some((t) => proposedTableId(scope, t.name) === id));
+    const found = mentioned.filter((id) => here.has(id));
+    const name = doc.name ?? 'the model';
+    if (mentioned.length && !found.length && !content.tables.length) {
+      const example = mentioned[0].slice(scope.length + 1);
+      return {
+        ok: false,
+        message: `None of the ${mentioned.length} tables in ${name} (e.g. ${example}) are in ${scope}. Open the schema that holds them, then import again.`,
+      };
     }
     setEditing(null);
     nextPositions.current = { positions: content.positions };
@@ -435,7 +454,13 @@ export default function App() {
     setDirty(true);
     setSelectedId(null);
     const from = doc.scope && doc.scope !== scope ? ` (made for ${doc.scope}, applied to ${scope})` : '';
-    setNotice(`Imported ${doc.name ?? 'the model'}${from}. Use Save as… to keep it.`);
+    const missing = mentioned.length - found.length;
+    return {
+      ok: true,
+      name: doc.name ?? null,
+      description: doc.description ?? null,
+      message: `Imported ${name}${from}: ${found.length} of ${mentioned.length} tables found${missing ? `; ${missing} not in this schema` : ''}. Save it to keep it.`,
+    };
   };
 
   const closeModel = () => {
@@ -1000,7 +1025,15 @@ export default function App() {
 
           {loading && <div className="overlay">Loading…</div>}
           {!loading && view && view.tables.length === 0 && (
-            <div className="overlay">No tables found in this schema.</div>
+            <div className="overlay">
+              No tables found in this schema.
+              {source === 'uc' && (
+                <div className="small">
+                  If it has tables, this app can't see them: grant its service principal access, e.g.{' '}
+                  <code>GRANT USE SCHEMA, SELECT ON SCHEMA {catalog}.{schema} TO `&lt;app service principal&gt;`</code>
+                </div>
+              )}
+            </div>
           )}
           {!loading && !model && !error && source !== 'demo' && (
             <div className="overlay">Choose a {source === 'uc' ? 'catalog and schema' : 'schema'} to draw its ERD.</div>
