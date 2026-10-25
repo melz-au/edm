@@ -61,30 +61,41 @@ The data has realistic shapes:
 | --- | --- |
 | `DIM_*.csv`, `FACT_*.csv` | One CSV per table |
 | `load_lakebase.sql` | Creates schema `water_star` in Lakebase/Postgres with primary keys, business-key `UNIQUE` constraints, foreign keys and comments, then loads the CSVs |
-| `load_model_lakebase.sql` | Saves an ERD Explorer data model, **Water utility star schema**, with every table's role, surrogate and business keys, SCD type and grain |
+| `water_star_model.json` | ERD Explorer data model, **Water utility star schema**, with every table's role, surrogate and business keys, SCD type and grain. Import it in the app (works for Lakebase and Unity Catalog) |
+| `load_model_lakebase.sql` | The same model saved with SQL straight into the app's Lakebase `refdata` tables, as an alternative for psql users |
 | `load_unity_catalog.sql` | Creates the tables in `main.water_star` with informational keys and loads the CSVs from a volume |
 | `generate_star.py` | Seeded generator that rebuilds all of the above |
 
 ## Load
 
+The `load_lakebase.sql` and `load_model_lakebase.sql` scripts are
+**Postgres-only**. Running them in the Databricks SQL editor fails with
+`UNSUPPORTED_DATATYPE "TEXT"` or a syntax error at `DO`. Use
+`load_unity_catalog.sql` for Unity Catalog.
+
 **Lakebase:**
 ```bash
 cd sample-data/star
 psql "host=<lakebase-host> dbname=databricks_postgres user=<you> sslmode=require" -f load_lakebase.sql
-# optional: the annotated data model (open ERD Explorer once first so it creates its tables)
-psql "host=<lakebase-host> dbname=databricks_postgres user=<you> sslmode=require" -f load_model_lakebase.sql
 ```
-
-In ERD Explorer, choose **Lakebase**, schema **water_star**, then choose the
-data model **Water utility star schema**. The tables show FACT/DIM badges and
-SK/BK keys, and the **Star schema** panel reports 0 errors and 0 warnings.
-Without the saved model, **Classify them** in the Star schema panel sets every
-role from the table names; then tick each dimension's business key, set
-`dim_customer` to SCD type 2, and write each fact's grain.
 
 **Unity Catalog:** create the schema and a volume, upload the CSV files to
 `/Volumes/main/water_star/raw/`, then run `load_unity_catalog.sql` in the SQL
 editor. The steps are at the top of the file, which can be re-run.
+
+**The annotated data model**, for either source:
+1. In ERD Explorer, open the schema (**water_star** in Lakebase, or
+   **main → water_star** in Unity Catalog).
+2. In the **Data model** panel, choose **Import JSON** and pick
+   `water_star_model.json`. The model was written for `water_star`; the app
+   moves it onto the open schema.
+3. Use **Save as…** to keep it.
+
+The tables then show FACT/DIM badges and SK/BK keys, and the **Star schema**
+panel reports 0 errors and 0 warnings. Without the model file, **Classify
+them** in the Star schema panel sets every role from the table names; then tick
+each dimension's business key, set `dim_customer` to SCD type 2, and write each
+fact's grain.
 
 Regenerate with `python3 generate_star.py`. It reads `../crm/CUSTOMER.csv` and
 `../assets/ASSET_GOLDEN.csv`.

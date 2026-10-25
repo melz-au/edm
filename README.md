@@ -143,7 +143,9 @@ work on the same model: a save is refused (with who saved in between) if the
 model changed since you opened it, so nobody's work is silently overwritten.
 **History** lists every version and can restore an earlier one as unsaved
 changes. **Export JSON** downloads the model, which also works without
-Lakebase. Only the model's creator or a data steward can delete it.
+Lakebase. **Import JSON** opens an exported model as unsaved changes. If it was
+made for another schema or source (say Lakebase `water_star`, imported into
+Unity Catalog `main.water_star`), its tables are moved onto the open schema. Only the model's creator or a data steward can delete it.
 
 **Generate DDL** (sidebar, or **DDL** on one selected entity) writes the
 `CREATE TABLE` script for the proposed entities, to copy or download as

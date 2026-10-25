@@ -424,3 +424,26 @@ export function freeSpot(rects, preferred, size, { gap = 40, step = 40, radius =
   const right = Math.max(...rects.map((r) => r.x + r.width), preferred.x);
   return { x: right + gap, y: preferred.y };
 }
+
+/**
+ * Moves model content saved for one schema onto another, e.g. a model exported
+ * from Lakebase "water_star" imported for Unity Catalog "main.water_star": every
+ * table id (in positions, references, drawn relationships, cardinality and star
+ * annotations) that starts with `fromScope.` is moved to `toScope.`.
+ */
+export function retargetContent(content, fromScope, toScope) {
+  if (!fromScope || !toScope || fromScope === toScope) return content;
+  const move = (id) => (typeof id === 'string' && id.startsWith(`${fromScope}.`) ? `${toScope}.${id.slice(fromScope.length + 1)}` : id);
+  const moveKeys = (obj) => Object.fromEntries(Object.entries(obj ?? {}).map(([k, v]) => [move(k), v]));
+  return {
+    ...content,
+    tables: (content.tables ?? []).map((t) => ({
+      ...t,
+      columns: (t.columns ?? []).map((c) => (c.references ? { ...c, references: { ...c.references, table: move(c.references.table) } } : c)),
+    })),
+    positions: moveKeys(content.positions),
+    relationships: (content.relationships ?? []).map((r) => ({ ...r, from: { ...r.from, table: move(r.from?.table) }, to: { ...r.to, table: move(r.to?.table) } })),
+    cardinality: moveKeys(content.cardinality),
+    star: moveKeys(content.star),
+  };
+}
