@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Modal from './Modal.jsx';
 import { api } from '../lib/api.js';
 
@@ -111,9 +111,11 @@ export default function ModelPanel({
   onClose,
   onAddEntity,
   onGenerateDdl,
+  onImport,
   confirmDiscard,
 }) {
   const [models, setModels] = useState([]);
+  const importRef = useRef(null);
   const [dialog, setDialog] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -185,6 +187,21 @@ export default function ModelPanel({
     URL.revokeObjectURL(url);
   };
 
+  // Reads a model exported as JSON (here or from another schema) as unsaved changes.
+  const importJson = async (file) => {
+    setError(null);
+    if (!file || !confirmDiscard()) return;
+    try {
+      const doc = JSON.parse(await file.text());
+      if (!doc || typeof doc !== 'object' || Array.isArray(doc)) throw new Error('not a data model');
+      onImport(doc);
+    } catch (err) {
+      setError(`Could not import ${file.name}: ${err.message}`);
+    } finally {
+      if (importRef.current) importRef.current.value = '';
+    }
+  };
+
   const canDelete = saved && (me?.isSteward || saved.created_by?.toLowerCase() === (me?.user ?? '').toLowerCase());
 
   return (
@@ -227,7 +244,16 @@ export default function ModelPanel({
       </div>
       <div className="model-panel__links small">
         <button className="link" onClick={onGenerateDdl} disabled={!entityCount}>Generate DDL</button>
-        <button className="link" onClick={exportJson} disabled={!entityCount && !saved}>Export JSON</button>
+        <button className="link" onClick={exportJson}>Export JSON</button>
+        <button className="link" onClick={() => importRef.current?.click()}>Import JSON</button>
+        <input
+          ref={importRef}
+          type="file"
+          accept=".json,application/json"
+          hidden
+          onChange={(e) => importJson(e.target.files?.[0])}
+          aria-label="Import a data model JSON file"
+        />
         {saved && <button className="link" onClick={() => setDialog('history')}>History</button>}
         {canDelete && <button className="link danger" onClick={remove}>Delete</button>}
       </div>

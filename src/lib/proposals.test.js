@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   applyProposals,
+  retargetContent,
   cardinalityText,
   clearRelationship,
   setCardinality,
@@ -240,4 +241,21 @@ test('renaming or removing an entity carries its drawn relationships and overrid
   assert.deepEqual([removed.relationships, removed.cardinality], [[], {}]);
   const built = removeEntity(p, 'maximo', 'job', { keepReferences: true });
   assert.equal(built.relationships.length, 1, 'a built entity keeps its drawn relationships');
+});
+
+test('retargetContent moves a model between schemas', () => {
+  const content = {
+    tables: [{ name: 'job', columns: [{ name: 'a', type: 'int', references: { table: 'water_star.dim_date', column: 'date_sk' } }] }],
+    positions: { 'water_star.dim_date': { x: 1, y: 2 }, 'other.t': { x: 0, y: 0 } },
+    relationships: [{ id: 'drawn:1', from: { table: 'water_star.job' }, to: { table: 'water_star.dim_date' }, fromEnd: 'many', toEnd: 'one' }],
+    cardinality: { 'water_star.fact:fk_x': { fromEnd: 'one', toEnd: 'one' } },
+    star: { 'water_star.dim_date': { role: 'dimension' }, 'water_star_old.x': { role: 'fact' } },
+  };
+  const moved = retargetContent(content, 'water_star', 'main.water_star');
+  assert.equal(moved.tables[0].columns[0].references.table, 'main.water_star.dim_date');
+  assert.deepEqual(Object.keys(moved.positions), ['main.water_star.dim_date', 'other.t']);
+  assert.deepEqual([moved.relationships[0].from.table, moved.relationships[0].to.table], ['main.water_star.job', 'main.water_star.dim_date']);
+  assert.deepEqual(Object.keys(moved.cardinality), ['main.water_star.fact:fk_x']);
+  assert.deepEqual(Object.keys(moved.star), ['main.water_star.dim_date', 'water_star_old.x'], 'only whole-scope prefixes move');
+  assert.equal(retargetContent(content, 'water_star', 'water_star'), content);
 });

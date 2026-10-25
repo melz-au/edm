@@ -36,6 +36,7 @@ import {
   proposedTableId,
   removeEntity,
   renameStarColumns,
+  retargetContent,
   upsertEntity,
   scopeName,
   setCardinality,
@@ -415,6 +416,26 @@ export default function App() {
     setProposal(validateProposal(v.content));
     setDirty(true);
     setNotice(`Restored version ${v.version} of ${v.name}. Save to make it the current version.`);
+  };
+
+  // A model exported as JSON, possibly from another schema or source: its table
+  // ids are moved onto this schema, and it opens as unsaved changes.
+  const importModel = (doc) => {
+    let content;
+    try {
+      content = validateProposal(retargetContent(doc, doc.scope, scope));
+    } catch (err) {
+      setError(`Could not import the model: ${err.message}`);
+      return;
+    }
+    setEditing(null);
+    nextPositions.current = { positions: content.positions };
+    setProposal(content);
+    setSavedModel(null);
+    setDirty(true);
+    setSelectedId(null);
+    const from = doc.scope && doc.scope !== scope ? ` (made for ${doc.scope}, applied to ${scope})` : '';
+    setNotice(`Imported ${doc.name ?? 'the model'}${from}. Use Save as… to keep it.`);
   };
 
   const closeModel = () => {
@@ -831,6 +852,7 @@ export default function App() {
                 setNotice(`Saved ${row.name} (version ${row.version}).`);
               }}
               onRestore={restoreVersion}
+              onImport={importModel}
               onClose={closeModel}
               onAddEntity={() => (editing ? setNotice('Finish or cancel the entity you are editing first.') : startNewEntity())}
               onGenerateDdl={() => setDialog({ type: 'ddl', only: null })}

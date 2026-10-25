@@ -1,3 +1,6 @@
+-- POSTGRES / LAKEBASE ONLY. Do not run this in the Databricks SQL editor: it uses Postgres types
+-- and psql's \copy. For Unity Catalog see load_unity_catalog.sql and README.md instead.
+--
 -- Loads the asset hierarchy sample into Lakebase (or any Postgres), in schema "assets":
 --   asset_hierarchy  the raw legacy register: every column text, exactly as
 --                    extracted, no primary key (it holds exact duplicate rows)
