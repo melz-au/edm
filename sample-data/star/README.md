@@ -83,6 +83,14 @@ psql "host=<lakebase-host> dbname=databricks_postgres user=<you> sslmode=require
 `/Volumes/main/water_star/raw/`, then run `load_unity_catalog.sql` in the SQL
 editor. The steps are at the top of the file, which can be re-run.
 
+The script uses the `main` catalog. If your workspace has a `workspace`
+catalog instead (Databricks Free Edition and newer workspaces), replace
+`main.water_star` with `workspace.water_star` and `/Volumes/main/` with
+`/Volumes/workspace/` throughout before running it. After loading, check that
+the tables are there with `SHOW TABLES IN workspace.water_star`. The app's
+service principal also needs `USE CATALOG` on the catalog and `USE SCHEMA, SELECT`
+on the schema, or the schema looks empty in ERD Explorer.
+
 **The annotated data model**, for either source:
 1. In ERD Explorer, open the schema (**water_star** in Lakebase, or
    **main → water_star** in Unity Catalog).
