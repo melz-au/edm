@@ -10,7 +10,6 @@
 DROP TABLE IF EXISTS workspace.water_star.fact_water_quality;
 DROP TABLE IF EXISTS workspace.water_star.fact_work_order;
 DROP TABLE IF EXISTS workspace.water_star.fact_meter_read;
-<<<<<<< Updated upstream
 DROP TABLE IF EXISTS workspace.water_star.dim_wq_parameter;
 DROP TABLE IF EXISTS workspace.water_star.dim_work_type;
 DROP TABLE IF EXISTS workspace.water_star.dim_asset;
@@ -19,15 +18,6 @@ DROP TABLE IF EXISTS workspace.water_star.dim_tariff;
 DROP TABLE IF EXISTS workspace.water_star.dim_meter;
 DROP TABLE IF EXISTS workspace.water_star.dim_customer;
 DROP TABLE IF EXISTS workspace.water_star.dim_date;
-=======
-DROP TABLE IF EXISTS main.water_star.dim_work_type;
-DROP TABLE IF EXISTS main.water_star.dim_asset;
-DROP TABLE IF EXISTS main.water_star.dim_site;
-DROP TABLE IF EXISTS main.water_star.dim_tariff;
-DROP TABLE IF EXISTS main.water_star.dim_meter;
-DROP TABLE IF EXISTS main.water_star.dim_customer;
-DROP TABLE IF EXISTS main.water_star.dim_date;
->>>>>>> Stashed changes
 
 CREATE OR REPLACE TABLE workspace.water_star.dim_date (
   date_sk INT NOT NULL COMMENT 'Smart key yyyymmdd; -1 is unknown',
