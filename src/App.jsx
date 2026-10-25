@@ -446,7 +446,7 @@ export default function App() {
       const sees = visible.length
         ? `The app sees ${visible.length} other table${visible.length === 1 ? '' : 's'} there (${visible.slice(0, 5).join(', ')}${visible.length > 5 ? ', …' : ''}).`
         : source === 'uc'
-          ? `The app sees no tables in ${scope}: load them there (load_unity_catalog.sql writes to main.water_star, so replace main with ${scope.split('.')[0]}), or grant the app's service principal USE SCHEMA and SELECT on ${scope}.`
+          ? `The app sees no tables in ${scope}: load them there (check with SHOW TABLES IN ${scope}), or grant the app's service principal USE SCHEMA and SELECT on ${scope}.`
           : `The app sees no tables in ${scope}.`;
       return {
         ok: false,
